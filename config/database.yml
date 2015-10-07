@@ -32,5 +32,6 @@ test:
 
 production:
   adapter: postgresql
+  database: omniscient
   pool: 5
   timeout: 5000
