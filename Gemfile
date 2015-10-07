@@ -38,3 +38,5 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+#gem version for openshift fix problem with test deploy
+gem 'rack', '1.5.2'
