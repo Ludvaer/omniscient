@@ -29,6 +29,13 @@ html, body {
 }
 
 h1 {
+    font-size: 40px;
+    display: inline;
+    width: auto;
+}
+
+h2 {
+    font-size: 35px;
     display: block;
     text-align: center;
     margin-bottom: 1em;
@@ -43,5 +50,10 @@ h1 {
 .hat {
     background: #ddddd6;
     padding: 1em;
+    overflow: auto;
+}
+
+#logo {
+    text-decoration: none;
 }
 
