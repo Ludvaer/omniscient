@@ -16,14 +16,13 @@
 html, body {
     margin: 0px;
     padding: 0px;
-    background: #999999;
+    background: #eeeee7;
     height:100%;
     color: #000033;
 }
 
 .main {
     min-height:100%;
-    background: #ccccc4;
     max-width: 45em;
     padding: 2%;
     margin: 0px auto;
@@ -34,5 +33,15 @@ h1 {
     text-align: center;
     margin-bottom: 1em;
     border-bottom: 2px solid #999999;
+}
+
+.top_nav {    
+    display: inline;
+    float: right;
+}
+
+.hat {
+    background: #ddddd6;
+    padding: 1em;
 }
 

@@ -1,13 +1,20 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <title><%= yield(:title) %> <%= ' | ' unless yield(:title).empty? %>Omniscient</title>
+  <title><%= yield(:title) %> <%= ' | ' unless yield(:title).empty? %><%= APPNAME %></title>
   <meta charset="UTF-8">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <header class="hat">
+    <%= link_to APPNAME, '/', id: "logo" %>
+    <nav class="top_nav">
+        <%= link_to "Sign up", '#' %> | <%= link_to "Log in", '#' %>
+    </nav>
+  </header>
 
   <div class="main">
   <%= yield %>
