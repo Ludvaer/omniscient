@@ -65,23 +65,13 @@ footer {
     float: right;
 }
 
-#logo {
-    box-sizing: border-box;
-    display: inline-block;
-    position: absolute;
-}
-
-
 h1 {
-    padding: 0px;
-    margin:0px;
-    box-sizing: border-box;
+    margin: 0px;
     height: 100%;
     font-size: 2.25em;
     text-transform: uppercase;
     letter-spacing: -1px;
     float:left;
-    position:relative;
 }
 
 h2 {
@@ -95,13 +85,11 @@ h2 {
 }
 
 
-a {
-    box-sizing: border-box;
+a {    
     text-decoration: none;
 }
 
-nav {
-    box-sizing: border-box;
+nav {    
     text-align: center;
 }
 
@@ -114,7 +102,6 @@ a {
 }
 
 a.btn {
-    box-sizing: border-box;
     color: #563d7c;
     background-color: transparent;
     border-color: #563d7c;
@@ -134,10 +121,6 @@ a.btn:active {
 
 a.sign:hover {
     text-decoration: underline;
-}
-
-img {
-    vertical-align:  center;
 }
 
 footer a {
