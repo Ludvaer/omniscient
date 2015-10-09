@@ -24,14 +24,17 @@ html, body {
 .main {
     height: 80%;
     max-width: 45em;
-    padding: 2%;
+    padding: 1em 2%;
     margin: 0px auto;
+    font-size: 1.1em;
 }
 
 h1 {
-    font-size: 2.5em;
+    font-size: 2.25em;
     display: inline;
     width: auto;
+    text-transform: uppercase;
+    letter-spacing: -1px;
 }
 
 h2 {
@@ -39,6 +42,7 @@ h2 {
     font-weight: bold;
     display: block;
     text-align: center;
+    margin-top: 0px;
     margin-bottom: 1em;
     border-bottom: 2px solid #999999;
 }
@@ -54,7 +58,7 @@ nav {
 
 .hat {
     background-color: #ddddd6;
-    padding: 1em;
+    padding: 1em 3%;
     overflow: auto;
 }
 
@@ -67,7 +71,7 @@ a {
 }
 
 .btn {
-    font-size: 1.3em;
+    font-size: 1.25em;
 }
 
 a.btn {
@@ -75,12 +79,10 @@ a.btn {
     color: #563d7c;
     background-color: transparent;
     border-color: #563d7c;
-    padding: 0.6em 1em;
-    line-height: 1.3333333;
-    border-radius: 6px;
+    padding: 0.5em 1em;
+    border-radius: 1.125em;
     border: 1px solid #563d7c;
 }
-
 a.btn:hover {
     color: #efefe0;
     background-color: #563d7c;
