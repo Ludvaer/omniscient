@@ -1,0 +1,9 @@
+<h2>Sign up</h2>
+<form method: post>
+<div>
+	<label>Username</label>
+	<input type="text" >
+	<% if @username_incorrect then %> <label class="err">The username disliked.</label> <%end%>
+	<% if @username_incorrect then %> <label class="err">The username is taken.</label> <%end%>
+</div>
+</form>
