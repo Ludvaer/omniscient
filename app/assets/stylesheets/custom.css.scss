@@ -1,23 +1,21 @@
+$side-padding: 2%;
+$footer-height: 80px;
+$background-mane: #eeeee7;
 
 html, body {
     margin: 0px;
     padding: 0px;
-    background-color: #eeeee7;
+    background-color: $background-mane;
     height:100%;
     color: #000033;
 }
-body {
-    padding: 0px 2%;
-}
+
 
 
 #main {
     box-sizing: border-box;
-    padding: 80px 0px;
-    margin: -80px auto;
-
-    min-height: 100%;
-    height: auto;
+    padding: 0px;
+    margin: 0px auto;    
 
     max-width: 45em; 
     font-size: 1.1em;
@@ -26,25 +24,35 @@ body {
 #header{
     display: block;
     box-sizing: border-box;
-    min-height: 80px;
-    line-height: 80px; 
 
     min-width: 100%;
-    padding: 0px 3%;
-    margin: 0px -2%;
+    padding: 1em 3%;
+    margin: 0px;
+    margin-left: -$side-padding;
+    margin-right: -$side-padding;
     overflow: auto;
 
     background-color: #ddddd6;
 }
 
+#footer-pusher-workaround {
+    box-sizing: border-box;
+    min-height: 100%;
+    height: auto;
+    padding: 0px $side-padding;
+    padding-bottom: $footer-height;
+    margin-top: 0px;
+    margin-bottom: -$footer-height; 
+}
+
 footer {  
     box-sizing: border-box;
-    min-height: 80px; 
-    line-height: 80px;
+    min-height: $footer-height; 
+    line-height: $footer-height;
  
     min-width: 100%;
     padding: 0px 3%;
-    margin: 0px -2%;
+    margin: 0px;
     overflow: auto;
 
     background-color: #ddddd6;
@@ -54,10 +62,9 @@ footer {
 
 .top_nav {
     box-sizing: border-box;
-    line-height: 1.2em;
     display: inline;
     float: right;
-    margin-top: 40px;
+    margin-top: 1.21em;
 }
 
 h1 {
@@ -75,51 +82,44 @@ h2 {
     font-weight: bold;
     display: block;
     text-align: center;
-    margin-top: 2%;
-    margin-bottom: 1em;
+    margin: 1.5% 0px;
     border-bottom: 2px solid #999999;
-}
-
-
-a {    
-    text-decoration: none;
 }
 
 nav {    
     text-align: center;
 }
 
-.btn {
-    font-size: 1.25em;
-}
-
 a {
+    text-decoration: none;
     display: inline-block;
+    img {
+         vertical-align: middle;
+    }
+    &.sign:hover {
+        text-decoration: underline;
+    }
 }
 
+
+$btncolor: #563d7c;
 a.btn {
-    color: #563d7c;
+    font-size: 1.25em;
+    color: $btncolor;
     background-color: transparent;
-    border-color: #563d7c;
+    border-color: $btncolor;
     padding: 0.5em 1em;
     margin: 0.5em 0.5em;
     border-radius: 1.125em;
-    border: 1px solid #563d7c;
-}
-a.btn:hover {
-    color: #efefe0;
-    background-color: #563d7c;
-}
-a.btn:active {
-    color: #fffff0;
-    background-color: #563d00;
-}
-
-a.sign:hover {
-    text-decoration: underline;
+    border: 1px solid $btncolor;
+    &:hover {
+        color: #efefe0;
+        background-color: $btncolor;
+    }
+    &:active {
+        color: #fffff0;
+        background-color: #563d00;
+    }
 }
 
-a img {
-    vertical-align: middle;
-}
 
