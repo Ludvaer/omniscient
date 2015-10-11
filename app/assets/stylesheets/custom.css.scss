@@ -15,13 +15,11 @@ html, body {
     font-size: 0px;
     min-width: 100%;
     width: auto;
-     display: inline-block;
 }
 
-#body {
-    
+body { 
+display: inline-block;   
     box-sizing: border-box;
-    display: inline-block;
     margin: 0px;
     padding: 0px;
     
@@ -99,6 +97,7 @@ footer {
 
 h1 {
     margin: 0px;
+    margin-right: 0.1em;
     padding: 0px;
     height: 100%;
     font-size: 2.25em;
