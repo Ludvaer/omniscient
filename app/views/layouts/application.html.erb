@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><%= yield(:title) %><%= ' | ' unless yield(:title).empty? %><%= APPNAME %></title>
+  <title><%= sanitize(yield(:title)) %><%= ' | ' unless yield(:title).empty? %>Omniscient</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -13,6 +13,7 @@
   <div id ="footer-pusher-workaround">
 	<%= render 'layouts/header' %>
 	<main id="main">
+  <h2><%= yield(:title) %></h2>
 	<%= yield %>
 	</main>
   </div>

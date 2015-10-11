@@ -27,7 +27,7 @@ body {
 }
  
 
-
+//main should not contain % padding since it has max width limitter, that's why padding defind for outer element
 #main {
     font-size: $font-size;
     box-sizing: border-box;
@@ -44,7 +44,7 @@ body {
     box-sizing: border-box;
     width: 100%+2*$side-padding;
 
-    padding: 1em 0px;
+    padding: 1em 3%;
     margin: 0px;
     margin-right: -$side-padding;
     margin-left:  -$side-padding;
@@ -92,7 +92,7 @@ footer {
     display: inline;
     float: right;
     margin: 5px;
-    margin-top: 1.21em;
+    margin-top: 1%;
 }
 
 h1 {
@@ -157,11 +157,10 @@ form {
 }
 
 
-    input {
-        max-width: 15em;
-        box-sizing: border-box;
-        width: 100%;
-        margin: 1px;
-
-    }
+input {
+    max-width: 15em;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 1px;
+}
 
