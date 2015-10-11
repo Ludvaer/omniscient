@@ -2,3 +2,6 @@
 
 Just learning Ruby.
 Nothing interesting here, yet.
+
+some version maybe deployed here: http://omniscient-lurr.rhcloud.com/
+or maybe here: https://omniscient.herokuapp.com/

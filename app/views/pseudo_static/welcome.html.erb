@@ -1,3 +1,4 @@
-<% provide(:title, "Home") %>
-<h1>Welcome</h1>
+<% provide(:title, "Wel<wbr/>come".html_safe) %>
 <p>Here be dragons.</p>
+<nav><%= link_to "Sign up", signup_path, class: "btn" %></nav>
+ 
