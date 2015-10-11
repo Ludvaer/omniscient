@@ -13,6 +13,9 @@ html, body {
     height:100%;
     color: #000033;
     font-size: 0px;
+    min-width: 100%;
+    width: auto;
+     display: inline-block;
 }
 
 #body {
@@ -96,12 +99,12 @@ footer {
 
 h1 {
     margin: 0px;
-    margin-right: 0.5em;
+    padding: 0px;
     height: 100%;
     font-size: 2.25em;
-
     float: left;
 }
+
 
 
 h2 {
