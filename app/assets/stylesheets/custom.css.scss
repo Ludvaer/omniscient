@@ -3,7 +3,8 @@ $footer-height: 80px;
 $background-mane: #eeeee7;
 $header-color: #ddddd6;
 $footer-color: #ddddd6;
-$mystery-padding-workaround: 5px;
+$mystery-padding-workaround: 0px;
+$font-size: 16px;
 
 html, body {
     background-color: $footer-color;
@@ -11,6 +12,7 @@ html, body {
     padding: 0px; 
     height:100%;
     color: #000033;
+    font-size: 0px;
 }
 
 #body {
@@ -30,15 +32,18 @@ html, body {
 
 
 #main {
+    font-size: $font-size;
     box-sizing: border-box;
+    display: block;
     padding: 2%;
     margin: 0px auto;
     max-width: 45em; 
-    font-size: 1.1em;
 }
 
 #header{
+    font-size: $font-size;
     box-sizing: border-box;
+    display: inline-block;
     overflow: auto;
     width: 100%;
 
@@ -60,8 +65,9 @@ html, body {
     margin-bottom: -$footer-height + $mystery-padding-workaround; 
 }
 
-footer {  
-display: inline-block;
+footer { 
+    font-size: $font-size;
+    display: inline-block;
     box-sizing: border-box;
     overflow: auto;
     width: 100%;
