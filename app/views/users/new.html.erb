@@ -1,9 +1,20 @@
 <% provide(:title, "Sign Up") %>
 <form method: post>
-<div>
-	<label>Username</label>
-	<input type="text" />
-	<% if @username_incorrect then %> <label class="err">The username disliked.</label> <%end%>
-	<% if @username_exists then %> <label class="err">The username is taken.</label> <%end%>
-</div>
+	<input type="text" style="display: none;" hidden="hidden" name="salt" value="<%= @salt %>"/>
+	<input type="text" style="display: none;" hidden="hidden" name="openkey" value="<%= @publickey %>"/>
+	<div class="field">
+		<label>Username</label>
+		<span class="sep"></span>
+		<input type="text" />
+		<% if @username_incorrect then %> <label class="err">The username disliked.</label> <%end%>
+		<% if @username_exists then %> <label class="err">The username is taken.</label> <%end%>
+	</div>
+	<div class="field">
+		<label>Password</label>
+		<span class="sep"></span>
+		<input type="text" />
+		<% if @password_incorrect then %> <label class="err">Password to short</label> <%end%>
+		<% if @username_exists then %> <label class="err">The username is taken.</label> <%end%>
+	</div>
+
 </form>
