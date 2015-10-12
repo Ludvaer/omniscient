@@ -1,20 +1,44 @@
 <% provide(:title, "Sign Up") %>
-<form method: post>
-	<input type="text" style="display: none;" hidden="hidden" name="salt" value="<%= @salt %>"/>
-	<input type="text" style="display: none;" hidden="hidden" name="openkey" value="<%= @publickey %>"/>
+<input type="text" style="display: none;" hidden="hidden" name="salt" id = "salt" value="<%= @salt %>"/>
+<input type="text" style="display: none;" hidden="hidden" name="publickey" id="publickey" value="<%= @publickey %>"/>
+
+
 	<div class="field">
 		<label>Username</label>
 		<span class="sep"></span>
-		<input type="text" />
+		<input type="text" id="name"/>
 		<% if @username_incorrect then %> <label class="err">The username disliked.</label> <%end%>
 		<% if @username_exists then %> <label class="err">The username is taken.</label> <%end%>
 	</div>
 	<div class="field">
 		<label>Password</label>
 		<span class="sep"></span>
-		<input type="text" />
+		<input type="password" id="pass" value=""/>
 		<% if @password_incorrect then %> <label class="err">Password to short</label> <%end%>
 		<% if @username_exists then %> <label class="err">The username is taken.</label> <%end%>
 	</div>
+	<input type="button" class="btn" value="encrypt" onclick="encrypt()" />
 
-</form>
+	<form method="post">	
+		<input type="text" name="username" id="nameform" value="" style="display: none;" hidden="hidden" />
+		<input type="password" name="password" id="passform" value="" style="display: none;" hidden="hidden"/>
+	</form>
+
+<script type="text/javascript">
+	var rsa = forge.pki.rsa;
+	var saltInput = document.getElementById("salt");
+	var pkeyInput = document.getElementById("publickey");
+	var nameInput = document.getElementById("name");
+	var passInput = document.getElementById("pass");
+
+	var nameformInput = document.getElementById("nameform");
+	var passformInput = document.getElementById("passform");
+	var publicKey = forge.pki.publicKeyFromPem(pkeyInput.value);
+	var encrypted = "asdf"
+	function encrypt() {
+		nameformInput
+		encrypted = publicKey.encrypt(passInput.value + '|' + saltInput.value);
+		nameformInput.value = nameInput.value;
+		passformInput.value = encrypted;
+	}
+</script>

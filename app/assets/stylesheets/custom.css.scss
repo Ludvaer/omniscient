@@ -132,7 +132,7 @@ a {
 }
 
 $btncolor: #563d7c;
-a.btn {
+.btn {
     font-size: 1.25em;
     color: $btncolor;
     background-color: transparent;
@@ -177,6 +177,14 @@ input {
     display: inline-block;
     margin: 1px;
     box-sizing: border-box;
-    max-width: $input-width;
-    width: 100%;
+    &[type=text], &[type=password]{
+        max-width: $input-width;
+        width: 100%;
+    }
+    &[type=button], &[type=submit] {
+        display: block;
+        margin: 1px auto;
+    }
 }
+
+
