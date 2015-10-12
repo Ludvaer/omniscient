@@ -1,0 +1,25 @@
+<input type="text" style="display: none;" hidden="hidden" name="salt" id = "salt" value="<%= @salt %>"/>
+<div class="field">
+	<label>Username</label>
+	<input type="text" id="username" value="<%= @name %>"/>
+	<% if @username_incorrect then %> <label class="err">The username disliked.</label> <%end%>
+	<% if @username_exists then %> <label class="err">The username is taken.</label> <%end%>
+	<label class="err" hidden="hidden" name="username_empty">You must have a name.</label>
+	<label class="err" hidden="hidden" name="username_incorrect">The username better be of some letters and numbers.</label>
+	<% if @username_exists then %> <label class="err">The username is taken.</label> <%end%>
+</div>
+<div class="field">
+	<label>Password</label>
+	<input type="password" id="password" value=""/>
+	<label class="err"  <% unless @password_incorrect then %>hidden="hidden"<% end %> name="password_incorrect">Password to short</label> 
+</div>
+<div class="field">
+	<label>Verify password</label>
+	<input type="password" id="verify" value=""/>
+	<label class="err" hidden="hidden" name>Do not match.</label>
+</div>
+<div class="field">
+	<label>Em@il</label>
+	<input type="text" id="email" value="<%= @email %>"/>
+	<label class="err" hidden="hidden" name="email_incorrect">Does not look much like email.</label>
+</div>

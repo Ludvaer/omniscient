@@ -1,44 +1,32 @@
 <% provide(:title, "Sign Up") %>
-<input type="text" style="display: none;" hidden="hidden" name="salt" id = "salt" value="<%= @salt %>"/>
 <input type="text" style="display: none;" hidden="hidden" name="publickey" id="publickey" value="<%= @publickey %>"/>
 
-
-	<div class="field">
-		<label>Username</label>
-		<span class="sep"></span>
-		<input type="text" id="name"/>
-		<% if @username_incorrect then %> <label class="err">The username disliked.</label> <%end%>
-		<% if @username_exists then %> <label class="err">The username is taken.</label> <%end%>
-	</div>
-	<div class="field">
-		<label>Password</label>
-		<span class="sep"></span>
-		<input type="password" id="pass" value=""/>
-		<% if @password_incorrect then %> <label class="err">Password to short</label> <%end%>
-		<% if @username_exists then %> <label class="err">The username is taken.</label> <%end%>
-	</div>
-	<input type="button" class="btn" value="encrypt" onclick="encrypt()" />
-
-	<form method="post">	
-		<input type="text" name="username" id="nameform" value="" style="display: none;" hidden="hidden" />
-		<input type="password" name="password" id="passform" value="" style="display: none;" hidden="hidden"/>
-	</form>
+<div id="signUpResponse">
+	<%= render 'form' %>
+</div>
+<input type="button" class="btn" value="Sign Up" id="signUpButton" onclick="test()" />
 
 <script type="text/javascript">
 	var rsa = forge.pki.rsa;
 	var saltInput = document.getElementById("salt");
 	var pkeyInput = document.getElementById("publickey");
-	var nameInput = document.getElementById("name");
-	var passInput = document.getElementById("pass");
+    var responseDiv = document.getElementById("signUpResponse");
+    var signUpButton = document.getElementById("signUpButton");
+    var publicKey = forge.pki.publicKeyFromPem(pkeyInput.value);
 
-	var nameformInput = document.getElementById("nameform");
-	var passformInput = document.getElementById("passform");
-	var publicKey = forge.pki.publicKeyFromPem(pkeyInput.value);
-	var encrypted = "asdf"
-	function encrypt() {
-		nameformInput
-		encrypted = publicKey.encrypt(passInput.value + '|' + saltInput.value);
-		nameformInput.value = nameInput.value;
-		passformInput.value = encrypted;
-	}
+    function test() {
+    	var nameInput = document.getElementById("username");
+		var passInput = document.getElementById("password");
+    	
+
+    	var md = forge.md.sha512.create();
+    	md.update(passInput.value + '|' + nameInput.value);
+    	var hashed = md.digest().toHex();
+
+    	//hashed = passInput.value + '|' + nameInput.value
+		var encrypted = forge.util.bytesToHex(publicKey.encrypt(hashed + '|' + saltInput.value));
+    	encryptsignup(encrypted);
+    }
+
+
 </script>

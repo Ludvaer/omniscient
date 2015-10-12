@@ -14,6 +14,7 @@
 //= require forge/cipher
 //= require forge/aes
 //= require forge/sha256
+//= require forge/sha512
 //= require forge/md
 //= require forge/util
 //= require forge/prng
@@ -29,3 +30,4 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+

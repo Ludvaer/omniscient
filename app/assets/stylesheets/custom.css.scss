@@ -5,7 +5,7 @@ $header-color: #ddddd6;
 $footer-color: #ddddd6;
 $mystery-padding-workaround: 0px;
 $font-size: 16px;
-$main-width: 45em; 
+$main-width: 55em; 
 
 html {
     height:100%;
@@ -161,11 +161,11 @@ form {
 }
 
 $label-width: 10em;
-$input-width: 15em;
+$input-width: 20em;
 
 label {
     display:  inline-block;
-    min-width: 40%;
+    min-width: 50% + (10*10*($label-width - $input-width)/($main-width));
     width: 100%;
     max-width: $label-width;
     margin: 1px;

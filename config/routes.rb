@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'users/new'
   get 'signup'  => 'users#new'
+  post 'signup'  => 'users#create'
   root 'pseudo_static#welcome'
   get 'pseudo_static/welcome'
 
