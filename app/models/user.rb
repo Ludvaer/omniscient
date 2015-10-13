@@ -20,8 +20,7 @@ class User < ActiveRecord::Base
 		format: { with: VALID_USER_REGEX }, uniqueness: { case_sensitive: false }
 	validates :email, presence: true, length: { maximum: MAX_EMAIL_LENGTH },
 		format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
-	validates :password, length: { minimum: PASSWORD_LENGTH, maximum: PASSWORD_LENGTH}
-
+	validates :password, presence: true, length: { minimum: PASSWORD_LENGTH, maximum: PASSWORD_LENGTH}
 	has_secure_password
 
     #will need to refactor and probably rebuild some of encription and other stuff some of it should be placed in helpers
