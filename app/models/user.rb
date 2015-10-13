@@ -3,16 +3,16 @@ class User < ActiveRecord::Base
 	@@sym = [('0'..'9'), ('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
     @@rsa_key = OpenSSL::PKey::RSA.new(2048)
     @@ssl = "asdfasdfasdfasdf"
-    @@salts = {}
+    @@salts = Hash.new(false)
     @@i = 1
 	def self.key
 		@@rsa_key.public_key
 	end
 
 	def self.decrypt(password)
-		p password
+		#p password
 		a = @@rsa_key.private_decrypt([password].pack('H*'))
-		p a
+		#p a
 	end
 
 	def self.salt
@@ -21,8 +21,17 @@ class User < ActiveRecord::Base
 		salt = (0...5).map { @@sym[rand(l)] }.join + "#{@@i}"
 		@@i += 1
 		@@salts[salt] = true
+		p "@@salts[#{salt}] = #{@@salts[salt]}"
 		salt
 	end
 
-
+	def self.checksalt(salt)
+		p "@@salts[#{salt}] = #{@@salts[salt]}"
+		if @@salts[salt]
+			@@salts[salt] = false
+			return true
+		else
+			return false
+		end
+	end
 end

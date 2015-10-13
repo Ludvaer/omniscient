@@ -8,9 +8,11 @@ class UsersController < ApplicationController
   	@publickey = User.key
   	@salt = User.salt
   	#@name = params[:name]
-  	@name = User.decrypt(params[:password])
-  	@password = params[:password]
+  	decrypted = User.decrypt(params[:password]).rpartition('|')
+  	@name = params[:name]
+  	@password = decrypted[0]
   	@email = params[:email]
+  	@doublepost = !User.checksalt(decrypted[-1])
   	render '_form', :layout => false
   end
 end

@@ -1,4 +1,6 @@
 <input type="text" style="display: none;" hidden="hidden" name="salt" id = "salt" value="<%= @salt %>"/>
+
+<div class="error" <%= 'hidden="hidden"' unless @doublepost %> name="doublepost">Double same form submission detected.</div>
 <div class="field">
 	<label>Username</label>
 	<input type="text" id="username" value="<%= @name %>"/>
