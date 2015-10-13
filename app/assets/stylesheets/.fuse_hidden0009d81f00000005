@@ -5,7 +5,6 @@ $header-color: #ddddd6;
 $footer-color: #ddddd6;
 $mystery-padding-workaround: 0px;
 $font-size: 16px;
-$main-width: 55em; 
 
 html {
     height:100%;
@@ -35,7 +34,7 @@ body {
     display: block;
     padding: 2% 0px;
     margin: 0px auto;
-    max-width: $main-width; 
+    max-width: 45em; 
 }
 
 #header{
@@ -114,7 +113,6 @@ h2 {
     text-align: center;
     margin: 0px;
     border-bottom: 2px solid #999999;
-    margin-bottom: 1%;
 }
 
 nav {    
@@ -133,7 +131,7 @@ a {
 }
 
 $btncolor: #563d7c;
-.btn {
+a.btn {
     font-size: 1.25em;
     color: $btncolor;
     background-color: transparent;
@@ -154,43 +152,15 @@ $btncolor: #563d7c;
 
 
 form {
-    text-align: left;
-    display: block;
-    padding: 0px;
-    margin: 0px;
+    padding: 0.5em 2%;
 
 }
 
-$label-width: 10em;
-$input-width: 20em;
 
-label {
-    display:  inline-block;
-    min-width: 50% + (10*10*($label-width - $input-width)/($main-width));
-    width: 100%;
-    max-width: $label-width;
-    margin: 1px;
-    box-sizing: border-box;
-    text-align: right;
-
-}
 input {
-    display: inline-block;
-    margin: 1px;
+    max-width: 15em;
     box-sizing: border-box;
-    &[type=text], &[type=password]{
-        max-width: $input-width;
-        width: 100%;
-    }
-    &[type=button], &[type=submit] {
-        display: block;
-        margin: 1px auto;
-    }
-}
-
-.error {
-    margin: 0 auto;
-    text-align: center;
-    color: #f43210;
+    width: 100%;
+    margin: 1px;
 }
 
