@@ -5,6 +5,7 @@ MAX_EMAIL_LENGTH = 255
 #MIN_EMAIL_LENGTH is not definrd cause i don't realy whant to know and it's anyway checked through regular expressions
 VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 VALID_USER_REGEX = /\A[\w+\-@. ]+\z/i
+PASSWORD_LENGTH = 64
 class User < ActiveRecord::Base
 	before_save do 
 		self.email = email.squish().downcase
@@ -19,7 +20,7 @@ class User < ActiveRecord::Base
 		format: { with: VALID_USER_REGEX }, uniqueness: { case_sensitive: false }
 	validates :email, presence: true, length: { maximum: MAX_EMAIL_LENGTH },
 		format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
-	validates :password, length: { minimum: 64, maximum: 64}
+	validates :password, length: { minimum: PASSWORD_LENGTH, maximum: PASSWORD_LENGTH}
 
 	has_secure_password
 
@@ -41,9 +42,9 @@ class User < ActiveRecord::Base
 	end
 
 	def has_pass?
-		if password and password.length == 64
+		if password and password.length == PASSWORD_LENGTH
 			digest = OpenSSL::Digest.new('sha256')
-			hash = OpenSSL::HMAC.digest(digest, name, "").unpack('H*')[0]
+			hash = OpenSSL::HMAC.digest(digest, name.downcase, "").unpack('H*')[0]
 			return password == hash
 		end
 		return false
