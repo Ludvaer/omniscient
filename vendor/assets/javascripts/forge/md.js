@@ -13,7 +13,7 @@ forge.md = forge.md || {};
 forge.md.algorithms = {
   md5: forge.md5,
   sha1: forge.sha1,
-  sha256: forge.sha256
+  sha256: forge.sha256z
 };
 forge.md.md5 = forge.md5;
 forge.md.sha1 = forge.sha1;

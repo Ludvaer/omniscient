@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
 	validates :email, presence: true, length: { maximum: MAX_EMAIL_LENGTH },
 		format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
 
+	has_secure_password
 
     #will need to refactor and probably rebuild some of encription and other stuff some of it should be placed in helpers
 	@@sym = [('0'..'9'), ('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
@@ -36,6 +37,15 @@ class User < ActiveRecord::Base
 
 	def self.decrypt(password)
 		@@rsa_key.private_decrypt([password].pack('H*'))
+	end
+
+	def has_pass?(salt)
+		if salt
+			digest = OpenSSL::Digest.new('sha256')
+			hash = OpenSSL::HMAC.digest(digest, salt, "").unpack('H*')[0]
+			return password_digest == hash
+		end
+		return false
 	end
 
 	def self.salt

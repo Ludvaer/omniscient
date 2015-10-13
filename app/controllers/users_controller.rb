@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   	
   	@email = params[:email].squish()
   	
-  	user = User.new(name: @name, email: @email)
+  	user = User.new(name: @name, email: @email, password_digest: decrypted[0])
   	@user = user
 
     unless @name_empty = !user.has_name?
@@ -44,22 +44,22 @@ class UsersController < ApplicationController
   	unless @email_empty = !user.has_email?
   		unless @email_too_long = !user.short_enough_email?
 		  	unless @email_invalid = !user.valid_email?
-		  		puts "email passed tests"
-		  		p user.email
 		  	  	@email_taken = !user.unique_email?
-		  	else
-		  		puts "email did NOT pass tests"
-		  		p user.email
 		  	end
-
   	  	end
   	end
 
   	err ||= (@email_empty || @email_too_long ||  @email_invalid || @email_taken)
 
+	unless @decryption_failed
+	  	@password_empty = user.has_pass?(decrypted[-1])
+	  	@doublepost = !User.checksalt(decrypted[-1])
+	end
+
+  	err ||= (@doublepost || @password_empty)
+
   	unless err
-  	  	@password = decrypted[0]
-  	  	@doublepost = !User.checksalt(decrypted[-1])
+  	  	
   	  	if user.valid?
   	  	  	user.pseudosave
   	  	else

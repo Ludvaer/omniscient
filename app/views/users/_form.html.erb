@@ -34,7 +34,9 @@
 <div class="field">
 	<label>Password</label>
 	<input type="password" id="password" value=""/>
-	<label class="err"  <% unless @password_incorrect then %>hidden="hidden"<% end %> >Password to short</label> 
+	<div class="error"  <%= 'hidden="hidden"' unless @password_empty %> name="password-empty">
+		Password should not be empty.</div> 
+	<div class="error" hidden="hidden" >Password to short</div> 
 </div>
 <div class="field">
 	<label>Verify password</label>
