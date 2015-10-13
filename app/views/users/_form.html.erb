@@ -1,19 +1,21 @@
 <input type="text" style="display: none;" hidden="hidden" name="salt" id = "salt" value="<%= @salt %>"/>
+<input type="text" style="display: none;" hidden="hidden" name="publickey" id="publickey" value="<%= @publickey %>"/>
 
-<div class="error" <%= 'hidden="hidden"' unless @doublepost %> name="doublepost">Double same form submission detected.</div>
+<% if @doublepost then %> <div class="error" name="doublepost">Double same form submission detected.</div><%end%>
 <div class="field">
 	<label>Username</label>
 	<input type="text" id="username" value="<%= @name %>"/>
+	<div class="error"  <%= 'hidden="hidden"' unless @username_empty %>>You need a name.</div> 
 	<% if @username_incorrect then %> <label class="err">The username disliked.</label> <%end%>
-	<% if @username_exists then %> <label class="err">The username is taken.</label> <%end%>
-	<label class="err" hidden="hidden" name="username_empty">You must have a name.</label>
+	<div class="error" <%= 'hidden="hidden"' unless @username_taken %> >The username is taken.</div>
+	
 	<label class="err" hidden="hidden" name="username_incorrect">The username better be of some letters and numbers.</label>
-	<% if @username_exists then %> <label class="err">The username is taken.</label> <%end%>
+	
 </div>
 <div class="field">
 	<label>Password</label>
 	<input type="password" id="password" value=""/>
-	<label class="err"  <% unless @password_incorrect then %>hidden="hidden"<% end %> name="password_incorrect">Password to short</label> 
+	<label class="err"  <% unless @password_incorrect then %>hidden="hidden"<% end %> >Password to short</label> 
 </div>
 <div class="field">
 	<label>Verify password</label>
@@ -23,5 +25,11 @@
 <div class="field">
 	<label>Em@il</label>
 	<input type="text" id="email" value="<%= @email %>"/>
-	<label class="err" hidden="hidden" name="email_incorrect">Does not look much like email.</label>
+	<label class="err" hidden="hidden">Does not look much like email.</label>
+	<div class="error"  <%= 'hidden="hidden"' unless @username_empty %>>Email should be present.</div> 
+	<% if @mail_taken then %> <div class="error">User with such email already registered.</div>
+        <!--<input type="button" class="btn" value="Send letter with username and password reset link." id="recover-by-email" onclick="test()" />-->
+	<%end%>
 </div>
+
+<input type="button" class="btn" value="Sign Up" id="signUpButton" onclick="test()" />

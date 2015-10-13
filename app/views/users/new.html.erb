@@ -4,17 +4,16 @@
 <div id="signUpResponse">
 	<%= render 'form' %>
 </div>
-<input type="button" class="btn" value="Sign Up" id="signUpButton" onclick="test()" />
 
 <script type="text/javascript">
 	var rsa = forge.pki.rsa;	
 	var pkeyInput = document.getElementById("publickey");
     var responseDiv = document.getElementById("signUpResponse");
-    var signUpButton = document.getElementById("signUpButton");
     var publicKey = forge.pki.publicKeyFromPem(pkeyInput.value);
 
 
     function test() {
+    	var signUpButton = document.getElementById("signUpButton");
     	var saltInput = document.getElementById("salt");
     	var nameInput = document.getElementById("username");
 		var passInput = document.getElementById("password");
