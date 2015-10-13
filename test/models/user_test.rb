@@ -2,8 +2,12 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(name: "Ex@mple User_001", email: "user@example.com", password_digest: "asdfasdfasd3425d14231asdl")
-    @user1 = User.new(name: "Ex@mple User_002", email: "user2@example.com", password_digest: "asdasdfasdf8192347qwersdl")
+    @user = User.new(name: "Ex@mple User_001", email: "user@example.com",
+                     password: "de5fda3f485ac15bcdd72740823fa4642c5bd5ad22c8724882c1ab72ae37b6b1", 
+                     password_confirmation: "de5fda3f485ac15bcdd72740823fa4642c5bd5ad22c8724882c1ab72ae37b6b1")
+    @user1 = User.new(name: "Ex@mple User_002", email: "user2@example.com",
+                     password: "201c257558cf685635c225d3af5c8fcbb066cdb4c0c86f5fd9936d16e354ba11", 
+                     password_confirmation: "201c257558cf685635c225d3af5c8fcbb066cdb4c0c86f5fd9936d16e354ba11")
   end
 
   test "should be valid" do
@@ -85,6 +89,19 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user1.valid?    
   end
 
+  test "password should be present (nonblank)" do
+    @user.password = @user.password_confirmation = " " * 6
+    assert_not @user.valid?
+  end
+
+  test "password should have length of 64" do
+    @user.password = @user.password_confirmation = "a" * 5
+    assert_not @user.valid?
+    @user.password = @user.password_confirmation = "a" * 63
+    assert_not @user.valid?
+    @user.password = @user.password_confirmation = "a" * 65
+    assert_not @user.valid?
+  end
 
   #test "password digest should be present" do
   #  @user.email = "     "

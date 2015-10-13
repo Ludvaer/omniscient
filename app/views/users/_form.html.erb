@@ -36,12 +36,12 @@
 	<input type="password" id="password" value=""/>
 	<div class="error"  <%= 'hidden="hidden"' unless @password_empty %> name="password-empty">
 		Password should not be empty.</div> 
-	<div class="error" hidden="hidden" >Password to short</div> 
+	
 </div>
 <div class="field">
 	<label>Verify password</label>
 	<input type="password" id="verify" value=""/>
-	<label class="err" hidden="hidden" name>Do not match.</label>
+	<div class="error" <%= 'hidden="hidden"' unless @verify_not_match %> name="verify-not-match" >Passwords do not match.</div> 
 </div>
 <div class="field">
 	<label>Em@il</label>

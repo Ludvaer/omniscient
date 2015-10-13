@@ -12,22 +12,28 @@ class UsersController < ApplicationController
 
   def create
   	init
-  	decrypted=["","",""]
+  	decrypted=decrypted2=["","",""]
+  	
   	begin
-  	  	decrypted = User.decrypt(params[:password]).rpartition('|')
+  	  	d1 = User.decrypt(params[:password])
+  	  	d2 = User.decrypt(params[:password_verify])
+  	  	@verify_not_match = d1 != d2
+  	  	decrypted = d1.rpartition('|')
+  	  	decrypted2 = d2.rpartition('|')
   	  	@decryption_failed = false
   	rescue
   		@decryption_failed = true
   		puts "Error #{$!}"
   	end
-  	err = @decryption_failed
+  	
+  	err = @decryption_failed || @verify_not_match
 
   	@name = params[:name].squish()
   	#@username_empty = @name.
   	
   	@email = params[:email].squish()
   	
-  	user = User.new(name: @name, email: @email, password_digest: decrypted[0])
+  	user = User.new(name: @name, email: @email,  password:  decrypted[0], password_confirmation:  decrypted2[0])
   	@user = user
 
     unless @name_empty = !user.has_name?
@@ -52,9 +58,9 @@ class UsersController < ApplicationController
   	err ||= (@email_empty || @email_too_long ||  @email_invalid || @email_taken)
 
 	unless @decryption_failed
-	  	@password_empty = user.has_pass?(decrypted[-1])
 	  	@doublepost = !User.checksalt(decrypted[-1])
 	end
+	@password_empty = user.has_pass?
 
   	err ||= (@doublepost || @password_empty)
 

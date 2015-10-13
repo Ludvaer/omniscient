@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
 		format: { with: VALID_USER_REGEX }, uniqueness: { case_sensitive: false }
 	validates :email, presence: true, length: { maximum: MAX_EMAIL_LENGTH },
 		format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
+	validates :password, length: { minimum: 64, maximum: 64}
 
 	has_secure_password
 
@@ -39,11 +40,11 @@ class User < ActiveRecord::Base
 		@@rsa_key.private_decrypt([password].pack('H*'))
 	end
 
-	def has_pass?(salt)
-		if salt
+	def has_pass?
+		if password and password.length == 64
 			digest = OpenSSL::Digest.new('sha256')
-			hash = OpenSSL::HMAC.digest(digest, salt, "").unpack('H*')[0]
-			return password_digest == hash
+			hash = OpenSSL::HMAC.digest(digest, name, "").unpack('H*')[0]
+			return password == hash
 		end
 		return false
 	end

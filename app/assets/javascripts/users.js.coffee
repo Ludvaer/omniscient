@@ -4,11 +4,11 @@
 
 root = exports ? this
 
-root.encryptsignup = (dat)->
+root.encryptsignup = (dat1,dat2)->
     $('#sign-up-button').hide()
     uname = $("#username").val()
     email = $("#email").val()
-    $.ajax(url: "/signup", method: "post", data: {name: uname, password: dat, email: email}).done (html) -> 
+    $.ajax(url: "/signup", method: "post", data: {name: uname, password: dat1, password_verify: dat2, email: email}).done (html) -> 
 	    $("#signUpResponse").html(html)
-	    
+
 
