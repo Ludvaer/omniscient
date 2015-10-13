@@ -1,5 +1,4 @@
 <% provide(:title, "Sign Up") %>
-<input type="text" style="display: none;" hidden="hidden" name="publickey" id="publickey" value="<%= @publickey %>"/>
 
 <div id="signUpResponse">
 	<%= render 'form' %>
@@ -13,7 +12,7 @@
 
 
     function test() {
-    	var signUpButton = document.getElementById("signUpButton");
+    	var signUpButton = document.getElementById("sign-up-button");
     	var saltInput = document.getElementById("salt");
     	var nameInput = document.getElementById("username");
 		var passInput = document.getElementById("password");
