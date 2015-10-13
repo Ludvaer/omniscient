@@ -6,12 +6,13 @@
 
 <script type="text/javascript">
 	var rsa = forge.pki.rsa;	
-	var pkeyInput = document.getElementById("publickey");
     var responseDiv = document.getElementById("signUpResponse");
-    var publicKey = forge.pki.publicKeyFromPem(pkeyInput.value);
+    
 
 
     function test() {
+    	var pkeyInput = document.getElementById("publickey");
+    	var publicKey = forge.pki.publicKeyFromPem(pkeyInput.value);
     	var signUpButton = document.getElementById("sign-up-button");
     	var saltInput = document.getElementById("salt");
     	var nameInput = document.getElementById("username");
