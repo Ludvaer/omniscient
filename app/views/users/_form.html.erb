@@ -17,15 +17,15 @@
 <div class="field">
 	<label>Username</label>
 	<input type="text" id="username" value="<%= @name %>"/>
-	<div class="error"  <%= 'hidden="hidden"' unless @username_empty %> name="username-empty">
+	<div class="error"  <%= 'hidden="hidden"' unless @name_empty %> name="username-empty">
 		You need a name.</div> 
-	<div class="error"  <%= 'hidden="hidden"' unless @username_too_short %> name="username-too-short">
+	<div class="error"  <%= 'hidden="hidden"' unless @name_too_short %> name="username-too-short">
 		Too short. One symbol name confuses me, please take longer name.</div>
-	<div class="error"  <%= 'hidden="hidden"' unless @username_too_long %> name="username-too-long">
+	<div class="error"  <%= 'hidden="hidden"' unless @name_too_long %> name="username-too-long">
 		Too long. Names longer than 50 symbols are not supported.</div>
-	<div class="error"  <%= 'hidden="hidden"' unless @username_incorrect %> name="username-incorrect">
+	<div class="error"  <%= 'hidden="hidden"' unless @name_invalid %> name="username-incorrect">
 		The username better be of some letters and numbers.</div>
-	<div class="error" <%= 'hidden="hidden"' unless @username_taken %> name="username-taken">
+	<div class="error" <%= 'hidden="hidden"' unless @name_taken %> name="username-taken">
 		The username is taken.</div>
 	
 	<label class="err" hidden="hidden" name="username_incorrect">The username better be of some letters and numbers.</label>
@@ -48,8 +48,8 @@
 		Email should be present.</div> 
 	<div class="error"  <%= 'hidden="hidden"' unless @email_too_long %> id="email-too-long">
 		Too long. Emails loger than 255 are not allowed.</div>
-	<label class="err" hidden="hidden" <%= 'hidden="hidden"' unless @email_incorrect %> id="email-incorrect">
-		Does not look much like email.</label>	
+	<div class="error" <%= 'hidden="hidden"' unless @email_invalid %> id="email-incorrect">
+		Does not look much like email.</div>	
     <div class="error" <%= 'hidden="hidden"' unless @email_taken%> name="email-taken" >
 	    User with such email already registered.
         <!--<input type="button" class="btn" value="Recover account." id="recover-by-email" onclick="recover_by_email(<%= @email %>)" />-->

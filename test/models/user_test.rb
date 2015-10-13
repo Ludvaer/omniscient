@@ -2,15 +2,20 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(name: "Example User", email: "user@example.com")
+    @user = User.new(name: "Ex@mple User_001", email: "user@example.com")
+    @user1 = User.new(name: "Ex@mple User_002", email: "user2@example.com")
   end
 
   test "should be valid" do
-    assert @user.valid?
     assert @user.has_name?
     assert @user.short_enough_name?
     assert @user.long_enough_name?
     assert @user.has_email?
+    assert @user.short_enough_email?
+    assert @user.has_email?
+    assert @user.unique_name?
+    assert @user.unique_email?
+    assert @user.valid?
   end
 
   test "name should be present" do
@@ -24,9 +29,6 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
     assert_not @user.short_enough_name?
     @user.name = ("a" * 26)
-    p @user.name
-    p @user.name.length
-    p @user.short_enough_name?
     assert @user.valid?
     assert @user.short_enough_name?
   end
@@ -45,6 +47,44 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
     assert_not @user.has_email?
   end
+
+  test "email should not be too long" do
+    @user.email = ("a" * 200) + "@" + ("a" * 50) + "." + "aaaa"
+    assert_not @user.valid?
+    assert_not @user.short_enough_email?
+    @user.email = ("a" * 200) + "@" + ("a" * 50) + "." + "aaa"
+    assert @user.valid?
+    assert @user.short_enough_email?
+  end
+
+
+  test "user should be unique" do
+    duplicate_user = @user.dup
+    @user.pseudosave
+    assert_not duplicate_user.unique_name?
+    assert_not duplicate_user.unique_email?
+    @user.save
+    assert_not duplicate_user.valid?    
+  end
+
+  test "user email should be unique" do
+    @user1.email = @user.email.upcase
+    @user.pseudosave
+    assert @user1.unique_name?
+    assert_not @user1.unique_email? 
+    @user.save
+    assert_not @user1.valid?    
+  end
+
+  test "user name should be unique" do
+    @user1.name = @user.name.upcase
+    @user.pseudosave
+    assert_not @user1.unique_name?
+    assert @user1.unique_email? 
+    @user.save
+    assert_not @user1.valid?    
+  end
+
 
   #test "password digest should be present" do
   #  @user.email = "     "
