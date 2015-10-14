@@ -38,17 +38,21 @@ body {
     max-width: $main-width; 
 }
 
+#main-side-padding{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0px $side-padding;
+}
+
 #header{
     font-size: $font-size;
     display: inline-block;
     overflow: auto;
     box-sizing: border-box;
-    width: 100%+2*$side-padding;
+    width: 100%;
 
     padding: 1em 3%;
     margin: 0px;
-    margin-right: -$side-padding;
-    margin-left:  -$side-padding;
     background-color: $header-color;
 }
 
@@ -61,11 +65,11 @@ body {
     height: auto;
     padding-top: 0px;
     padding-bottom: $footer-height - $mystery-padding-workaround;
-    padding-right: $side-padding;
-    padding-left: $side-padding;
     margin-top: 0px;
     margin-bottom: -$footer-height + $mystery-padding-workaround; 
 }
+
+
 
 footer { 
     font-size: $font-size;
@@ -205,5 +209,21 @@ input {
 }
 
 td {
-    padding: 0.3em;
+    padding: 0.25em 0.5em;
+}
+
+.avatar {
+    float: left;
+    display: inline-block;
+}
+div {
+
+    box-sizing: border-box;
+    overflow: auto;
+
+}
+
+table {
+    box-sizing: border-box;
+    margin: 1em;
 }
