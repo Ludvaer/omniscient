@@ -1,0 +1,62 @@
+<input type="text" style="display: none;" hidden="hidden" name="salt" id = "salt" value="<%= @salt %>"/>
+<input type="text" style="display: none;" hidden="hidden" name="publickey" id="publickey" value="<%= @publickey %>"/>
+
+<% if @user_errors.any? %>
+    <div id="error_explanation" class="error">
+      <h3><%= pluralize(@user.errors.count, "error") %> happened:</h3>
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+<% end %>
+
+<% if @success then %> <div class="error">Success</div><%end%>
+<% if @doublepost then %> <div class="error">Double same form submission detected.</div><%end%>
+<% if @decryption_failed then %> <div class="error">Failed to decrypt your submission, try again.</div><%end%>
+<div class="field">
+	<label for="name">Username</label>
+	<input type="text" id="name" value="<%= @user.name %>" autocomplete="off"/>
+	<div class="error"  <%= 'hidden="hidden"' unless @name_empty %> id="username-empty">
+		You need a name.</div> 
+	<div class="error"  <%= 'hidden="hidden"' unless @name_too_short %> id="username-too-short">
+		Too short. One symbol name confuses me, please take longer name.</div>
+	<div class="error"  <%= 'hidden="hidden"' unless @name_too_long %> id="username-too-long">
+		Too long. Names longer than 50 symbols are not supported.</div>
+	<div class="error"  <%= 'hidden="hidden"' unless @name_invalid %> id="username-incorrect">
+		The username better be of some letters and numbers.</div>
+	<div class="error" <%= 'hidden="hidden"' unless @name_taken %> id="username-taken">
+		The username is taken.</div>
+	
+	<label class="err" hidden="hidden" name="username_incorrect">The username better be of some letters and numbers.</label>
+	
+</div>
+<div class="field">
+	<label for="password">Password</label>
+	<input type="password" id="password" value=""/>
+	<div class="error"  <%= 'hidden="hidden"' unless @password_empty %> id="password-empty">
+		Password should not be empty.</div> 
+	
+</div>
+<div class="field">
+	<label for="password-confirmation">Confirm password</label>
+	<input type="password" id="password-confirmation" value=""/>
+	<div class="error" <%= 'hidden="hidden"' unless @password_confirmation_not_match %> id="password-confirmation-not-match" >
+		Passwords do not match.</div> 
+</div>
+<div class="field">
+	<label for="email" autocomplete="off">Em@il</label>
+	<input type="text" id="email" value="<%= @user.email %>"/>
+	<div class="error"  <%= 'hidden="hidden"' unless @email_empty %> id="email-empty">
+		Email should be present.</div> 
+	<div class="error"  <%= 'hidden="hidden"' unless @email_too_long %> id="email-too-long">
+		Too long. Emails loger than 255 are not allowed.</div>
+	<div class="error" <%= 'hidden="hidden"' unless @email_invalid %> id="email-incorrect">
+		Does not look much like email.</div>	
+    <div class="error" <%= 'hidden="hidden"' unless @email_taken%> id="email-taken" >
+	    User with such email already registered.
+        <!--<input type="button" class="btn" value="Recover account." id="recover-by-email" onclick="recover_by_email(<%= @email %>)" />-->
+    </div>
+</div>
+

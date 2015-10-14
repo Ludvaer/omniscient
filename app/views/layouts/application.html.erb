@@ -11,11 +11,16 @@
 <body>
 
   <div id ="footer-pusher-workaround">
-	<%= render 'layouts/header' %>
-	<main id="main">
-  <h2><%= yield(:title) %></h2>
-	<%= yield %>
-	</main>
+    <% if Rails.env.development?  %>
+      <div style="font-size: 16px;">
+      <%= debug(params) %>
+      </div>
+    <% end %>
+    <%= render 'layouts/header' %>
+  	<main id="main">      
+      <h2><%= yield(:title) %></h2>
+    	<%= yield %>
+  	</main>
   </div>
   <%= render 'layouts/footer' %>
 

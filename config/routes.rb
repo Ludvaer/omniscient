@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  get 'users/new'
-  get 'signup'  => 'users#new'
   root 'pseudo_static#welcome'
-  get 'pseudo_static/welcome'
-
+  get 'signup'  => 'users#new'
+  resources :users
+  post 'signup'  => 'users#create'
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

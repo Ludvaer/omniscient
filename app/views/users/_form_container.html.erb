@@ -1,0 +1,57 @@
+<div id="sign-up-response">
+    <%= render 'form' %>    
+</div>
+<input type="button" class="btn" value="<%= yield :action%>" id="sign-up-button" onclick="test()" />
+<div style="display: none;" hidden="hidden" >
+<%= form_for(@user, remote: true) do |f| %>
+    <%= f.text_field :name %>
+    <%= f.text_field :email %>
+    <%= f.text_field :password %>
+    <%= f.text_field :password_confirmation %>
+    <%= f.submit id:'user-submit' %>
+<% end %>
+</div>
+
+<script type="text/javascript">
+	var rsa = forge.pki.rsa;	
+    var responseDiv = document.getElementById("sign-up-response");
+    var hashed1 =""
+    var hashed2 =""
+    var encrypted1 =""
+    var encrypted2 =""
+    $('#new_user').bind('ajax:success',ajax_success_handler);
+    $('.edit_user').bind('ajax:success',ajax_success_handler);
+    $('#new_user').bind('ajax:error',ajax_failed_handler);
+    $('.edit_user').bind('ajax:error',ajax_failed_handler);
+    function test() {
+    	var pkeyInput = document.getElementById("publickey");
+    	var publicKey1 = forge.pki.publicKeyFromPem(pkeyInput.value);
+    	var publicKey2 = forge.pki.publicKeyFromPem(pkeyInput.value);
+    	var signUpButton = document.getElementById("sign-up-button");
+    	var saltInput = document.getElementById("salt");
+    	var nameInput = document.getElementById("name");
+		var passInput = document.getElementById("password");
+		var verifyInput = document.getElementById("password-confirmation");
+    	
+
+    	//var md = forge.md.sha512.create();
+    	//md.update(passInput.value + '|' + nameInput.value);
+    	//hashed = md.digest().toHex();
+
+    	var name_as_salt = nameInput.value.trim().replace(/ +/g, " ").toLowerCase();
+
+    	var hmac = forge.hmac.create();
+    	hmac.start('sha256', name_as_salt);
+    	hmac.update(passInput.value);
+    	hashed1 = hmac.digest().toHex();
+
+    	var hmac = forge.hmac.create();
+    	hmac.start('sha256', name_as_salt);    	
+    	hmac.update(verifyInput.value);
+    	hashed2 = hmac.digest().toHex();
+
+		encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + saltInput.value));
+		encrypted2 = forge.util.bytesToHex(publicKey1.encrypt(hashed2 + '|' + saltInput.value));
+    	encryptsignup(encrypted1,encrypted2);
+    }
+</script>
