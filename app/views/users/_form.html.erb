@@ -12,11 +12,12 @@
     </div>
 <% end %>
 
+<% if @success then %> <div class="error">Success</div><%end%>
 <% if @doublepost then %> <div class="error">Double same form submission detected.</div><%end%>
 <% if @decryption_failed then %> <div class="error">Failed to decrypt your submission, try again.</div><%end%>
 <div class="field">
 	<label for="name">Username</label>
-	<input type="text" id="name" value="<%= @name %>"/>
+	<input type="text" id="name" value="<%= @user.name %>" autocomplete="off"/>
 	<div class="error"  <%= 'hidden="hidden"' unless @name_empty %> id="username-empty">
 		You need a name.</div> 
 	<div class="error"  <%= 'hidden="hidden"' unless @name_too_short %> id="username-too-short">
@@ -45,8 +46,8 @@
 		Passwords do not match.</div> 
 </div>
 <div class="field">
-	<label for="email">Em@il</label>
-	<input type="text" id="email" value="<%= @email %>"/>
+	<label for="email" autocomplete="off">Em@il</label>
+	<input type="text" id="email" value="<%= @user.email %>"/>
 	<div class="error"  <%= 'hidden="hidden"' unless @email_empty %> id="email-empty">
 		Email should be present.</div> 
 	<div class="error"  <%= 'hidden="hidden"' unless @email_too_long %> id="email-too-long">

@@ -69,8 +69,8 @@ class User < ActiveRecord::Base
 	end
 
 	def pseudosave()
-		@@users[self.name.downcase] = self;
-		@@usersbymail[self.email.downcase] = self;
+	#	@@users[self.name.downcase] = self;
+	#	@@usersbymail[self.email.downcase] = self;
 	end
 
 	def has_name?()
@@ -93,19 +93,30 @@ class User < ActiveRecord::Base
 		return email.length <= MAX_EMAIL_LENGTH
 	end
 
-	def has_email?()
+	def has_email?
 		return !email.blank?
 	end
 
-	def valid_email?()
+	def valid_email?
 		return VALID_EMAIL_REGEX.match(email)
 	end
 
-	def unique_name?()
-		return @@users[self.name.downcase].nil?
+
+	def check_unique(users)
+		if id
+			return ((users.length == 0) or ((users.length == 1) and (id == users[0].id)))
+		else
+			return (users.length == 0)
+		end
 	end
 
-	def unique_email?()
-		return @@usersbymail[self.email.downcase].nil?
+	def unique_name?
+		#return @@users[self.name.downcase].nil?
+		check_unique User.where(downame: name.squish().downcase)
+	end
+
+	def unique_email?
+		#return @@usersbymail[self.email.downcase].nil?
+		check_unique User.where(email: email.squish().downcase) 
 	end
 end

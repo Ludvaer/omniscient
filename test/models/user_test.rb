@@ -20,6 +20,17 @@ class UserTest < ActiveSupport::TestCase
     assert @user.unique_name?
     assert @user.unique_email?
     assert @user.valid?
+    @user.save
+    assert @user.has_name?
+    assert @user.short_enough_name?
+    assert @user.long_enough_name?
+    assert @user.has_email?
+    assert @user.short_enough_email?
+    assert @user.has_email?
+    assert @user.unique_name?
+    assert @user.unique_email?
+    assert @user.valid?
+
   end
 
   test "name should be present" do
@@ -64,28 +75,28 @@ class UserTest < ActiveSupport::TestCase
 
   test "user should be unique" do
     duplicate_user = @user.dup
-    @user.pseudosave
+    #@user.pseudosave
+    @user.save
     assert_not duplicate_user.unique_name?
     assert_not duplicate_user.unique_email?
-    @user.save
     assert_not duplicate_user.valid?    
   end
 
   test "user email should be unique" do
     @user1.email = @user.email.upcase
-    @user.pseudosave
+    #@user.pseudosave
+    @user.save
     assert @user1.unique_name?
     assert_not @user1.unique_email? 
-    @user.save
     assert_not @user1.valid?    
   end
 
   test "user name should be unique" do
     @user1.name = @user.name.upcase
-    @user.pseudosave
+    #@user.pseudosave
+    @user.save
     assert_not @user1.unique_name?
     assert @user1.unique_email? 
-    @user.save
     assert_not @user1.valid?    
   end
 
@@ -116,6 +127,23 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
     @user.password = @user.password_confirmation = "a" * 65
     assert_not @user.valid?
+  end
+
+
+  test "can be edited" do
+    @user.save
+    @user.name = "Ex@mple User_001m"
+    @user.email = "user001@example.comm"
+    assert @user.has_name?
+    assert @user.short_enough_name?
+    assert @user.long_enough_name?
+    assert @user.has_email?
+    assert @user.short_enough_email?
+    assert @user.has_email?
+    assert @user.unique_name?
+    assert @user.unique_email?
+    assert @user.valid?
+
   end
 
   #test "password digest should be present" do

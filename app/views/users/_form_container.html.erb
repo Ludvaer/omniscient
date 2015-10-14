@@ -1,7 +1,7 @@
 <div id="sign-up-response">
     <%= render 'form' %>    
 </div>
-<input type="button" class="btn" value="Sign Up" id="sign-up-button" onclick="test()" />
+<input type="button" class="btn" value="<%= yield :action%>" id="sign-up-button" onclick="test()" />
 <div style="display: none;" hidden="hidden" >
 <%= form_for(@user, remote: true) do |f| %>
     <%= f.text_field :name %>
@@ -19,6 +19,10 @@
     var hashed2 =""
     var encrypted1 =""
     var encrypted2 =""
+    $('#new_user').bind('ajax:success',ajax_success_handler);
+    $('.edit_user').bind('ajax:success',ajax_success_handler);
+    $('#new_user').bind('ajax:error',ajax_failed_handler);
+    $('.edit_user').bind('ajax:error',ajax_failed_handler);
     function test() {
     	var pkeyInput = document.getElementById("publickey");
     	var publicKey1 = forge.pki.publicKeyFromPem(pkeyInput.value);
@@ -47,7 +51,7 @@
     	hashed2 = hmac.digest().toHex();
 
 		encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + saltInput.value));
-		encrypted2 = forge.util.bytesToHex(publicKey2.encrypt(hashed2 + '|' + saltInput.value));
+		encrypted2 = forge.util.bytesToHex(publicKey1.encrypt(hashed2 + '|' + saltInput.value));
     	encryptsignup(encrypted1,encrypted2);
     }
 </script>
