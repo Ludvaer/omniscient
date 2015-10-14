@@ -8,8 +8,8 @@ VALID_USER_REGEX = /\A[\w+\-@. ]+\z/i
 PASSWORD_LENGTH = 64
 class User < ActiveRecord::Base
 	before_save do 
-		self.email = email.squish().downcase
-		name = self.name.squish()
+		email.squish!.downcase!
+		self.name.squish!
 		self.name = name
 		#grants caseless nameuniquness but keeps original name in other column
 		#do I need insex on original name column?

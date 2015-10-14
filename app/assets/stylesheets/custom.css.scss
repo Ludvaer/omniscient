@@ -161,12 +161,12 @@ form {
 
 }
 
-$label-width: 10em;
+$label-width: 12em;
 $input-width: 20em;
 
 label {
     display:  inline-block;
-    min-width: 50% + (10*10*($label-width - $input-width)/($main-width));
+    //min-width: 50% + (10*10*($label-width - $input-width)/($main-width));
     width: 100%;
     max-width: $label-width;
     margin: 1px;
@@ -194,3 +194,12 @@ input {
     color: #f43210;
 }
 
+
+#sign-up-response {
+    text-align: center;
+}
+
+.debug_dump {
+    display: inline-block;
+    max-width:50em;
+}

@@ -2,13 +2,32 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+
+ajax_success_handler = (event, data) ->
+    $("#sign-up-response").html(data.html)
+    $('#new_user').bind "ajax:success", ajax_success_handler
+    $('#sign-up-button').show()
+
+
+$(document).ready ->
+    $('#new_user').bind "ajax:success", ajax_success_handler
+
+
+
 root = exports ? this
+
+
 
 root.encryptsignup = (dat1,dat2)->
     $('#sign-up-button').hide()
-    uname = $("#username").val()
-    email = $("#email").val()
-    $.ajax(url: "/signup", method: "post", data: {name: uname, password: dat1, password_verify: dat2, email: email}).done (html) -> 
-	    $("#signUpResponse").html(html)
+    $('#user_name').val($("#name").val())
+    $('#user_email').val($("#email").val())
+    $('#user_password').val(dat1)
+    $('#user_password_confirmation').val(dat2)
+    $('#user-submit').click()
+    #uname = $("#name").val()
+    #email = $("#email").val()
+    #$.ajax(url: "/signup", method: "post", data: {user: {name: uname, password: dat1, password_confirmation: dat2, email: email}}).done (html) -> 
+	#    $("#sign-up-response").html(html)
 
 
