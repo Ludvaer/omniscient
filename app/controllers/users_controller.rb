@@ -22,6 +22,7 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
+    @isCreate = true
   	@user = User.new
     if @success = validate_input
       @success = @user.save
@@ -45,15 +46,11 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
+    @isEdit = true
     if @success = validate_input
-      p @success
-      @user.update({password: @password, password_confirmation: @password_confirmation, name: @name, email: @email})
+      @success = @user.update({password: @password, password_confirmation: @password_confirmation, name: @name, email: @email})
     end
-    p @success
     @user_errors = @user.errors
-
-    puts "success #{@success}"
-    p @success
     unless @success 
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_form'), redirect: false}, :content_type => 'text/json' }

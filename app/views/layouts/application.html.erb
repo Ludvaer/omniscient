@@ -18,7 +18,9 @@
     <% end %>S
     <%= render 'layouts/header' %>
     <div id ="main-side-padding">
+
     	<main id="main">      
+        <div class="error"><%= sanitize(params[:msg]) %></div>
         <h2><%= yield(:title) %></h2>
       	<%= yield %>
     	</main>
