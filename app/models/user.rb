@@ -56,15 +56,17 @@ class User < ActiveRecord::Base
 		l = @@sym.length
 		salt = (0...5).map { @@sym[rand(l)] }.join + "#{@@i}"
 		@@i += 1
-		@@salts[salt] = true
-		#p "@@salts[#{salt}] = #{@@salts[salt]}"
-		salt
+		Rails.cache.fetch salt do 
+			true
+		end
+		return salt
 	end
 
 	def self.checksalt(salt)
-		#p "@@salts[#{salt}] = #{@@salts[salt]}"
-		if @@salts[salt]
-			@@salts[salt] = false
+		if Rails.cache.fetch(salt)
+			Rails.cache.fetch salt do 
+				false
+			end
 			return true
 		else
 			return false
