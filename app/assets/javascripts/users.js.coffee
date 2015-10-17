@@ -32,12 +32,16 @@ root.encryptsignup = ()->
     hmac.update($('#user_password_confirmation').val());
     hashed2 = hmac.digest().toHex();
 
+    method = 'post'
+    if $('input[name="_method"]').val()
+        method = $('input[name="_method"]').val()
+
     publicKey1 = forge.pki.publicKeyFromPem($("#publickey").val());
     salt = $("#salt").val()
     encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + salt));
     encrypted2 = forge.util.bytesToHex(publicKey1.encrypt(hashed2 + '|' + salt));
-    $.ajax '/users',
-                type: 'POST'
+    $.ajax $('form').attr('action'),
+                type: method
                 dataType: 'json'
                 data: { user: { name: uname, password_encrypted: encrypted1, password_confirmation_encrypted: encrypted2, email: email } }
                 error: (jqXHR, textStatus, errorThrown) ->
@@ -50,6 +54,8 @@ root.encryptsignup = ()->
                         else
                             $('#sign-up-button').show()
                             $('#user-submit').hide()
+
+
                     
                     
 

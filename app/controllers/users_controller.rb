@@ -22,6 +22,7 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
+    @isEdit = false
     @isCreate = true
   	@user = User.new
     if @success = validate_input
@@ -45,6 +46,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     @isEdit = true
+    @isCreate = false
     if @success = validate_input
       @success = @user.update({password: @password, password_confirmation: @password_confirmation, name: @name, email: @email})
     end
