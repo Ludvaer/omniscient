@@ -13,12 +13,14 @@ root = exports ? this
 root.ajax_success_handler = (event, data) ->
         $("#sign-up-response").html(data.html)
         if data.redirect
-            window.location.replace($('#redirect-to-user').attr('href'))
+            #window.location.replace($('#redirect-to-user').attr('href'))
+            #$('#redirect-to-user').click()
+            Turbolinks.visit($('#redirect-to-user').attr('href'));
         else
             $('#sign-up-button').show()
 
 root.ajax_failed_handler = (event, data) ->
-        #alert("Ajax request failed");
+        alert("Ajax request failed");
         $("#sign-up-response").html(data.html)
         $('#sign-up-button').show()
 
@@ -31,7 +33,9 @@ root.encryptsignup = (dat1,dat2)->
     $('#user-submit').click()
     #uname = $("#name").val()
     #email = $("#email").val()
-    #$.ajax(url: "/signup", method: "post", data: {user: {name: uname, password: dat1, password_confirmation: dat2, email: email}}).done (html) -> 
-	#    $("#sign-up-response").html(html)
+    #$.ajax(url: "/signup", 
+    #       method: "post", 
+    #       data: {user: {name: uname, password: dat1, password_confirmation: dat2, email: email}}).done (html) -> 
+	#               $("#sign-up-response").html(html)
 
 
