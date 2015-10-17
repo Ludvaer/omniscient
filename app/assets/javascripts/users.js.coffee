@@ -10,32 +10,46 @@
 
 root = exports ? this
 
-root.ajax_success_handler = (event, data) ->
-        $("#sign-up-response").html(data.html)
-        if data.redirect
-            #window.location.replace($('#redirect-to-user').attr('href'))
-            #$('#redirect-to-user').click()
-            Turbolinks.visit($('#redirect-to-user').attr('href'));
-        else
-            $('#sign-up-button').show()
+root.init_users_form = ()->
+    $('#user-submit').hide();
+    $('#sign-up-button').show();
 
-root.ajax_failed_handler = (event, data) ->
-        alert("Ajax request failed");
-        $("#sign-up-response").html(data.html)
-        $('#sign-up-button').show()
+root.encryptsignup = ()->
+    uname = $("#user_name").val()
+    email = $("#user_email").val()
+    
+    name_as_salt = uname.trim().replace(/ +/g, " ").toLowerCase();
 
-root.encryptsignup = (dat1,dat2)->
-    $('#sign-up-button').hide()
-    $('#user_name').val($("#name").val())
-    $('#user_email').val($("#email").val())
-    $('#user_password').val(dat1)
-    $('#user_password_confirmation').val(dat2)
-    $('#user-submit').click()
-    #uname = $("#name").val()
-    #email = $("#email").val()
-    #$.ajax(url: "/signup", 
-    #       method: "post", 
-    #       data: {user: {name: uname, password: dat1, password_confirmation: dat2, email: email}}).done (html) -> 
-	#               $("#sign-up-response").html(html)
+
+    hmac = forge.hmac.create();
+    hmac.start('sha256', name_as_salt);
+    hmac.update($('#user_password').val());
+    hashed1 = hmac.digest().toHex();
+
+    hmac = forge.hmac.create();
+    hmac.start('sha256', name_as_salt);
+    hmac.update($('#user_password_confirmation').val());
+    hashed2 = hmac.digest().toHex();
+
+    publicKey1 = forge.pki.publicKeyFromPem($("#publickey").val());
+    salt = $("#salt").val()
+    encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + salt));
+    encrypted2 = forge.util.bytesToHex(publicKey1.encrypt(hashed2 + '|' + salt));
+    $.ajax '/users',
+                type: 'POST'
+                dataType: 'json'
+                data: { user: { name: uname, password_encrypted: encrypted1, password_confirmation_encrypted: encrypted2, email: email } }
+                error: (jqXHR, textStatus, errorThrown) ->
+                    alert("Ajax request failed");
+                    $('#sign-up-button').show()
+                success: (data, textStatus, jqXHR) ->
+                        $("#sign-up-response").html(data.html)
+                        if data.redirect
+                            Turbolinks.visit($('#redirect-to-user').attr('href'));
+                        else
+                            $('#sign-up-button').show()
+                            $('#user-submit').hide()
+                    
+                    
 
 

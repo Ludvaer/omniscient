@@ -1,6 +1,6 @@
-<p id="notice"><%= notice %></p>
-<% provide(:title, "User №#{@user.id}") %>
-<div>
+<p id="notice" class="error"><%= notice %></p>
+<% provide(:title, "#{@user.name}") %>
+<div calss="user_show">
 <%= render 'user' %>
 </div>
 <%= link_to 'Edit', edit_user_path(@user) %> |

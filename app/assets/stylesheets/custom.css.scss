@@ -158,10 +158,10 @@ $btncolor: #563d7c;
 
 
 form {
-    text-align: left;
+    text-align: center;
     display: block;
-    padding: 0px;
-    margin: 0px;
+    box-sizing: border-box;
+    width: 100%;
 
 }
 
@@ -216,10 +216,14 @@ td {
     float: left;
     display: inline-block;
 }
-div {
+.user_show {
 
     box-sizing: border-box;
     overflow: auto;
+    display: block;
+
+    padding: 0px;
+    margin: 0px;
 
 }
 

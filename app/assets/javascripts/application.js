@@ -11,6 +11,7 @@
 // about supported directives.
 //Dir["forge"].each {|file| require file }
 //= require forge/md
+//= require forge/md5
 //= require forge/cipherModes
 //= require forge/cipher
 //= require forge/aes
@@ -26,7 +27,6 @@
 //= require forge/oids
 //= require forge/x509
 //= require forge/pki
-//= require forge/md5
 //= require forge/hmac
 //= require jquery
 //= require jquery_ujs

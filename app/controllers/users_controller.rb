@@ -37,7 +37,6 @@ class UsersController < ApplicationController
     else
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_redirect'), redirect: true}, :content_type => 'text/json' }
-        #format.js { redirect_to user, format: 'js' }
         format.html { redirect_to @user, notice: 'User was successfully created.' }
       end
     end
@@ -59,7 +58,6 @@ class UsersController < ApplicationController
     else
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_redirect'), redirect: true}, :content_type => 'text/json' }
-        #format.js { redirect_to user, format: 'js' }
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
       end
     end
@@ -92,30 +90,40 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :password_encrypted, :password_confirmation_encrypted, :salt)
     end
 
 	def validate_input
   	decrypted=decrypted2=["","",""]
   	err = false
-  	begin
-	  	d1 = User.decrypt(user_params[:password])
-	  	d2 = User.decrypt(user_params[:password_confirmation])
-	  	@password_confirmation_not_match = d1 != d2
-	  	decrypted = d1.rpartition('|')
-	  	decrypted2 = d2.rpartition('|')
-	  	@decryption_failed = false
-  	rescue
-  		@decryption_failed = true
-  	end
+    user = @user
+    user.name = @name = user_params[:name].squish()
+    user.email = @email = user_params[:email].squish()
+
+    if  user_params[:password_encrypted] or user_params[:password_confirmation_encrypted]
+    	begin
+  	  	d1 = User.decrypt(user_params[:password_encrypted])
+  	  	d2 = User.decrypt(user_params[:password_confirmation_encrypted])
+  	  	@password_confirmation_not_match = d1 != d2
+  	  	decrypted = d1.rpartition('|')
+  	  	decrypted2 = d2.rpartition('|')
+  	  	@decryption_failed = false
+    	rescue
+    		@decryption_failed = true
+    	end
+    else
+      @password_confirmation_not_match = user_params[:password] != user_params[:password_confirmation]
+      decrypted = [user.hash_pass(user_params[:password]),'|',params[:salt]]
+      decrypted2 = [user.hash_pass(user_params[:password_confirmation]),'|',params[:salt]]
+      @decryption_failed = false
+    end
   	
   	err = @decryption_failed || @password_confirmation_not_match
 
-  	user = @user
+  	
   	user.password = @password = decrypted[0]
   	user.password_confirmation = @password_confirmation = decrypted2[0]
-  	user.name = @name = user_params[:name].squish()
-  	user.email = @email = user_params[:email].squish()
+
   	#user = User.new(password: decrypted[0], password_confirmation: decrypted2[0], name: @name, email: @email)
   	#@user = user
   

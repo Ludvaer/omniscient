@@ -1,4 +1,3 @@
-<input type="text" style="display: none;" hidden="hidden" name="salt" id = "salt" value="<%= @salt %>"/>
 <input type="text" style="display: none;" hidden="hidden" name="publickey" id="publickey" value="<%= @publickey %>"/>
 
 <% if @user_errors.any? %>
@@ -12,12 +11,16 @@
     </div>
 <% end %>
 
+
+<%= form_for(@user) do |f| %>
+    <input type="text" style="display: none;" hidden="hidden" name="salt" id = "salt" value="<%= @salt %>"/>
 <% if @success then %> <div class="error">Success</div><%end%>
 <% if @doublepost then %> <div class="error">Double same form submission detected.</div><%end%>
-<% if @decryption_failed then %> <div class="error">Failed to decrypt your submission, try again.</div><%end%>
+<% if @decryption_failed then %> <div class="error">Decription failed, try again.</div><%end%>
+
 <div class="field">
 	<label for="name">Username</label>
-	<input type="text" id="name" value="<%= @user.name %>" autocomplete="off"/>
+	<%= f.text_field :name %>
 	<div class="error"  <%= 'hidden="hidden"' unless @name_empty %> id="username-empty">
 		You need a name.</div> 
 	<div class="error"  <%= 'hidden="hidden"' unless @name_too_short %> id="username-too-short">
@@ -34,20 +37,20 @@
 </div>
 <div class="field">
 	<label for="password">Password</label>
-	<input type="password" id="password" value=""/>
+	<%= f.password_field :password %>
 	<div class="error"  <%= 'hidden="hidden"' unless @password_empty %> id="password-empty">
 		Password should not be empty.</div> 
 	
 </div>
 <div class="field">
 	<label for="password-confirmation">Confirm password</label>
-	<input type="password" id="password-confirmation" value=""/>
+	<%= f.password_field :password_confirmation %>
 	<div class="error" <%= 'hidden="hidden"' unless @password_confirmation_not_match %> id="password-confirmation-not-match" >
 		Passwords do not match.</div> 
 </div>
 <div class="field">
 	<label for="email" autocomplete="off">Em@il</label>
-	<input type="text" id="email" value="<%= @user.email %>"/>
+	<%= f.text_field :email %>
 	<div class="error"  <%= 'hidden="hidden"' unless @email_empty %> id="email-empty">
 		Email should be present.</div> 
 	<div class="error"  <%= 'hidden="hidden"' unless @email_too_long %> id="email-too-long">
@@ -59,4 +62,6 @@
         <!--<input type="button" class="btn" value="Recover account." id="recover-by-email" onclick="recover_by_email(<%= @email %>)" />-->
     </div>
 </div>
+    <%= f.submit id:'user-submit', value:  (yield :action), :class => "btn"%>
+<% end %>
 

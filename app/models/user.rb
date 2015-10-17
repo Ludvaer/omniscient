@@ -42,11 +42,14 @@ class User < ActiveRecord::Base
 
 	def has_pass?
 		if password and password.length == PASSWORD_LENGTH
-			digest = OpenSSL::Digest.new('sha256')
-			hash = OpenSSL::HMAC.digest(digest, name.downcase, "").unpack('H*')[0]
-			return password == hash
+			return password == hash_pass('')
 		end
 		return false
+	end
+
+	def hash_pass(pass)
+		digest = OpenSSL::Digest.new('sha256')
+		return OpenSSL::HMAC.digest(digest, name.downcase, pass).unpack('H*')[0]
 	end
 
 	def self.salt
