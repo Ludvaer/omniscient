@@ -15,6 +15,7 @@ root.init_users_form = ()->
     $('#sign-up-button').show();
 
 root.encryptsignup = ()->
+    $('#sign-up-button').hide()
     uname = $("#user_name").val()
     email = $("#user_email").val()
     
