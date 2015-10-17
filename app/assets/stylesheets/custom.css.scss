@@ -38,17 +38,21 @@ body {
     max-width: $main-width; 
 }
 
+#main-side-padding{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0px $side-padding;
+}
+
 #header{
     font-size: $font-size;
     display: inline-block;
     overflow: auto;
     box-sizing: border-box;
-    width: 100%+2*$side-padding;
+    width: 100%;
 
     padding: 1em 3%;
     margin: 0px;
-    margin-right: -$side-padding;
-    margin-left:  -$side-padding;
     background-color: $header-color;
 }
 
@@ -61,11 +65,11 @@ body {
     height: auto;
     padding-top: 0px;
     padding-bottom: $footer-height - $mystery-padding-workaround;
-    padding-right: $side-padding;
-    padding-left: $side-padding;
     margin-top: 0px;
     margin-bottom: -$footer-height + $mystery-padding-workaround; 
 }
+
+
 
 footer { 
     font-size: $font-size;
@@ -154,19 +158,19 @@ $btncolor: #563d7c;
 
 
 form {
-    text-align: left;
+    text-align: center;
     display: block;
-    padding: 0px;
-    margin: 0px;
+    box-sizing: border-box;
+    width: 100%;
 
 }
 
-$label-width: 10em;
+$label-width: 12em;
 $input-width: 20em;
 
 label {
     display:  inline-block;
-    min-width: 50% + (10*10*($label-width - $input-width)/($main-width));
+    //min-width: 50% + (10*10*($label-width - $input-width)/($main-width));
     width: 100%;
     max-width: $label-width;
     margin: 1px;
@@ -194,3 +198,36 @@ input {
     color: #f43210;
 }
 
+
+#sign-up-response {
+    text-align: center;
+}
+
+.debug_dump {
+    display: inline-block;
+    max-width:50em;
+}
+
+td {
+    padding: 0.25em 0.5em;
+}
+
+.avatar {
+    float: left;
+    display: inline-block;
+}
+.user_show {
+
+    box-sizing: border-box;
+    overflow: auto;
+    display: block;
+
+    padding: 0px;
+    margin: 0px;
+
+}
+
+table {
+    box-sizing: border-box;
+    margin: 1em;
+}

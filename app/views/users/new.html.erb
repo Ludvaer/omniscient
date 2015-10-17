@@ -1,47 +1,4 @@
 <% provide(:title, "Sign Up") %>
+<% provide(:action, "Sign Up") %>
+<%= render 'form_container' %>
 
-<div id="signUpResponse">
-	<%= render 'form' %>
-</div>
-
-<script type="text/javascript">
-	var rsa = forge.pki.rsa;	
-    var responseDiv = document.getElementById("signUpResponse");
-    var hashed1 =""
-    var hashed2 =""
-    var encrypted1 =""
-    var encrypted2 =""
-    function test() {
-    	var pkeyInput = document.getElementById("publickey");
-    	var publicKey1 = forge.pki.publicKeyFromPem(pkeyInput.value);
-    	var publicKey2 = forge.pki.publicKeyFromPem(pkeyInput.value);
-    	var signUpButton = document.getElementById("sign-up-button");
-    	var saltInput = document.getElementById("salt");
-    	var nameInput = document.getElementById("username");
-		var passInput = document.getElementById("password");
-		var verifyInput = document.getElementById("verify");
-    	
-
-    	//var md = forge.md.sha512.create();
-    	//md.update(passInput.value + '|' + nameInput.value);
-    	//hashed = md.digest().toHex();
-
-    	var name_as_salt = nameInput.value.trim().replace(/ +/g, " ").toLowerCase();
-
-    	var hmac = forge.hmac.create();
-    	hmac.start('sha256', name_as_salt);
-    	hmac.update(passInput.value);
-    	hashed1 = hmac.digest().toHex();
-
-    	var hmac = forge.hmac.create();
-    	hmac.start('sha256', name_as_salt);    	
-    	hmac.update(verifyInput.value);
-    	hashed2 = hmac.digest().toHex();
-
-		encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + saltInput.value));
-		encrypted2 = forge.util.bytesToHex(publicKey2.encrypt(hashed2 + '|' + saltInput.value));
-    	encryptsignup(encrypted1,encrypted2);
-    }
-
-
-</script>

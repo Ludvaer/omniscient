@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(name: "Ex@mple User_001", email: "user@example.com",
+    @user = User.new(name: "Ex@mple User_001", email: "user001@example.com",
                      password: "de5fda3f485ac15bcdd72740823fa4642c5bd5ad22c8724882c1ab72ae37b6b1", 
                      password_confirmation: "de5fda3f485ac15bcdd72740823fa4642c5bd5ad22c8724882c1ab72ae37b6b1")
     @user1 = User.new(name: "Ex@mple User_002", email: "user2@example.com",
@@ -20,6 +20,17 @@ class UserTest < ActiveSupport::TestCase
     assert @user.unique_name?
     assert @user.unique_email?
     assert @user.valid?
+    @user.save
+    assert @user.has_name?
+    assert @user.short_enough_name?
+    assert @user.long_enough_name?
+    assert @user.has_email?
+    assert @user.short_enough_email?
+    assert @user.has_email?
+    assert @user.unique_name?
+    assert @user.unique_email?
+    assert @user.valid?
+
   end
 
   test "name should be present" do
@@ -64,30 +75,45 @@ class UserTest < ActiveSupport::TestCase
 
   test "user should be unique" do
     duplicate_user = @user.dup
-    @user.pseudosave
+    #@user.pseudosave
+    @user.save
     assert_not duplicate_user.unique_name?
     assert_not duplicate_user.unique_email?
-    @user.save
     assert_not duplicate_user.valid?    
   end
 
   test "user email should be unique" do
     @user1.email = @user.email.upcase
-    @user.pseudosave
+    #@user.pseudosave
+    @user.save
     assert @user1.unique_name?
     assert_not @user1.unique_email? 
-    @user.save
     assert_not @user1.valid?    
   end
 
   test "user name should be unique" do
     @user1.name = @user.name.upcase
-    @user.pseudosave
+    #@user.pseudosave
+    @user.save
     assert_not @user1.unique_name?
     assert @user1.unique_email? 
-    @user.save
     assert_not @user1.valid?    
   end
+
+  test "email addresses should be saved as lower-case" do
+    mixed_case_email = "Foo@ExAMPle.CoM"
+    @user.email = mixed_case_email
+    @user.save
+    assert_equal mixed_case_email.downcase, @user.reload.email
+  end
+
+  test "names should be saved as lower-case" do
+    mixed_case_bame= "Foo@ExAMPle.CoM"
+    @user.name = mixed_case_bame
+    @user.save
+    assert_equal mixed_case_bame.downcase, @user.reload.downame
+  end
+
 
   test "password should be present (nonblank)" do
     @user.password = @user.password_confirmation = " " * 6
@@ -101,6 +127,23 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
     @user.password = @user.password_confirmation = "a" * 65
     assert_not @user.valid?
+  end
+
+
+  test "can be edited" do
+    @user.save
+    @user.name = "Ex@mple User_001m"
+    @user.email = "user001@example.comm"
+    assert @user.has_name?
+    assert @user.short_enough_name?
+    assert @user.long_enough_name?
+    assert @user.has_email?
+    assert @user.short_enough_email?
+    assert @user.has_email?
+    assert @user.unique_name?
+    assert @user.unique_email?
+    assert @user.valid?
+
   end
 
   #test "password digest should be present" do
