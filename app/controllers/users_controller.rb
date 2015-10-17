@@ -11,16 +11,12 @@ class UsersController < ApplicationController
 
   def new
   	@user = User.new
-        @isEdit = false
-    @isCreate = true
   end
 
   def show
   end
 
   def edit
-        @isEdit = true
-    @isCreate = false
   end
 
 
