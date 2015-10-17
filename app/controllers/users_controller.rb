@@ -27,7 +27,6 @@ class UsersController < ApplicationController
     if @success = validate_input
       @success = @user.save
     end
-    puts "success #{@success}"
     unless @success
       @user_errors = @user.errors
       respond_to do |format|
