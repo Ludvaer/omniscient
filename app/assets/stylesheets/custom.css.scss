@@ -182,11 +182,11 @@ input {
     display: inline-block;
     margin: 1px;
     box-sizing: border-box;
-    &[type=text], &[type=password]{
+    &[type=text], &[type=password], &[type=email] {
         max-width: $input-width;
         width: 100%;
     }
-    &[type=button], &[type=submit] {
+    &[type=button], &[type=submit]{
         display: block;
         margin: 1px auto;
     }
