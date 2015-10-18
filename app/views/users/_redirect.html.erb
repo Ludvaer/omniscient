@@ -1,4 +1,4 @@
 <% msg = "User successfully edited."  if @isEdit %>
 <% msg = "User successfully created."  if @isCreate %>
 
-<%= link_to 'Success, redirecting.',  {:controller => "users", :action => "show", :id => @user.id, :msg => msg }, id:"redirect-to-user" %>
+<%= link_to 'Success, redirecting.',  user_path(@user, :msg => msg ), id:"redirect-to-user" %>
