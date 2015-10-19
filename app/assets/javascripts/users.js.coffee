@@ -1,7 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-
+#TODO: submt form data via form render insted of manual extraction info from fields
 
 #$(document).ready ->
 #    $('#new_user').on "ajax:success", ajax_success_handler
