@@ -1,14 +1,11 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
-#TODO: submt form data via form render insted of manual extraction info from fields
-
-#$(document).ready ->
-#    $('#new_user').on "ajax:success", ajax_success_handler
-
-
-
 root = exports ? this
+
+serializeForm = (form) ->
+    hash = {}
+    for item in form.serializeArray()
+        hash[item.name] = item.value
+    hash
+
 
 root.init_users_form = ()->
     $('#user-submit').hide();
@@ -40,10 +37,15 @@ root.encryptsignup = ()->
     salt = $("#salt").val()
     encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + salt));
     encrypted2 = forge.util.bytesToHex(publicKey1.encrypt(hashed2 + '|' + salt));
+    data = serializeForm($('form'))
+    delete  data['user[password]']
+    delete  data['user[password_confirmation]']
+    data['user[password_encrypted]'] = encrypted1
+    data['user[password_confirmation_encrypted]'] = encrypted2
     $.ajax $('form').attr('action'),
                 type: method
                 dataType: 'json'
-                data: { user: { name: uname, password_encrypted: encrypted1, password_confirmation_encrypted: encrypted2, email: email } }
+                data: data
                 error: (jqXHR, textStatus, errorThrown) ->
                     alert("Ajax request failed");
                     $('#sign-up-button').show()
@@ -54,9 +56,3 @@ root.encryptsignup = ()->
                         else
                             $('#sign-up-button').show()
                             $('#user-submit').hide()
-
-
-                    
-                    
-
-
