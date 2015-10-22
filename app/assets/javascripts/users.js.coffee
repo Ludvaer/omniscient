@@ -30,7 +30,8 @@ root.encryptsignup = ()->
     delete  data['user[password]']
     data['user[password_encrypted]'] = encrypted1
 
-    if $('#user_password_confirmation').val()
+
+    if $('#user_password_confirmation').length
         hmac = forge.hmac.create();
         hmac.start('sha256', name_as_salt);
         hmac.update($('#user_password_confirmation').val());

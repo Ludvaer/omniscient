@@ -29,7 +29,6 @@ class UsersController < ApplicationController
       @success = @user.save
     end
     unless @success
-      @user_errors = @user.errors
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_form'), redirect: false}, :content_type => 'text/json' }
         format.html { render :new }
@@ -50,7 +49,6 @@ class UsersController < ApplicationController
     if @success = validate_input
       @success = @user.update({password: @password, password_confirmation: @password_confirmation, name: @name, email: @email})
     end
-    @user_errors = @user.errors
     unless @success 
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_form'), redirect: false}, :content_type => 'text/json' }
@@ -79,7 +77,6 @@ class UsersController < ApplicationController
     def init_form
   	  @publickey = User.key
   	  @salt = User.salt
-  	  @user_errors = []
     end
 
     def set_user
