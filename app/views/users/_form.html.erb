@@ -2,7 +2,7 @@
 
 <input type="text" style="display: none;" hidden="hidden" name="publickey" id="publickey" value="<%= @publickey %>"/>
 
-<% if @user_errors.any? %>
+<% if @user.errors.any? %>
     <div id="error_explanation" class="error">
       <h3><%= pluralize(@user.errors.count, "error") %> happened:</h3>
       <ul>
@@ -13,8 +13,8 @@
     </div>
 <% end %>
 
-
-<%= form_for(@user) do |f| %>
+<% form_params = if @islogin then {url: {controller: 'sessions', action: 'create'}} else {} end %>
+<%= form_for(@user, form_params) do |f| %>
     <input type="text" style="display: none;" hidden="hidden" name="salt" id = "salt" value="<%= @salt %>"/>
 <% if @success then %> <div class="error">Success</div><%end%>
 <% if @doublepost then %> <div class="error">Double same form submission detected.</div><%end%>
@@ -29,41 +29,48 @@
 		Too short. One symbol name confuses me, please take longer name.</div>
 	<div class="error"  <%= 'hidden="hidden"' unless @name_too_long %> id="username-too-long">
 		Too long. Names longer than 50 symbols are not supported.</div>
-	<div class="error"  <%= 'hidden="hidden"' unless @name_invalid %> id="username-incorrect">
+	<div class="error"  <%= 'hidden="hidden"' unless @name_invalid %> id="username-invalid">
 		The username better be of some letters and numbers.</div>
-	<div class="error" <%= 'hidden="hidden"' unless @name_taken %> id="username-taken">
+	<div class="error" <%= 'hidden="hidden"' unless @name_taken %> id="name-taken">
 		The username is taken.</div>
-	
-	<label class="err" hidden="hidden" name="username_incorrect">The username better be of some letters and numbers.</label>
-	
+	<% if @islogin %> 
+		<div class="error" <%= 'hidden="hidden"' unless @name_unknown %> id="name-unknown">
+			No user with such username found.</div>
+	<% end %>
 </div>
 <div class="field">
     <%= f.label :password %>
 	<%= f.password_field :password %>
 	<div class="error"  <%= 'hidden="hidden"' unless @password_empty %> id="password-empty">
-		Password should not be empty.</div> 
-	
+		Password should not be empty.</div>	
+	<% if @islogin %> 
+		<div class="error" <%= 'hidden="hidden"' unless @password_invalid %> id="password-invalid">
+			Invalid password, or wrong username.</div>
+	<% end %>
 </div>
-<div class="field">
-    <%= f.label :password_confirmation, "Confirmation" %>
-	<%= f.password_field :password_confirmation %>
-	<div class="error" <%= 'hidden="hidden"' unless @password_confirmation_not_match %> id="password-confirmation-not-match" >
-		Passwords do not match.</div> 
-</div>
-<div class="field">
-    <%= f.label :email, "Em@il" %>
-	<%= f.email_field :email %>
-	<div class="error"  <%= 'hidden="hidden"' unless @email_empty %> id="email-empty">
-		Email should be present.</div> 
-	<div class="error"  <%= 'hidden="hidden"' unless @email_too_long %> id="email-too-long">
-		Too long. Emails loger than 255 are not allowed.</div>
-	<div class="error" <%= 'hidden="hidden"' unless @email_invalid %> id="email-incorrect">
-		Does not look much like email.</div>	
-    <div class="error" <%= 'hidden="hidden"' unless @email_taken%> id="email-taken" >
-	    User with such email already registered.
-        <!--<input type="button" class="btn" value="Recover account." id="recover-by-email" onclick="recover_by_email(<%= @email %>)" />-->
-    </div>
-</div>
-    <%= f.submit id:'user-submit', value:  (yield :action), :class => "btn"%>
+
+<% unless @islogin %>
+	<div class="field">
+	    <%= f.label :password_confirmation, "Confirmation" %>
+		<%= f.password_field :password_confirmation %>
+		<div class="error" <%= 'hidden="hidden"' unless @password_confirmation_not_match %> id="password-confirmation-not-match" >
+			Passwords do not match.</div> 
+	</div>
+	<div class="field">
+	    <%= f.label :email, "Em@il" %>
+		<%= f.email_field :email %>
+		<div class="error"  <%= 'hidden="hidden"' unless @email_empty %> id="email-empty">
+			Email should be present.</div> 
+		<div class="error"  <%= 'hidden="hidden"' unless @email_too_long %> id="email-too-long">
+			Too long. Emails loger than 255 are not allowed.</div>
+		<div class="error" <%= 'hidden="hidden"' unless @email_invalid %> id="email-invalid">
+			Does not look much like email.</div>	
+	    <div class="error" <%= 'hidden="hidden"' unless @email_taken%> id="email-taken" >
+		    User with such email already registered.
+	        <!--<input type="button" class="btn" value="Recover account." id="recover-by-email" onclick="recover_by_email(<%= @email %>)" />-->
+	    </div>
+	</div>
+<% end %>
+<%= f.submit id:'user-submit', value:  (yield :action), :class => "btn"%>
 <% end %>
 

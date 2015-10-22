@@ -1,8 +1,15 @@
 Rails.application.routes.draw do
+  #welcome
   root 'pseudo_static#welcome'
-  get 'signup'  => 'users#new'
+  
+  #signup view destroy users
   resources :users
-  post 'signup'  => 'users#create'
+  get 'signup'  => 'users#new'
+
+  #login - logout
+  get    'login'   => 'sessions#new'
+  post   'login'   => 'sessions#create'
+  delete 'logout'  => 'sessions#destroy'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
