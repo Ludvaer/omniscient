@@ -14,34 +14,35 @@ root.init_users_form = ()->
 root.encryptsignup = ()->
     $('#sign-up-button').hide()
     uname = $("#user_name").val()
-    email = $("#user_email").val()
     
     name_as_salt = uname.trim().replace(/ +/g, " ").toLowerCase();
-
 
     hmac = forge.hmac.create();
     hmac.start('sha256', name_as_salt);
     hmac.update($('#user_password').val());
     hashed1 = hmac.digest().toHex();
 
-    hmac = forge.hmac.create();
-    hmac.start('sha256', name_as_salt);
-    hmac.update($('#user_password_confirmation').val());
-    hashed2 = hmac.digest().toHex();
+    publicKey1 = forge.pki.publicKeyFromPem($("#publickey").val());
+    salt = $("#salt").val()
+    encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + salt));
+
+    data = serializeForm($('form'))
+    delete  data['user[password]']
+    data['user[password_encrypted]'] = encrypted1
+
+    if $('#user_password_confirmation').val()
+        hmac = forge.hmac.create();
+        hmac.start('sha256', name_as_salt);
+        hmac.update($('#user_password_confirmation').val());
+        hashed2 = hmac.digest().toHex();
+        encrypted2 = forge.util.bytesToHex(publicKey1.encrypt(hashed2 + '|' + salt));
+        delete  data['user[password_confirmation]']
+        data['user[password_confirmation_encrypted]'] = encrypted2
 
     method = 'post'
     if $('input[name="_method"]').val()
         method = $('input[name="_method"]').val()
 
-    publicKey1 = forge.pki.publicKeyFromPem($("#publickey").val());
-    salt = $("#salt").val()
-    encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + salt));
-    encrypted2 = forge.util.bytesToHex(publicKey1.encrypt(hashed2 + '|' + salt));
-    data = serializeForm($('form'))
-    delete  data['user[password]']
-    delete  data['user[password_confirmation]']
-    data['user[password_encrypted]'] = encrypted1
-    data['user[password_confirmation_encrypted]'] = encrypted2
     $.ajax $('form').attr('action'),
                 type: method
                 dataType: 'json'
