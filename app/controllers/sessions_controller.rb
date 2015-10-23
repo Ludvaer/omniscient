@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
 	end
 
    	def create
-   		@user.name = user_params[:name]
+   		@user.name = user_params[:name].squish()
 
    		#TODO: DRY
 	    if  user_params[:password_encrypted]
@@ -20,10 +20,28 @@ class SessionsController < ApplicationController
 	      decrypted = [user.hash_pass(user_params[:password]),'|',params[:salt]]
 	      @decryption_failed = false
 	    end
+	    
+	    
+		@doublepost = !User.checksalt(decrypted[-1]) unless @decryption_failed
+
+		@success = !(@doublepost or @decryption_failed)
+		if @success
+	        user = User.find_by(downame: @user.name.downcase)
+	        if user
+		        if user.authenticate(decrypted[0])
+		        	@user = user
+		        else
+		        	@password_invalid = true
+		        end
+	        else
+	        	@name_unknown = true
+	        end
+		end
+		@success = !(@password_invalid or @name_unknown)
 
 	    if @success
 	      respond_to do |format|
-	        format.js { render :json => { :html => render_to_string('_redirect'), redirect: true}, :content_type => 'text/json' }
+	        format.js { render :json => { :html => render_to_string('users/_redirect'), redirect: true}, :content_type => 'text/json' }
 	        format.html { redirect_to @user, notice: 'Login successfull.' }
 	      end
 	    else

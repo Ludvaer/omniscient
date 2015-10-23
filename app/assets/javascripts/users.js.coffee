@@ -27,6 +27,7 @@ root.encryptsignup = ()->
     encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + salt));
 
     data = serializeForm($('form'))
+    delete  data['salt']
     delete  data['user[password]']
     data['user[password_encrypted]'] = encrypted1
 
