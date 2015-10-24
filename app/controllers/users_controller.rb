@@ -34,6 +34,7 @@ class UsersController < ApplicationController
         format.html { render :new }
       end
     else
+      log_in(@user)
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_redirect'), redirect: true}, :content_type => 'text/json' }
         format.html { redirect_to @user, notice: 'User was successfully created.' }

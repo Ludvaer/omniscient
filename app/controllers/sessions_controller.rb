@@ -41,6 +41,7 @@ class SessionsController < ApplicationController
 
 	    if @success
 	      respond_to do |format|
+	      	log_in(@user)
 	        format.js { render :json => { :html => render_to_string('users/_redirect'), redirect: true}, :content_type => 'text/json' }
 	        format.html { redirect_to @user, notice: 'Login successfull.' }
 	      end
