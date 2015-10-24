@@ -38,6 +38,7 @@ class SessionsController < ApplicationController
 	        end
 		end
 		@success = !(@password_invalid or @name_unknown)
+		@is_login = true
 
 	    if @success
 	      respond_to do |format|
@@ -51,6 +52,13 @@ class SessionsController < ApplicationController
 	        format.html { render :new }
 	      end
 	    end
+	end
+
+	def destroy
+		log_out()
+		respond_to do |format|
+		    format.html { redirect_to root_path }
+		end
 	end
 
 	private
