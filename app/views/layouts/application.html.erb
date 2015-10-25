@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<% provide(:appname, 'Omni<small style="font-size:0;"> </small>scient'.html_safe) %>
+<% provide(:appname, "Omni<small style=\"font-size:0;\"> </small>scient".html_safe) %>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><%= sanitize(yield(:title)) %><%= ' | ' unless yield(:title).empty? %><%= sanitize(yield(:appname)) %></title>
+  <title><%= sanitize(yield(:title)) %><%= ' | ' unless yield(:title).empty? %>Omniscient</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>

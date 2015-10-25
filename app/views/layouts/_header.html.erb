@@ -1,5 +1,5 @@
 <header class="hat" id="header">
-	<h1><%= link_to yield(:appname), root_path, id: 'alogo' %></h1>
+	<h1><%= link_to ((yield(:appname)).html_safe), root_path, id: 'alogo' %></h1>
 	<nav class="top_nav">
 	    <%= if logged_in? 
 	       "#{link_to 'Profile', current_user, class: 'sign'} | #{link_to 'Log out', logout_path, class: 'sign'}".html_safe
