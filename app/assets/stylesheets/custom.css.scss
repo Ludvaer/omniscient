@@ -168,6 +168,10 @@ form {
 $label-width: 12em;
 $input-width: 20em;
 
+.field {
+    margin: 0.5em 1px;
+}
+
 label {
     display:  inline-block;
     //min-width: 50% + (10*10*($label-width - $input-width)/($main-width));
@@ -176,6 +180,9 @@ label {
     margin: 1px;
     box-sizing: border-box;
     text-align: right;
+    &.noalign {
+        width: auto;
+    }
 
 }
 input {
@@ -189,9 +196,6 @@ input {
     &[type=button], &[type=submit]{
         display: block;
         margin: 1px auto;
-    }
-    &[type=checkbox] {
-
     }
 }
 

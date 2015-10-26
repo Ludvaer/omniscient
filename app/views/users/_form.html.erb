@@ -50,8 +50,8 @@
 </div>
 <% if @islogin %> 
 	<div class="field">
-		<%= label :login, :remember %>
 	    <%= check_box :login, :remember %>
+		<%= label :login, :remember, :class => "noalign"%>
 	</div>
 <% end %>
 <% unless @islogin %>
