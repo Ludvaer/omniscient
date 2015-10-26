@@ -42,7 +42,7 @@ class SessionsController < ApplicationController
 
 	    if @success
 	      respond_to do |format|
-	      	log_in(@user)
+	      	log_in(@user.id,login_params[:remember] == "1")
 	        format.js { render :json => { :html => render_to_string('users/_redirect'), redirect: true}, :content_type => 'text/json' }
 	        format.html { redirect_to @user, notice: 'Login successfull.' }
 	      end
@@ -62,6 +62,9 @@ class SessionsController < ApplicationController
 	end
 
 	private
+		def login_params
+			params.require(:login).permit(:remember)
+		end
 	    def user_params
 			params.require(:user).permit(:name, :password, :password_encrypted, :salt)
 	    end

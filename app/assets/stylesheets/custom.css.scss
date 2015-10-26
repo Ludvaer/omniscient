@@ -190,6 +190,9 @@ input {
         display: block;
         margin: 1px auto;
     }
+    &[type=checkbox] {
+
+    }
 }
 
 .error {

@@ -48,7 +48,12 @@
 			Invalid password, or wrong username.</div>
 	<% end %>
 </div>
-
+<% if @islogin %> 
+	<div class="field">
+		<%= label :login, :remember %>
+	    <%= check_box :login, :remember %>
+	</div>
+<% end %>
 <% unless @islogin %>
 	<div class="field">
 	    <%= f.label :password_confirmation, "Confirmation" %>
