@@ -23,6 +23,9 @@ module SessionsHelper
 				u = User.find_by(id: id)
 				log_in(u)
 				@current_user ||= u
+			else
+				cookies.delete(:remember_token)
+				@current_user = nil
 			end
 		end
 	end
