@@ -19,6 +19,8 @@
 <% if @success then %> <div class="error">Success</div><%end%>
 <% if @doublepost then %> <div class="error">Double same form submission detected.</div><%end%>
 <% if @decryption_failed then %> <div class="error">Decription failed, try again.</div><%end%>
+<% if @no_right then %> <div class="error">You haave no rights to perform this action.</div><%end%>
+
 
 <div class="field">
 	<%= f.label :name, "Username" %>

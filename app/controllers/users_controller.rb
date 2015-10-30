@@ -48,7 +48,12 @@ class UsersController < ApplicationController
     @isEdit = true
     @isCreate = false
     if @success = validate_input
-      @success = @user.update({password: @password, password_confirmation: @password_confirmation, name: @name, email: @email})
+      if access?(@user)
+        @success = @user.update({password: @password, password_confirmation: @password_confirmation, name: @name, email: @email})
+      else
+        @success = false
+        @no_right = true
+      end
     end
     unless @success 
       respond_to do |format|
@@ -65,9 +70,15 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 
   def destroy
-    @user.destroy
-    respond_to do |format|
-        format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+    if access?(@user)
+      @user.destroy
+      respond_to do |format|
+          format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to '/500', notice: 'No right.' }
+      end
     end
   end
   	

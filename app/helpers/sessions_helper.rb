@@ -47,4 +47,9 @@ module SessionsHelper
 		session.delete(:user_id)
 		@current_user = nil
 	end
+
+	#determines if logged in user has right to modify data related to argument user
+	def access?(user)
+		current_user and (current_user.id == user.id or current_user.id == 1) 
+	end
 end
