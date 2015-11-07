@@ -1,6 +1,7 @@
 module SessionsHelper
 	# Logs in the given user.
-	def log_in(id, remember = false)
+	def log_in(user, remember = false)
+		id = user.id
 		if remember
 			s = Session.new
 			s.init_token
@@ -21,12 +22,13 @@ module SessionsHelper
 			if s
 				id = s.user_id
 				u = User.find_by(id: id)
-				log_in(u)
-				@current_user ||= u
-			else
-				cookies.delete(:remember_token)
-				@current_user = nil
+				if u
+					log_in(u)
+					return @current_user ||= u
+				end
 			end
+			cookies.delete(:remember_token)
+			@current_user = nil			
 		end
 	end
 
