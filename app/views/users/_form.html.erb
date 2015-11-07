@@ -13,13 +13,13 @@
     </div>
 <% end %>
 
-<% form_params = if @islogin then {url: login_path} else {} end %>
+<% form_params =  @islogin ? {url: login_path} : {} %>
 <%= form_for(@user, form_params) do |f| %>
     <input type="text" style="display: none;" hidden="hidden" name="salt" id = "salt" value="<%= @salt %>"/>
 <% if @success then %> <div class="error">Success</div><%end%>
 <% if @doublepost then %> <div class="error">Double same form submission detected.</div><%end%>
 <% if @decryption_failed then %> <div class="error">Decription failed, try again.</div><%end%>
-<% if @no_right then %> <div class="error">You haave no rights to perform this action.</div><%end%>
+<% if @no_right then %> <div class="error">You have no rights to perform this action.</div><%end%>
 
 
 <div class="field">
@@ -55,8 +55,7 @@
 	    <%= check_box :login, :remember %>
 		<%= label :login, :remember, :class => "noalign"%>
 	</div>
-<% end %>
-<% unless @islogin %>
+<% else %>
 	<div class="field">
 	    <%= f.label :password_confirmation, "Confirmation" %>
 		<%= f.password_field :password_confirmation %>
