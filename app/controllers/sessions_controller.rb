@@ -41,10 +41,11 @@ class SessionsController < ApplicationController
 		@is_login = true
 
 	    if @success
+	      flash[:notice] = 'Login successfull.'
 	      respond_to do |format|
 	      	log_in(@user.id,login_params[:remember] == "1")
 	        format.js { render :json => { :html => render_to_string('users/_redirect'), redirect: true}, :content_type => 'text/json' }
-	        format.html { redirect_to @user, notice: 'Login successfull.' }
+	        format.html { redirect_to @user }
 	      end
 	    else
 	      respond_to do |format|
@@ -57,6 +58,7 @@ class SessionsController < ApplicationController
 	def destroy
 		log_out()
 		respond_to do |format|
+			flash[:notice] = 'Logout successfull.'
 		    format.html { redirect_to root_path }
 		end
 	end

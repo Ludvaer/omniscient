@@ -34,10 +34,11 @@ class UsersController < ApplicationController
         format.html { render :new }
       end
     else
+      flash[:notice] = 'User was successfully created.'
       log_in(@user)
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_redirect'), redirect: true}, :content_type => 'text/json' }
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to @user}
       end
     end
   end
@@ -61,9 +62,10 @@ class UsersController < ApplicationController
         format.html { render :edit }
       end
     else
+      flash[:notice] = 'User was successfully updated.' 
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_redirect'), redirect: true}, :content_type => 'text/json' }
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to @user }
       end
     end
   end
@@ -72,8 +74,9 @@ class UsersController < ApplicationController
   def destroy
     if access?(@user)
       @user.destroy
+       flash[:notice] = 'User was successfully destroyed.'
       respond_to do |format|
-          format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+          format.html { redirect_to users_url }
       end
     else
       respond_to do |format|
