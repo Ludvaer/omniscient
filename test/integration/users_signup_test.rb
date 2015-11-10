@@ -40,6 +40,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   	fill_in('user[email]', :with => 'asdf1234@asdf.asdf')
   	first("input.btn").click()
   	assert page.has_css?('p#notice', text: 'User was successfully created.')
+  	assert page.has_css?('h2', text: 'asdf1234')
 
   	visit('/signup')
   	fill_in('user[name]', :with => 'asdf1234')
