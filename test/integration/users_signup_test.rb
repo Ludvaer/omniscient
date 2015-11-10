@@ -5,7 +5,9 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 	include Capybara::DSL
 	def setup
 	  	Capybara.current_driver = :selenium
-	  	Capybara.app_host = "http://localhost:3000"
+	  	#Capybara.app_host = "http://localhost:3000"
+	  	Capybara.run_server = true #Whether start server when testing
+	    Capybara.server_port = 8200
 	end
 
 #  test 'should not register invalid user' do
@@ -148,9 +150,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   	assert page.has_css?('div#email-invalid', visible: false)
   	assert page.has_css?('div#email-taken', visible: false)
   	assert page.has_no_css?('div#error_explanation')
-  end
 
-  test 'login' do
   	visit('/login')
   	fill_in('user[name]', :with => 'asdf1234')
   	fill_in('user[password]', :with => 'asdf1234')
