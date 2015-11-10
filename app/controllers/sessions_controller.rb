@@ -41,7 +41,7 @@ class SessionsController < ApplicationController
 		@is_login = true
 
 	    if @success
-	      flash[:notice] = 'Login successfull.'
+	      flash[:notice] = 'Login successful.'
 	      respond_to do |format|
 	      	log_in(@user,login_params[:remember] == "1")
 	        format.js { render :json => { :html => render_to_string('users/_redirect'), redirect: true}, :content_type => 'text/json' }

@@ -74,7 +74,7 @@ class UsersController < ApplicationController
   def destroy
     if access?(@user)
       @user.destroy
-       flash[:notice] = 'User was successfully destroyed.'
+      flash[:notice] = 'User was successfully destroyed.'
       respond_to do |format|
           format.html { redirect_to users_url }
       end
@@ -144,13 +144,13 @@ class UsersController < ApplicationController
     unless @name_empty = !user.has_name?
     	@name_too_short = !user.long_enough_name?
     	@name_too_long = !user.short_enough_name?
-    	unless @name_too_short or @username_too_long
+    	unless @name_too_short or @name_too_long
 	    	unless @name_invalid = !user.valid_name?
 	          	@name_taken = !user.unique_name?
 	        end
         end
     end
-    err ||= (@username_empty || @username_too_short || @username_too_long || @username_taken || @name_invalid)
+    err ||= (@name_empty || @name_too_short || @name_too_long || @name_taken || @name_invalid)
   	unless @email_empty = !user.has_email?
   		unless @email_too_long = !user.short_enough_email?
 		  	unless @email_invalid = !user.valid_email?
