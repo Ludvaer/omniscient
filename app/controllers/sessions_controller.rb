@@ -6,6 +6,7 @@ class SessionsController < ApplicationController
 
    	def create
    		@user.name = user_params[:name].squish()
+   		user = @user
 
    		#TODO: DRY
 	    if  user_params[:password_encrypted]
@@ -20,12 +21,27 @@ class SessionsController < ApplicationController
 	      decrypted = [user.hash_pass(user_params[:password]),'|',params[:salt]]
 	      @decryption_failed = false
 	    end
-	    
+	    @user.password =  decrypted[0]
 	    
 		@doublepost = !User.checksalt(decrypted[-1]) unless @decryption_failed
 
-		@success = !(@doublepost or @decryption_failed)
-		if @success
+		err = (@doublepost or @decryption_failed)
+
+        
+		unless err
+		    unless @name_empty = !user.has_name?
+		    	@name_too_short = !user.long_enough_name?
+		    	@name_too_long = !user.short_enough_name?
+		    	unless @name_too_short or @name_too_long
+			    	@name_invalid = !user.valid_name?
+		        end
+		    end
+		end
+		@password_empty = !user.has_pass?
+	    err ||= (@name_empty || @name_too_short || @name_too_long || @name_invalid || @password_empty)
+	
+
+		unless err
 	        user = User.find_by(downame: @user.name.downcase)
 	        if user
 		        if user.authenticate(decrypted[0])
@@ -37,10 +53,11 @@ class SessionsController < ApplicationController
 	        	@name_unknown = true
 	        end
 		end
-		@success = !(@password_invalid or @name_unknown)
+
+		err ||= (@password_invalid or @name_unknown)
 		@is_login = true
 
-	    if @success
+	    unless err
 	      flash[:notice] = 'Login successful.'
 	      respond_to do |format|
 	      	log_in(@user,login_params[:remember] == "1")

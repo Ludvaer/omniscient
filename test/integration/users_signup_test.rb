@@ -3,42 +3,19 @@ require 'test_helper'
 
 class UsersSignupTest < ActionDispatch::IntegrationTest
 	include Capybara::DSL
+
 	def setup
-	  	Capybara.current_driver = :selenium
-	  	#Capybara.app_host = "http://localhost:3000"
-	  	Capybara.run_server = true #Whether start server when testing
-	    Capybara.server_port = 8200
+		setup_capybara
 	end
 
-#  test 'should not register invalid user' do
-#  	get signup_path
-#   	assert_no_difference 'User.count' do
-#    post users_path, user: { name:  "1",
-#                             email: "user@invalid",
-#                             password: "",
-#                             password_confirmation: "bar" }
-#	end
-  #end
-
-
-  #test "valid signup information" do
-  #  get signup_path
-  #  assert_difference 'User.count', 1 do
-  #    post_via_redirect users_path, user: { name:  "Example User3",
-  #                                          email: "user3@example.com",
-  #                                          password:              "password3",
-  #                                          password_confirmation: "password3" }
-  #  end
-  #  assert_template 'users/show'
-  #ends
-
-  test 'valid user data check' do
+  test 'signup validation check' do
   	visit('/signup')
   	fill_in('user[name]', :with => 'asdf1234')
   	fill_in('user[password]', :with => 'asdf1234')
   	fill_in('user[password_confirmation]', :with => 'asdf1234')
   	fill_in('user[email]', :with => 'asdf1234@asdf.asdf')
   	first("input.btn").click()
+  	wait_for_ajax
   	assert page.has_css?('p#notice', text: 'User was successfully created.')
   	assert page.has_css?('h2', text: 'asdf1234')
 
@@ -156,9 +133,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   	fill_in('user[name]', :with => 'asdf1234')
   	fill_in('user[password]', :with => 'asdf1234')
   	first("input.btn").click()
+  	wait_for_ajax
   	assert page.has_css?('p#notice', text: 'Login successful.')
 
-  	click_link('Destroy');
+  	click_link 'Destroy'
     page.driver.browser.switch_to.alert.accept
     assert page.has_css?('p#notice', text: 'User was successfully destroyed.')
   end

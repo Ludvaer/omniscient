@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
 
 	def has_pass?
 		if password and password.length == PASSWORD_LENGTH
-			return password == hash_pass('')
+			return password != hash_pass('')
 		end
 		return false
 	end

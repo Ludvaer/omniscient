@@ -33,11 +33,12 @@
 		Too long. Names longer than 50 symbols are not supported.</div>
 	<div class="error"  <%= 'hidden="hidden"' unless @name_invalid %> id="name-invalid">
 		The username better be of some letters and numbers.</div>
-	<div class="error" <%= 'hidden="hidden"' unless @name_taken %> id="name-taken">
-		The username is taken.</div>
 	<% if @islogin %> 
 		<div class="error" <%= 'hidden="hidden"' unless @name_unknown %> id="name-unknown">
 			No user with such username found.</div>
+	<% else %>
+		<div class="error" <%= 'hidden="hidden"' unless @name_taken %> id="name-taken">
+			The username is taken.</div>
 	<% end %>
 </div>
 <div class="field">
@@ -53,7 +54,7 @@
 <% if @islogin %> 
 	<div class="field">
 	    <%= check_box :login, :remember %>
-		<%= label :login, :remember, :class => "noalign"%>
+		<%= label :login, :remember, 'Remember me', :class => "noalign"%>
 	</div>
 <% else %>
 	<div class="field">

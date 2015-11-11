@@ -163,7 +163,7 @@ class UsersController < ApplicationController
 		unless @decryption_failed
 		  	@doublepost = !User.checksalt(decrypted[-1])
 		end
-		@password_empty = user.has_pass?
+		@password_empty = !user.has_pass?
 
 	  err ||= (@doublepost || @password_empty)
 
