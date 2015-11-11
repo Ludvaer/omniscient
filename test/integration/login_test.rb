@@ -102,8 +102,9 @@ class LoginTest < ActionDispatch::IntegrationTest
 		  	#login with no remember
 		  	standart_login s, false
 		  	#reset and reopen login page
-		  	Capybara.reset!
-		  	visit('/login')
+		  	#Capybara.reset!
+		  	#visit('/login')		  	
+		  	visit('/resession')
 		  	#check that not logged in anymore
 			check_not_logged_in s
 
@@ -111,8 +112,9 @@ class LoginTest < ActionDispatch::IntegrationTest
 			standart_logout s
 		  	standart_login s, true
 		  	#reset and reopen login page
-		  	reset!
-		  	visit('/login')
+		  	#Capybara.reset!
+		  	#visit('/login')		  	
+		  	visit('/resession')
 		  	#check if still logged in
 			logged_in s
 			#delete user

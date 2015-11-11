@@ -4,6 +4,14 @@ class SessionsController < ApplicationController
 	def new
 	end
 
+	def reset
+		reset_session
+		respond_to do |format|
+			flash[:notice] = 'Session reseted.'
+		    format.html { redirect_to root_path }
+		end
+	end
+
    	def create
    		@user.name = user_params[:name].squish()
    		user = @user
@@ -15,6 +23,7 @@ class SessionsController < ApplicationController
 		  	  	decrypted = d1.rpartition('|')
 		  	  	@decryption_failed = false
 	    	rescue
+	    		decrypted = ['','|','']
 	    		@decryption_failed = true
 	    	end
 	    else
@@ -37,7 +46,7 @@ class SessionsController < ApplicationController
 		        end
 		    end
 		end
-		@password_empty = !user.has_pass?
+		@password_empty = !user.has_pass? unless @decryption_failed
 	    err ||= (@name_empty || @name_too_short || @name_too_long || @name_invalid || @password_empty)
 	
 
