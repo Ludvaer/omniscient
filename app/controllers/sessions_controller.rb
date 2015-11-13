@@ -12,58 +12,9 @@ class SessionsController < ApplicationController
 		end
 	end
 
-   	def create
-   		@user.name = user_params[:name].squish()
-   		user = @user
-
-   		#TODO: DRY
-	    if  user_params[:password_encrypted]
-	    	begin
-		  	  	d1 = User.decrypt(user_params[:password_encrypted])
-		  	  	decrypted = d1.rpartition('|')
-		  	  	@decryption_failed = false
-	    	rescue
-	    		decrypted = ['','|','']
-	    		@decryption_failed = true
-	    	end
-	    else
-	      decrypted = [user.hash_pass(user_params[:password]),'|',params[:salt]]
-	      @decryption_failed = false
-	    end
-	    @user.password =  decrypted[0]
-	    
-		@doublepost = !User.checksalt(decrypted[-1]) unless @decryption_failed
-
-		err = (@doublepost or @decryption_failed)
-
-        
-		unless err
-		    unless @name_empty = !user.has_name?
-		    	@name_too_short = !user.long_enough_name?
-		    	@name_too_long = !user.short_enough_name?
-		    	unless @name_too_short or @name_too_long
-			    	@name_invalid = !user.valid_name?
-		        end
-		    end
-		end
-		@password_empty = !user.has_pass? unless @decryption_failed
-	    err ||= (@name_empty || @name_too_short || @name_too_long || @name_invalid || @password_empty)
-	
-
-		unless err
-	        user = User.find_by(downame: @user.name.downcase)
-	        if user
-		        if user.authenticate(decrypted[0])
-		        	@user = user
-		        else
-		        	@password_invalid = true
-		        end
-	        else
-	        	@name_unknown = true
-	        end
-		end
-
-		err ||= (@password_invalid or @name_unknown)
+   	def create   		
+		@user = @user.validate_login_input(user_params)
+		err = @user.err
 		@is_login = true
 
 	    unless err

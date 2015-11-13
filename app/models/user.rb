@@ -7,20 +7,15 @@ VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 VALID_USER_REGEX = /\A[\w+\-@. ]+\z/i
 PASSWORD_LENGTH = 64
 class User < ActiveRecord::Base
-	before_save do 
-		email.squish!.downcase!
-		self.name.squish!
-		self.name = name
-		#grants caseless nameuniquness but keeps original name in other column
-		#do I need insex on original name column?
-		self.downame = name.downcase
-	end
 
 	validates :name,  presence: true, length: { maximum: MAX_USERNAME_LENGTH,  minimum: MIN_USERNAME_LENGTH},
-		format: { with: VALID_USER_REGEX }, uniqueness: { case_sensitive: false }
+		format: { with: VALID_USER_REGEX }#, uniqueness: { case_sensitive: false } 
+		               #uniqueness checked during validation, removed here to avoid ext db queries
 	validates :email, presence: true, length: { maximum: MAX_EMAIL_LENGTH },
-		format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
+		format: { with: VALID_EMAIL_REGEX }#, uniqueness: { case_sensitive: false }
 	validates :password, presence: true, length: { minimum: PASSWORD_LENGTH, maximum: PASSWORD_LENGTH}
+	validates :downame,  presence: true, length: { maximum: MAX_USERNAME_LENGTH,  minimum: MIN_USERNAME_LENGTH},
+		format: { with: VALID_USER_REGEX }
 	has_secure_password
 
     #will need to refactor and probably rebuild some of encription and other stuff some of it should be placed in helpers
@@ -73,10 +68,6 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	def pseudosave()
-	#	@@users[self.name.downcase] = self;
-	#	@@usersbymail[self.email.downcase] = self;
-	end
 
 	def has_name?()
 		return !name.blank?
@@ -98,11 +89,11 @@ class User < ActiveRecord::Base
 		return email.length <= MAX_EMAIL_LENGTH
 	end
 
-	def has_email?
+	def has_email?()
 		return !email.blank?
 	end
 
-	def valid_email?
+	def valid_email?()
 		return VALID_EMAIL_REGEX.match(email)
 	end
 
@@ -117,11 +108,129 @@ class User < ActiveRecord::Base
 
 	def unique_name?
 		#return @@users[self.name.downcase].nil?
-		check_unique User.where(downame: name.squish().downcase)
+		check_unique User.where(downame: downame)
 	end
 
 	def unique_email?
 		#return @@usersbymail[self.email.downcase].nil?
-		check_unique User.where(email: email.squish().downcase) 
+		check_unique User.where(email: email) 
+	end
+
+# class NameErrors
+	attr_accessor  :name_empty, :name_too_short, :name_too_long, :name_invalid, :name_unknown, :name_taken;
+# PasswordErrors
+	attr_accessor  :password_empty, :password_invalid, :password_decryption_failed, :password_doublepost;
+# ConfirmationErrors
+	attr_accessor  :password_confirmation_empty, :password_confirmation_not_match, :password_confirmation_decryption_failed, :password_confirmation_doublepost;
+# MailErrors
+	attr_accessor  :email_empty, :email_too_long, :email_invalid, :email_taken;
+#dlobal errors
+    attr_accessor  :err, :decryption_failed, :doublepost;
+
+
+	def check_name (user_params)
+		self.name = user_params[:name].squish()
+		self.downame = name.downcase
+		unless @name_empty = !has_name?
+	    	@name_too_short = !long_enough_name?
+	    	@name_too_long = !short_enough_name?
+	    	unless @name_too_short or @name_too_long
+		    	unless @name_invalid = !valid_name?
+		          	return true
+		        end
+	        end
+		end
+		@err ||= true;
+		return false
+	end
+
+	def check_name_unique
+		@err ||= (@name_taken = !unique_name?)
+        return !@name_taken
+	end
+
+	def decrypt(password,encrypted, salt)
+		if  encrypted
+			begin
+		  	  	d1 = User.decrypt(encrypted)
+		  	  	decrypted = d1.rpartition('|')
+		  	  	decryption_failed = false
+			rescue
+				decrypted = ['','|','']
+				decryption_failed = true
+			end
+		else
+		  decrypted = [hash_pass(password),'|', salt]
+		  decryption_failed = false
+		end
+		return decrypted,decryption_failed
+	end
+
+	def check_password (user_params)
+		decrypted, decryption_failed = decrypt(user_params[:password],user_params[:password_encrypted],user_params[:salt])
+		@decryption_failed ||= decryption_failed
+		doublepost = !User.checksalt(decrypted[-1]) unless decryption_failed
+		@doublepost ||= doublepost
+		self.password = decrypted[0]
+		@password_empty = (decrypted[0] == hash_pass(''))
+		@err ||= (decryption_failed || doublepost || @password_empty)
+	end
+
+	def check_password_confirmation (user_params)
+		decrypted, decryption_failed = decrypt(user_params[:password_confirmation],user_params[:password_confirmation_encrypted],user_params[:salt])
+		@decryption_failed ||= decryption_failed
+		doublepost = !User.checksalt(decrypted[-1]) unless decryption_failed
+		@doublepost ||= doublepost
+		#unless @password_confirmation_empty = (decrypted[0] == User.hash_pass(''))
+			@password_confirmation_not_match = password != decrypted[0]
+		#end
+		@err ||= decryption_failed || doublepost || @password_confirmation_empty || @password_confirmation_not_match
+	end
+
+	def check_email (user_params)
+		self.email = user_params[:email].squish().downcase
+		unless @email_empty = !has_email?
+	  		unless @email_too_long = !short_enough_email?
+			  	unless @email_invalid = !valid_email?
+			  	  	@email_taken = !unique_email?
+			  	end
+	  	  	end
+	  	end
+	  	@err ||= (@email_empty || @email_too_long ||  @email_invalid || @email_taken)
+	end
+
+
+	def validate_signup_input(user_params)
+		@err = false
+	    if(check_name(user_params))
+	    	check_name_unique
+	    end
+	    check_password(user_params)
+	    check_password_confirmation(user_params)
+	    check_email(user_params)	 
+	    
+		return !@err
+	end
+
+	def validate_login_input(user_params)
+		@err = false
+	    user = self
+	    check_name(user_params)
+   		check_password(user_params)
+
+		unless @err	       
+			user = User.find_by(downame: name.downcase)
+	        if user
+		        if user.authenticate(password)
+		        	return user
+		        else
+		        	@password_invalid = true
+		        end
+	        else
+	        	@name_unknown = true
+	        end
+		end
+		@err = true;
+		return self
 	end
 end
