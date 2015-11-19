@@ -18,6 +18,21 @@ class User < ActiveRecord::Base
 		format: { with: VALID_USER_REGEX }
 	has_secure_password
 
+	def create_activation
+		aa = AccountActivation.new
+		aa.email = email
+		aa.user_id = id
+		aa.init_token
+		aa.save
+		@activation = aa
+	end
+
+	def account_activation
+		create_activation unless @activation
+		return @activation
+	end
+
+
     #will need to refactor and probably rebuild some of encription and other stuff some of it should be placed in helpers
 	@@sym = [('0'..'9'), ('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
     @@rsa_key = OpenSSL::PKey::RSA.new(2048)

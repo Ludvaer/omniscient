@@ -9,10 +9,14 @@ Rails.application.routes.draw do
   #login - logout
   get    'login'   => 'sessions#new'
   post   'login'   => 'sessions#create'
-  get 'logout'  => 'sessions#destroy'
+  get 'logout'  => 'sessions#destroy' #TODO: fix; no logout through get
   delete 'logout'  => 'sessions#destroy'
   get 'resession'  => 'sessions#reset' #simulates session reset (reopening browser) (clears session cookie)
-  
+  post 'account_activations' => 'account_activations#create'
+  post 'account_activations/:token' => 'account_activations#activate' , as: :account_activate
+  get 'account_activations/:token' => 'account_activations#activate'
+     #get 'account_activations/:token' => 'account_activations#destroy'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

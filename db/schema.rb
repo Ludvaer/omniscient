@@ -11,10 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151026142955) do
+ActiveRecord::Schema.define(version: 20151119104921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "account_actiovations", force: true do |t|
+    t.string   "token"
+    t.integer  "user_id"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "account_actiovations", ["token"], name: "index_account_actiovations_on_token", unique: true, using: :btree
+  add_index "account_actiovations", ["user_id"], name: "index_account_actiovations_on_user_id", using: :btree
+
+  create_table "account_activations", force: true do |t|
+    t.string   "token"
+    t.integer  "user_id"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "account_activations", ["user_id"], name: "index_account_activations_on_user_id", using: :btree
 
   create_table "sessions", force: true do |t|
     t.string   "token"
@@ -32,6 +53,7 @@ ActiveRecord::Schema.define(version: 20151026142955) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "downame"
+    t.boolean  "activated",       default: false
   end
 
   add_index "users", ["downame"], name: "index_users_on_downame", unique: true, using: :btree

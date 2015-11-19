@@ -1,0 +1,9 @@
+<h1>Omniscient account activation</h1>
+
+<p>Hi ,</p>
+
+<p>
+Welcome to the Omniscient! Use the link below to activate your account:
+</p>
+
+<%= link_to 'Destroy', account_activate_url(token: @account_activation.get_token), method: :post%>
