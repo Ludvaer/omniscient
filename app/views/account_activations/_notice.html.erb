@@ -2,8 +2,5 @@
 <p class="error">
 	Email is not confirmed. 
 	<%= link_to 'resend letter', account_activations_url, method: :post%>
-	<%= form_for(AccountActivation.new) do |f| %>
-		<%= f.submit id:'account-activation-submit', value: 'resend letter' %>
-	<% end %>
 </p>
 <% end %>
