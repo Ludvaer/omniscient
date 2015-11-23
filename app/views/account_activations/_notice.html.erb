@@ -1,6 +1,6 @@
 <% if current_user and not current_user.activated %>
 <p class="error">
-	Email is not confirmed. 
+	Email is not confirmed. Please check your mail and visit confirmation link. Letter with activation link should be received within several minutes after registration or changing email, but you can
 	<%= link_to 'resend letter', account_activations_url, method: :post%>
 </p>
 <% end %>

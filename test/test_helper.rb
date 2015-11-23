@@ -41,7 +41,7 @@ class ActiveSupport::TestCase
     s + 'pass'
   end 
   def standart_mail s
-    s + 'mail@'+ s + '.' + s
+    s + '_test_mail@'+ s + '.' + s
   end 
 
   def logged_in s

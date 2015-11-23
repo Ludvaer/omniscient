@@ -6,7 +6,7 @@ class UserMailer < ActionMailer::Base
   #
   #   en.user_mailer.account_activation.subject
   #
-  def account_activation(account_activation, user)
+  def account_activation(account_activation)
     @user = user
     @greeting = "Hi"
     @account_activation = account_activation

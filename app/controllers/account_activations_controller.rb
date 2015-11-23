@@ -2,7 +2,7 @@ class AccountActivationsController < ApplicationController
 
 	def create
 		user = current_user
-		UserMailer.account_activation(user.account_activation, user)
+		user.send_activation_letter
 		flash[:notice] = 'Activation letter sent.'
 		@user = user
 		respond_to do |format|

@@ -32,6 +32,10 @@ class User < ActiveRecord::Base
 		return @activation
 	end
 
+	def send_activation_letter
+		UserMailer.account_activation(user.account_activation).deliver_now
+	end
+
 
     #will need to refactor and probably rebuild some of encription and other stuff some of it should be placed in helpers
 	@@sym = [('0'..'9'), ('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten

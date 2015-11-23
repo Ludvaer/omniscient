@@ -29,6 +29,7 @@ class UsersController < ApplicationController
       @success = @user.save
     end
     unless @success
+      @user.send_activation_letter
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_form'), redirect: false}, :content_type => 'text/json' }
         format.html { render :new }
@@ -50,7 +51,9 @@ class UsersController < ApplicationController
     @isCreate = false
     if @success = validate_input
       if access?(@user)
+        oldmail = @user.email
         @success = @user.update({password: @password, password_confirmation: @password_confirmation, name: @name, email: @email})
+        email_changed = (oldmail != @user.email)
       else
         @success = false
         @no_right = true
@@ -62,6 +65,9 @@ class UsersController < ApplicationController
         format.html { render :edit }
       end
     else
+      if (email_changed)
+        @user.send_activation_letter
+      end
       flash[:notice] = 'User was successfully updated.' 
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_redirect'), redirect: true}, :content_type => 'text/json' }
