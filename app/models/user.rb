@@ -36,6 +36,23 @@ class User < ActiveRecord::Base
 		UserMailer.account_activation(user.account_activation).deliver_now
 	end
 
+	def create_password_reset
+		pr = PasswordReset.new
+		pr.user_id = id
+		pr.init_token
+		pr.save
+		@password_reset = pr
+	end
+
+	def password_reset
+		create_password_reset unless @password_reset
+		return @password_reset
+	end
+
+	def send_password_reset_letter
+		UserMailer.password_reset(user.password_reset).deliver_now
+	end
+
 
     #will need to refactor and probably rebuild some of encription and other stuff some of it should be placed in helpers
 	@@sym = [('0'..'9'), ('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
@@ -142,7 +159,7 @@ class User < ActiveRecord::Base
 # ConfirmationErrors
 	attr_accessor  :password_confirmation_empty, :password_confirmation_not_match, :password_confirmation_decryption_failed, :password_confirmation_doublepost;
 # MailErrors
-	attr_accessor  :email_empty, :email_too_long, :email_invalid, :email_taken;
+	attr_accessor  :email_empty, :email_too_long, :email_invalid, :email_taken, :email_unknown;
 #dlobal errors
     attr_accessor  :err, :decryption_failed, :doublepost;
 
@@ -166,6 +183,10 @@ class User < ActiveRecord::Base
 	def check_name_unique
 		@err ||= (@name_taken = !unique_name?)
         return !@name_taken
+	end
+	def check_email_unique
+		@err ||= (@email_taken = !unique_email?)
+        return !@email_taken
 	end
 
 	def decrypt(password,encrypted, salt)
@@ -212,6 +233,7 @@ class User < ActiveRecord::Base
 	  		unless @email_too_long = !short_enough_email?
 			  	unless @email_invalid = !valid_email?
 			  	  	@email_taken = !unique_email?
+			  	  	@email_unknown = !@email_taken
 			  	end
 	  	  	end
 	  	end
@@ -226,8 +248,10 @@ class User < ActiveRecord::Base
 	    end
 	    check_password(user_params)
 	    check_password_confirmation(user_params)
-	    check_email(user_params)	 
-	    
+	    if check_email(user_params)
+		    check_email_unique	 
+	    end
+
 		return !@err
 	end
 
@@ -251,5 +275,24 @@ class User < ActiveRecord::Base
 		end
 		@err = true;
 		return self
+	end
+
+	def validate_email_input(user_params)
+		@err = false
+		user = self
+		if check_email(user_params)
+			user = User.find_by(downame: name.downcase)
+			if user 
+				return user
+			end
+		end
+		return self
+	end
+
+	def validate_password_input(user_params)
+		@err = false
+		check_password(user_params)
+	    check_password_confirmation(user_params)
+	    return !@err
 	end
 end

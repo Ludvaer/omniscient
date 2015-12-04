@@ -13,7 +13,7 @@ class UsersController < ApplicationController
   	@user = User.new
   end
 
-  def show
+  def show 
   end
 
   def edit
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    @isEdit = false
+    @isEdit = false #TODO: remove this, make distinct forms
     @isCreate = true
   	@user = User.new
     if @success = validate_input
@@ -47,12 +47,12 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    @isEdit = true
+    @isEdit = true #TODO: remove this, make distinct forms
     @isCreate = false
+    oldmail = @user.email
     if @success = validate_input
-      if access?(@user)
-        oldmail = @user.email
-        @success = @user.update({password: @password, password_confirmation: @password_confirmation, name: @name, email: @email})
+      if access?(@user)        
+        @success = @user.save
         email_changed = (oldmail != @user.email)
       else
         @success = false

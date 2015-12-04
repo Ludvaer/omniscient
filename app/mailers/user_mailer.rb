@@ -7,8 +7,6 @@ class UserMailer < ActionMailer::Base
   #   en.user_mailer.account_activation.subject
   #
   def account_activation(account_activation)
-    @user = user
-    @greeting = "Hi"
     @account_activation = account_activation
     mail to: account_activation.email, subject: "Account activation"
   end
@@ -18,9 +16,9 @@ class UserMailer < ActionMailer::Base
   #
   #   en.user_mailer.password_reset.subject
   #
-  def password_reset
-    @greeting = "Hi"
-
-    mail to: "to@example.org"
+  def password_reset(user)
+    @user = user
+    @password_reset = user.password_reset
+    mail to: user.email, subject: "Password reset"
   end
 end

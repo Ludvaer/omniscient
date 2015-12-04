@@ -13,12 +13,8 @@ class AccountActivationsController < ApplicationController
 
 	def activate
 		aa = AccountActivation.find_token(params[:token])
-		p aa
-		puts aa
 		if aa
 			user = User.find_by(id: aa.user_id)
-			p aa
-			puts user
 			if user
 				user.update_attribute(:activated, true)
 			end

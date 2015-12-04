@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'password_reset/create'
+
   #welcome
   root 'pseudo_static#welcome'
   
@@ -14,7 +16,12 @@ Rails.application.routes.draw do
   get 'resession'  => 'sessions#reset' #simulates session reset (reopening browser) (clears session cookie)
   post 'account_activations' => 'account_activations#create'
   post 'account_activations/:token' => 'account_activations#activate' , as: :account_activate
-  get 'account_activations/:token' => 'account_activations#activate'
+  get 'account_activations/:token' => 'account_activations#activate' #try to avoid use get
+  get 'reset_request'  => 'password_resets#new'
+  post 'send_reset_request'  => 'password_resets#create'
+  get 'password_resets/:token' => 'password_resets#edit', as: :password_reset #get password reset form
+  patch 'reset_password' => 'password_resets#reset'
+
      #get 'account_activations/:token' => 'account_activations#destroy'
 
   # The priority is based upon order of creation: first created -> highest priority.

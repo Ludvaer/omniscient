@@ -14,9 +14,6 @@ class AccountActivation < ActiveRecord::Base
 	def self.find_token(token)
 		parsed = token.rpartition('|')                      #and decrypt here
 		aa = AccountActivation.find_by(id: parsed[-1])
-		p aa.token
-		p parsed[0]
-		p aa.hash_token(parsed[0])
 		return aa if aa and aa.token == aa.hash_token(parsed[0])	
 		return nil
 	end
@@ -25,6 +22,6 @@ class AccountActivation < ActiveRecord::Base
 	end
 	def hash_token(token)
 		digest = OpenSSL::Digest.new('sha256')
-		return OpenSSL::HMAC.digest(digest, email, token).unpack('H*')[0]
+		return OpenSSL::HMAC.digest(digest, user_id, token).unpack('H*')[0]
 	end
 end

@@ -17,22 +17,22 @@ root.encryptsignup = ()->
     
     name_as_salt = uname.trim().replace(/ +/g, " ").toLowerCase();
 
-    hmac = forge.hmac.create();
-    hmac.start('sha256', name_as_salt);
-    hmac.update($('#user_password').val());
-    hashed1 = hmac.digest().toHex();
 
-    publicKey1 = forge.pki.publicKeyFromPem($("#publickey").val());
-    salt = $("#salt").val()
-    encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + salt));
-
-    data = serializeForm($('form'))
-    delete  data['salt']
-    delete  data['user[password]']
-    data['user[password_encrypted]'] = encrypted1
+    if $('#user_password').length
+        salt = $("#salt").val()
+        hmac = forge.hmac.create();
+        hmac.start('sha256', name_as_salt);
+        hmac.update($('#user_password').val());
+        hashed1 = hmac.digest().toHex();
+        publicKey1 = forge.pki.publicKeyFromPem($("#publickey").val());
+        encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + salt));
+        data = serializeForm($('form'))
+        delete  data['user[password]']
+        data['user[password_encrypted]'] = encrypted1
 
 
     if $('#user_password_confirmation').length
+        salt = $("#salt").val()
         hmac = forge.hmac.create();
         hmac.start('sha256', name_as_salt);
         hmac.update($('#user_password_confirmation').val());
@@ -40,6 +40,8 @@ root.encryptsignup = ()->
         encrypted2 = forge.util.bytesToHex(publicKey1.encrypt(hashed2 + '|' + salt));
         delete  data['user[password_confirmation]']
         data['user[password_confirmation_encrypted]'] = encrypted2
+
+    delete  data['salt']
 
     method = 'post'
     if $('input[name="_method"]').val()
@@ -53,9 +55,9 @@ root.encryptsignup = ()->
                     alert("Ajax request failed");
                     $('#sign-up-button').show()
                 success: (data, textStatus, jqXHR) ->
-                        $("#sign-up-response").html(data.html)
-                        if data.redirect
-                            Turbolinks.visit($('#redirect-to-user').attr('href'));
-                        else
-                            $('#sign-up-button').show()
-                            $('#user-submit').hide()
+                    $("#sign-up-response").html(data.html)
+                    if data.redirect
+                        Turbolinks.visit($('#redirect-to-user').attr('href'));
+                    else
+                        $('#sign-up-button').show()
+                        $('#user-submit').hide()

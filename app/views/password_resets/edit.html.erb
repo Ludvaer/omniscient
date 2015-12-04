@@ -1,0 +1,8 @@
+<% provide(:title, "password reset") %>
+<% provide(:action, "reset") %>
+
+<% if @user %>
+  <%= render 'reset_form' %>
+<% else %>
+  <div class="error"> Reset failed. Link is invalid.</div>
+<% end %>

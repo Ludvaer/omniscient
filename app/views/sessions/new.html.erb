@@ -1,3 +1,6 @@
 <% provide(:title, "Log in") %>
 <% provide(:action, "Log in") %>
 <%= render 'users/form_container' %>
+<div class="help-links">
+<%= link_to "Forgot password?", reset_request_url %>
+</div>
