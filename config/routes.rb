@@ -14,15 +14,17 @@ Rails.application.routes.draw do
   get 'logout'  => 'sessions#destroy' #TODO: fix; no logout through get
   delete 'logout'  => 'sessions#destroy'
   get 'resession'  => 'sessions#reset' #simulates session reset (reopening browser) (clears session cookie)
+ 
+  #activation stuff
   post 'account_activations' => 'account_activations#create'
   post 'account_activations/:token' => 'account_activations#activate' , as: :account_activate
   get 'account_activations/:token' => 'account_activations#activate' #try to avoid use get
-  get 'reset_request'  => 'password_resets#new'
-  post 'send_reset_request'  => 'password_resets#create'
-  get 'password_resets/:token' => 'password_resets#edit', as: :password_reset #get password reset form
-  patch 'reset_password' => 'password_resets#reset'
 
-     #get 'account_activations/:token' => 'account_activations#destroy'
+  #pasword reset stuff
+  get 'reset_request'  => 'password_resets#new' #get reset request form
+  post 'send_reset_request'  => 'password_resets#create' #sends password request and creates corresponding record in db
+  get 'password_resets/:token' => 'password_resets#edit', as: :password_reset #get password reset form
+  patch 'reset_password' => 'password_resets#reset' #finally changes password in user, reset record in db can be deleted
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

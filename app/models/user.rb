@@ -33,8 +33,10 @@ class User < ActiveRecord::Base
 	end
 
 	def send_activation_letter
-		UserMailer.account_activation(user.account_activation).deliver_now
+		UserMailer.account_activation(account_activation).deliver
 	end
+
+	#TODO: look above, look below, DRY!?
 
 	def create_password_reset
 		pr = PasswordReset.new
@@ -50,7 +52,7 @@ class User < ActiveRecord::Base
 	end
 
 	def send_password_reset_letter
-		UserMailer.password_reset(user.password_reset).deliver_now
+		UserMailer.password_reset(user).deliver
 	end
 
 

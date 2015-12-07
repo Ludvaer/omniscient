@@ -28,14 +28,14 @@ class UsersController < ApplicationController
     if @success = validate_input
       @success = @user.save
     end
-    unless @success
-      @user.send_activation_letter
+    unless @success     
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_form'), redirect: false}, :content_type => 'text/json' }
         format.html { render :new }
       end
     else
       flash[:notice] = 'User was successfully created.'
+      @user.send_activation_letter
       log_in(@user)
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_redirect'), redirect: true}, :content_type => 'text/json' }

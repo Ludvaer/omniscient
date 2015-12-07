@@ -203,6 +203,23 @@ input {
     margin: 0 auto;
     text-align: center;
     color: #f43210;
+    background: #112211;
+    padding: 1em;
+    /* recoloring links, default is too dark for dark bckground */
+    /* unvisited link */
+    a:link {
+        color: #7898f8;
+    }
+
+    /* visited link */
+    a:visited {
+        color: #7898e0;
+    }
+
+    /* mouse over link */
+    a:hover {
+        color: #a0b0ff;
+    }
 }
 
 
