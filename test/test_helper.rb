@@ -70,27 +70,34 @@ class ActiveSupport::TestCase
     logged_in s
   end
 
-  def standart_login s, remember = false
+  def standart_login s, remember = false, just_link = false
     name = s + 'name'
     pass = s + 'pass'
-    visit('/login')
+    click_link 'Log out' if page.has_css?('a', :text => 'Log out')
+    if just_link or page.has_css?('a', :text => 'Log in')
+      click_link 'Log in'
+    else
+      visit(login_url)
+    end
+    wait_for_ajax
     fill_in('user[name]', :with => name)
     fill_in('user[password]', :with => pass)
     check "Remember me" if remember
     first("input.btn").click()
     wait_for_ajax
-    assert page.has_css?('p#notice', text: 'Login successful.'), 'standart login, get success mssage'
-    assert page.has_css?('h2', text: name), 'standart login, get profile page header'
+    assert page.has_css?('p#notice', text: 'Login successful.'), 'standart login, get success message'
     logged_in s
   end
 
   def standart_logout s
     visit('/logout')
+    assert page.has_css?('p#notice', text: 'Logout successfull.'), 'standart logout, get success message'
     check_not_logged_in s
   end
 
   def standart_destroy s
     standart_login s
+    click_link 'Profile'
     click_link 'Destroy'
     accept_alert
     assert page.has_css?('p#notice', text: 'User was successfully destroyed.')

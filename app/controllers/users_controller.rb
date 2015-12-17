@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @no_right = !access?(@user)
   end
 
 
@@ -25,7 +26,7 @@ class UsersController < ApplicationController
     @isEdit = false #TODO: remove this, make distinct forms
     @isCreate = true
   	@user = User.new
-    if @success = validate_input
+    if @success = @user.validate_signup_input(user_params)
       @success = @user.save
     end
     unless @success     
@@ -50,7 +51,7 @@ class UsersController < ApplicationController
     @isEdit = true #TODO: remove this, make distinct forms
     @isCreate = false
     oldmail = @user.email
-    if @success = validate_input
+    if (@success = @user.validate_edit_input(user_params))
       if access?(@user)        
         @success = @user.save
         email_changed = (oldmail != @user.email)
@@ -61,7 +62,7 @@ class UsersController < ApplicationController
     end
     unless @success 
       respond_to do |format|
-        format.js { render :json => { :html => render_to_string('_form'), redirect: false}, :content_type => 'text/json' }
+        format.js { render :json => { :html => render_to_string('_edit_form'), redirect: false}, :content_type => 'text/json' }
         format.html { render :edit }
       end
     else
@@ -110,10 +111,8 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :password_encrypted, :password_confirmation_encrypted, :salt)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation,
+       :password_encrypted, :password_confirmation_encrypted, :old_password, :old_password_encrypted, :salt)
     end
 
-	def validate_input
-	  return @user.validate_signup_input(user_params)
-	end
 end

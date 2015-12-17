@@ -30,6 +30,17 @@ root.encryptsignup = ()->
         delete  data['user[password]']
         data['user[password_encrypted]'] = encrypted1
 
+    if $('#old_password').length
+        salt = $("#salt").val()
+        hmac = forge.hmac.create();
+        hmac.start('sha256', name_as_salt);
+        hmac.update($('#old_password').val());
+        hashed2 = hmac.digest().toHex();
+        encrypted2 = forge.util.bytesToHex(publicKey1.encrypt(hashed2 + '|' + salt));
+        delete  data['user[old_password]']
+        data['user[old_password_encrypted]'] = encrypted2
+
+
 
     if $('#user_password_confirmation').length
         salt = $("#salt").val()

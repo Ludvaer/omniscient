@@ -14,6 +14,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 			pass = standart_pass s
 			mail = standart_mail s
 			standart_signup s
+			standart_logout s
 
 			visit('/signup')
 			fill_in('user[name]', :with => name)

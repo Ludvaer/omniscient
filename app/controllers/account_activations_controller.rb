@@ -16,12 +16,12 @@ class AccountActivationsController < ApplicationController
 		@link_already_activated = @aa && @aa.activated	
 		if  @aa && !@aa.activated
 			user = current_user
-			@not_logged_in = !logged_in?	
+			@not_logged_in = !(logged_in?)
 			@wrong_user = user && (@aa.user_id != user.id)
 			if user && (@aa.user_id == user.id)
-				@valid_user_mail = user && (user.email == @aa.email)
+				@email_changed = user && (user.email != @aa.email)
 				@user_already_activated= user.activated
-				if @valid_user_mail
+				if  user && !@email_changed
 					@aa.update_attribute(:activated, true)
 					user.update_attribute(:activated, true)
 					@success = true

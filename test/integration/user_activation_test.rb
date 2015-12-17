@@ -16,12 +16,20 @@ class UserActivationTest < ActionDispatch::IntegrationTest
 		assert page.has_css? '#email-not-confirmed-notice'
 		mail = ActionMailer::Base.deliveries[-1]
 		link =  URI.extract(mail.body.encoded)[-1]
-		visit link
-		assert_text 'successfully'
+		activate_link link, s
+		assert_text 'successfully confirmed'
 		return link
 	end
 
-	test "email confirmayion" do
+	def activate_link(link, s)
+		visit link
+		if  page.has_css?('a', :text => 'Log in')
+			standart_login s,true,true
+			wait_for_ajax
+		end
+	end
+
+	test "email confirmation" do
 		s = 'activationtest'	
 		signup_and_activate s	
 		visit root_url
@@ -30,11 +38,10 @@ class UserActivationTest < ActionDispatch::IntegrationTest
 	end
 
 
-	test "double confirmation" do
+	test "double email confirmation" do
 		s = 'doubleactivationtest'	
-		link = signup_and_activate s	
-		visit root_url
-		visit link
+		link = signup_and_activate s
+		activate_link link, s
 		assert_no_text 'successfully'
 		assert_text 'failed'
 		standart_destroy s

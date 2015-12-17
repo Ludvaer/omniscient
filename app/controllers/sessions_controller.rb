@@ -19,10 +19,12 @@ class SessionsController < ApplicationController
 
 	    unless err
 	      flash[:notice] = 'Login successful.'
+	      redirect_url = params[:redirect_url]
+	      redirect_url ||= users_url(id: @user)
 	      respond_to do |format|
 	      	log_in(@user,login_params[:remember] == "1")
-	        format.js { render :json => { :html => render_to_string('users/_redirect'), redirect: true}, :content_type => 'text/json' }
-	        format.html { redirect_to @user }
+	        format.js {	render :json => { :html => redirect_link(redirect_url), redirect: true}, :content_type => 'text/json'}
+	        format.html { redirect_to redirect_url }
 	      end
 	    else
 	      respond_to do |format|

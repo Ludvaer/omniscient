@@ -1,6 +1,6 @@
 <% provide(:title, "Edit profile") %>
 <% provide(:action, "Edit") %>
-<%= render 'form_container' %>
+<%= user_form_container('edit_form','Edit') %>
 
 <%= link_to 'Show', @user %> |
 <%= link_to 'Back', users_path %>

@@ -1,0 +1,33 @@
+<%= render 'errors' %>
+<input type="text" style="display: none;" hidden="hidden" name="publickey" id="publickey" value="<%= @publickey %>"/>
+<%= form_for(@user) do |f| %>
+	<%= render 'form_common' %>
+	
+	<%= user_old_password_field(f) %>
+
+	<div class="field">
+		<%= f.label :name, "Username" %>
+		<%= f.text_field :name %>
+		<div class="error"  <%= 'hidden="hidden"' unless @user.name_empty %> id="name-empty">
+			You need a name.</div> 
+		<div class="error"  <%= 'hidden="hidden"' unless @user.name_too_short %> id="name-too-short">
+			Too short. One symbol name confuses me, please take longer name.</div>
+		<div class="error"  <%= 'hidden="hidden"' unless @user.name_too_long %> id="name-too-long">
+			Too long. Names longer than 50 symbols are not supported.</div>
+		<div class="error"  <%= 'hidden="hidden"' unless @user.name_invalid %> id="name-invalid">
+			The username better be of some letters and numbers.</div>
+		<% if @islogin %> 
+			<div class="error" <%= 'hidden="hidden"' unless @user.name_unknown %> id="name-unknown">
+				No user with such username found.</div>
+		<% else %>
+			<div class="error" <%= 'hidden="hidden"' unless @user.name_taken %> id="name-taken">
+				The username is taken.</div>
+		<% end %>
+	</div>
+
+	
+	<%= user_password_field(f,true) %>
+	<%= user_password_confirmation_field(f) %>
+	<%= user_email_field(f,true) %>
+	<%= f.submit id:'user-submit', value: 'Edit', :class => "btn"%>
+<% end %>

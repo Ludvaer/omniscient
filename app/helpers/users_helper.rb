@@ -11,7 +11,6 @@ module UsersHelper
     errors.map{ |message|  "<div class='error'>#{message}</div>"}.join().html_safe
   end
 
-
   def user_email_field(f,is_signup = false)
     hidden_attr = 'hidden="hidden"'
     existance_error = if is_signup then  %Q{<div class="error" #{  hidden_attr unless @user.email_taken } id="email-taken" >  User with such email already registered. </div>} 
@@ -33,13 +32,27 @@ module UsersHelper
   end
 
   def user_password_field(f,is_signup = false)
-    validness_error =  %Q{<div class="error" <%= 'hidden="hidden"' unless @user.password_invalid %> id="password-invalid">
+    validness_error =  %Q{<div class="error" #{  'hidden="hidden"' unless @user.password_invalid } id="password-invalid">
         Invalid password, or wrong username.</div>} unless is_signup
     %Q{
       <div class="field">
       #{ f.label :password }
       #{ f.password_field :password }
       <div class="error"  #{ 'hidden="hidden"' unless @user.password_empty } id="password-empty">
+        Password should not be empty.</div> 
+      #{ validness_error }
+      </div>
+    }.html_safe
+  end
+
+  def user_old_password_field(f)
+    validness_error =  %Q{<div class="error"  #{ 'hidden="hidden"' unless @user.old_password_invalid } id="old-password-invalid">
+        Invalid password, or wrong username.</div>} 
+    %Q{
+      <div class="field">
+      #{ f.label :old_password }
+      #{ f.password_field :old_password }
+      <div class="error"  #{ 'hidden="hidden"' unless @user.old_password_empty } id="old_password-empty">
         Password should not be empty.</div> 
       #{ validness_error }
       </div>
@@ -61,5 +74,21 @@ module UsersHelper
 
   def user_salt_field
     %Q{<input type="text" style="display: none;" hidden="hidden" name="user[salt]" id = "salt" value="#{ @salt }"/>}.html_safe
+  end
+
+  #its crtical for javascript to preserve button id sign-up-button and submit button id as user submit
+  def user_form_container form_path,action
+    %Q{
+      <div id="sign-up-response">
+        #{ render form_path }    
+      </div>
+
+      <input type="button" class="btn" style="display:none;" hidden="true" value="#{action}" id="sign-up-button" onclick="encryptsignup()" />
+
+      <script type="text/javascript">
+          init_users_form();
+      </script>
+    }.html_safe
+
   end
 end

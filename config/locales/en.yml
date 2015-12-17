@@ -21,3 +21,6 @@
 
 en:
   hello: "Hello world"
+  app_name_left: "Omni"
+  app_name_right: "scient"
+  app_name_full: "Omniscient"

@@ -158,6 +158,8 @@ class User < ActiveRecord::Base
 	attr_accessor  :name_empty, :name_too_short, :name_too_long, :name_invalid, :name_unknown, :name_taken;
 # PasswordErrors
 	attr_accessor  :password_empty, :password_invalid, :password_decryption_failed, :password_doublepost;
+# Old Password Errors
+	attr_accessor  :old_password_empty, :old_password_invalid, :password_ignored;
 # ConfirmationErrors
 	attr_accessor  :password_confirmation_empty, :password_confirmation_not_match, :password_confirmation_decryption_failed, :password_confirmation_doublepost;
 # MailErrors
@@ -208,6 +210,14 @@ class User < ActiveRecord::Base
 		return decrypted,decryption_failed
 	end
 
+	def check_old_password (user_params)
+		decrypted, @decryption_failed  = decrypt(user_params[:old_password],user_params[:old_password_encrypted],user_params[:salt])
+		@doublepost ||= !User.checksalt(decrypted[-1]) unless decryption_failed
+		@old_password = decrypted[0]
+		@old_password_empty = (decrypted[0] == hash_pass(''))
+		@err ||= (@decryption_failed || @doublepost || @old_password_empty)
+	end
+
 	def check_password (user_params)
 		decrypted, decryption_failed = decrypt(user_params[:password],user_params[:password_encrypted],user_params[:salt])
 		@decryption_failed ||= decryption_failed
@@ -223,6 +233,7 @@ class User < ActiveRecord::Base
 		@decryption_failed ||= decryption_failed
 		doublepost = !User.checksalt(decrypted[-1]) unless decryption_failed
 		@doublepost ||= doublepost
+		@password_confirmation_empty = (decrypted[0] == hash_pass(''))
 		#unless @password_confirmation_empty = (decrypted[0] == User.hash_pass(''))
 			@password_confirmation_not_match = password != decrypted[0]
 		#end
@@ -250,6 +261,39 @@ class User < ActiveRecord::Base
 	    end
 	    check_password(user_params)
 	    check_password_confirmation(user_params)
+	    if check_email(user_params)
+		    check_email_unique	 
+	    end
+
+		return !@err
+	end
+
+	def validate_edit_input(user_params)
+	    @err = false
+
+		check_old_password(user_params)
+		
+		if ((!@err) and (!authenticate(@old_password)))
+			@old_password_invalid = true
+			@err = true
+		end
+
+		err_backup = @err
+        check_password(user_params)
+	    check_password_confirmation(user_params)
+
+	    if (@password_confirmation_empty && @password_empty)
+	    	@err = err_backup;
+	    	@password_confirmation_empty = false
+	    	@password_empty = false
+	    	@password_ignored = true
+	    	self.password_confirmation = @old_password
+	    	self.password =  @old_password
+	    end
+		
+	    if(check_name(user_params))
+	    	check_name_unique
+	    end
 	    if check_email(user_params)
 		    check_email_unique	 
 	    end
@@ -297,4 +341,6 @@ class User < ActiveRecord::Base
 	    check_password_confirmation(user_params)
 	    return !@err
 	end
+
+
 end

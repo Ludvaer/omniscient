@@ -13,9 +13,9 @@
     </div>
 <% end %>
 
-<% form_params =  @islogin ? {url: login_path} : {} %>
+<% form_params =  @islogin ? {url: request.original_url} : {} %>
 	<%= form_for(@user, form_params) do |f| %>
-	    <input type="text" style="display: none;" hidden="hidden" name="user[salt]" id = "salt" value="<%= @salt %>"/>
+	<input type="text" style="display: none;" hidden="hidden" name="user[salt]" id = "salt" value="<%= @salt %>"/>
 
 	<% if @user.doublepost then %> <div class="error">Double same form submission detected.</div><%end%>
 	<% if @user.decryption_failed then %> <div class="error">Decription failed, try again.</div><%end%>

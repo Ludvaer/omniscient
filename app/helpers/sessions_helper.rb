@@ -54,4 +54,9 @@ module SessionsHelper
 	def access?(user)
 		current_user and (current_user.id == user.id or current_user.id == 1) 
 	end
+
+	def redirect_link(redirect_url)
+		@redirect_url = redirect_url
+	   render_to_string 'sessions/_redirect_link', redirect_url: redirect_url
+	end
 end
