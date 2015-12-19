@@ -55,7 +55,7 @@ class ActiveSupport::TestCase
   end
 
   def standart_signup s
-    visit('/signup')
+    visit  signup_path(default_test_url_options)
     name = standart_name s
     pass = standart_pass s
     mail = standart_mail s
@@ -68,6 +68,7 @@ class ActiveSupport::TestCase
     assert page.has_css?('p#notice', text: 'User was successfully created.'), 'standart signup, get success message'
     assert page.has_css?('h2', text: name), 'Standart signup, get profile page header'
     logged_in s
+    # "#{s} signupped"
   end
 
   def standart_login s, remember = false, just_link = false
@@ -76,8 +77,10 @@ class ActiveSupport::TestCase
     click_link 'Log out' if page.has_css?('a', :text => 'Log out')
     if just_link or page.has_css?('a', :text => 'Log in')
       click_link 'Log in'
+      # "#{s} login"
     else
-      visit(login_url)
+      visit(login_path(default_test_url_options))
+      # "#{s} visit login"
     end
     wait_for_ajax
     fill_in('user[name]', :with => name)
@@ -90,7 +93,13 @@ class ActiveSupport::TestCase
   end
 
   def standart_logout s
-    visit('/logout')
+    if page.has_css?('a', :text => 'Log out')
+      # "#{s} logout"
+      click_link 'Log out'
+    else
+      # "#{s} visit logout"
+      visit logout_path(default_test_url_options)
+    end
     assert page.has_css?('p#notice', text: 'Logout successfull.'), 'standart logout, get success message'
     check_not_logged_in s
   end
@@ -101,6 +110,7 @@ class ActiveSupport::TestCase
     click_link 'Destroy'
     accept_alert
     assert page.has_css?('p#notice', text: 'User was successfully destroyed.')
+    # "#{s} destroyed"
   end
 
   def wait_for_ajax
@@ -114,6 +124,10 @@ class ActiveSupport::TestCase
 
   def finished_all_ajax_requests?
     page.evaluate_script('jQuery.active').zero?
+  end
+
+  def default_test_url_options
+    {locale: :en}
   end
 
 end

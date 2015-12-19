@@ -8,7 +8,7 @@ class UserActivationTest < ActionDispatch::IntegrationTest
 	end	
 
 	def signup_and_activate(s)
-		visit '/signup'
+		visit  signup_path(default_test_url_options)
 		assert page.has_no_css? '#email-not-confirmed-notice'
 		c = ActionMailer::Base.deliveries.size		
 		standart_signup s
@@ -30,21 +30,25 @@ class UserActivationTest < ActionDispatch::IntegrationTest
 	end
 
 	test "email confirmation" do
-		s = 'activationtest'	
-		signup_and_activate s	
-		visit root_url
-		assert_no_text 'successfully'
-		standart_destroy s
+		with_and_without_js do
+			s = 'activationtest'	
+			signup_and_activate s	
+			visit pseudo_root_path(default_test_url_options)
+			assert_no_text 'successfully'
+			standart_destroy s
+		end
 	end
 
 
 	test "double email confirmation" do
-		s = 'doubleactivationtest'	
-		link = signup_and_activate s
-		activate_link link, s
-		assert_no_text 'successfully'
-		assert_text 'failed'
-		standart_destroy s
+		with_and_without_js do
+			s = 'doubleactivationtest'	
+			link = signup_and_activate s
+			activate_link link, s
+			assert_no_text 'successfully'
+			assert_text 'failed'
+			standart_destroy s
+		end
 	end
 end
 

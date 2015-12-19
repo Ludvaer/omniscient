@@ -16,7 +16,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 			standart_signup s
 			standart_logout s
 
-			visit('/signup')
+			visit  signup_path(default_test_url_options)
 			fill_in('user[name]', :with => name)
 			fill_in('user[password]', :with => pass)
 			fill_in('user[password_confirmation]', :with => pass)
@@ -35,7 +35,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 			assert page.has_css?('div#email-taken', visible: false)
 			assert page.has_no_css?('div#error_explanation')
 
-			visit('/signup')
+			visit  signup_path(default_test_url_options)
 			fill_in('user[name]', :with => 'a')
 			fill_in('user[password]', :with => '')
 			fill_in('user[password_confirmation]', :with => pass)
@@ -54,7 +54,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 			assert page.has_css?('div#email-taken', visible: false)
 			assert page.has_no_css?('div#error_explanation')
 
-			visit('/signup')
+			visit  signup_path(default_test_url_options)
 			fill_in('user[name]', :with => '')
 			fill_in('user[password]', :with => s+'pss')
 			fill_in('user[password_confirmation]', :with => pass)
@@ -73,7 +73,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 			assert page.has_css?('div#email-taken', visible: false)
 			assert page.has_no_css?('div#error_explanation')
 
-			visit('/signup')
+			visit  signup_path(default_test_url_options)
 			fill_in('user[name]', :with => 'abcdefghijklmnopqrstabcdefghijklmnopqrstabcdefghijklmnopqrst')
 			fill_in('user[password]', :with => '')
 			fill_in('user[password_confirmation]', :with => '')
@@ -92,7 +92,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 			assert page.has_css?('div#email-taken', visible: true)
 			assert page.has_no_css?('div#error_explanation')
 
-			visit('/signup')
+			visit  signup_path(default_test_url_options)
 			fill_in('user[name]', :with => '!@#$!@#$@%^$*(^)*(_*(*+')
 			fill_in('user[password]', :with => 'asdf')
 			fill_in('user[password_confirmation]', :with => 'asdf')
@@ -111,7 +111,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 			assert page.has_css?('div#email-taken', visible: false)
 			assert page.has_no_css?('div#error_explanation')
 
-			visit('/signup')
+			visit  signup_path(default_test_url_options)
 
 			assert page.has_css?('div#name-empty', visible: false)
 			assert page.has_css?('div#name-too-short', visible: false)

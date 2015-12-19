@@ -265,6 +265,7 @@ class User < ActiveRecord::Base
 		    check_email_unique	 
 	    end
 
+	    # "signup pass #{password}"
 		return !@err
 	end
 
@@ -278,11 +279,17 @@ class User < ActiveRecord::Base
 			@err = true
 		end
 
+		if(check_name(user_params))
+	    	check_name_unique
+		end
+
 		err_backup = @err
         check_password(user_params)
 	    check_password_confirmation(user_params)
-
+	    # "old pass #{@old_password}"
+	    # "edited pass #{password}"
 	    if (@password_confirmation_empty && @password_empty)
+	    	# "edited pass ignored"
 	    	@err = err_backup;
 	    	@password_confirmation_empty = false
 	    	@password_empty = false
@@ -291,9 +298,6 @@ class User < ActiveRecord::Base
 	    	self.password =  @old_password
 	    end
 		
-	    if(check_name(user_params))
-	    	check_name_unique
-	    end
 	    if check_email(user_params)
 		    check_email_unique	 
 	    end
@@ -310,6 +314,7 @@ class User < ActiveRecord::Base
 		unless @err	       
 			user = User.find_by(downame: name.downcase)
 	        if user
+	        	# "input pass #{password}"
 		        if user.authenticate(password)
 		        	return user
 		        else

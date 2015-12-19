@@ -3,10 +3,10 @@ Rails.application.routes.draw do
 
   #welcome
   root 'pseudo_static#welcome'
-  #get '/:locale' => 'pseudo_static#welcome'
+  get '/:locale' => 'pseudo_static#welcome', as: :pseudo_root
 
 
-  #scope "(:locale)", locale: /en|ru/ do  
+  scope "(:locale)", locale: /en|ru/ do  
     #signup view destroy users
     resources :users
     get 'signup'  => 'users#new'
@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     post 'send_reset_request'  => 'password_resets#create' #sends password request and creates corresponding record in db
     get 'password_resets/:token' => 'password_resets#edit', as: :password_reset #get password reset form
     patch 'reset_password' => 'password_resets#reset' #finally changes password in user, reset record in db can be deleted
-  #end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

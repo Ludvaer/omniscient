@@ -18,7 +18,7 @@ class LoginTest < ActionDispatch::IntegrationTest
 
 		  	standart_logout s
 
-		  	visit('/login')
+		  	visit login_path(default_test_url_options)
 		  	fill_in('user[name]', :with => '')
 		  	fill_in('user[password]', :with => pass)
 		  	first("input.btn").click() 
@@ -104,7 +104,7 @@ class LoginTest < ActionDispatch::IntegrationTest
 		  	#reset and reopen login page
 		  	#Capybara.reset!
 		  	#visit('/login')		  	
-		  	visit('/resession')
+		  	visit resession_path(default_test_url_options)
 		  	#check that not logged in anymore
 			check_not_logged_in s
 
@@ -114,7 +114,7 @@ class LoginTest < ActionDispatch::IntegrationTest
 		  	#reset and reopen login page
 		  	#Capybara.reset!
 		  	#visit('/login')		  	
-		  	visit('/resession')
+		  	visit resession_path(default_test_url_options)
 		  	#check if still logged in
 			logged_in s
 			#delete user
