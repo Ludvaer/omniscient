@@ -1,0 +1,19 @@
+<div class="field">
+    <%= f.label :email, "Em@il" %>
+	<%= f.email_field :email %>
+	<div class="error"  <%= 'hidden="hidden"' unless @user.email_empty %> id="email-empty">
+		Email should be present.</div> 
+	<div class="error"  <%= 'hidden="hidden"' unless @user.email_too_long %> id="email-too-long">
+		Too long. Emails loger than 255 are not allowed.</div>
+	<div class="error" <%= 'hidden="hidden"' unless @user.email_invalid %> id="email-invalid">
+		Does not look much like email.</div>
+	<% if for_new %>	
+	    <div class="error" <%= 'hidden="hidden"' unless @user.email_taken%> id="email-taken" >
+		    User with such email already registered.
+	        <!--<input type="button" class="btn" value="Recover account." id="recover-by-email" onclick="recover_by_email(<%= @email %>)" />-->
+	    </div>
+	<% else %>
+	    <div class="error" <%= 'hidden="hidden"' unless @user.email_unknown%> id="email-unknown" >
+		    User with such email already registered. </div>
+    <% end %>
+</div>
