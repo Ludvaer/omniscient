@@ -1,12 +1,11 @@
 <% provide(:title, "Email confirmation.") %>
-<% if @link_already_activated %><p>This link was activated earlier.</p><%end%>
-<% if @not_logged_in %><p>You are not logged in. Log in or open link in browser where you are logged in.</p><%end%>
-<% if @wrong_user %><p>This is not your link.</p><%end%>
-<% if @user_already_activated %><p>Your email is already confirmed.</p><%end%>
-<% if @email_changed %><p>Your email were changed.</p><%end%>
-
+<%= simple_error_message('link_already_activated') %>
+<%= simple_error_message('not_logged_in') %>
+<%= simple_error_message('wrong_user') %>
+<%= simple_error_message('user_already_activated') %>
+<%= simple_error_message('email_changed') %>
 <% if @success %>
-<p>Email was successfully confirmed.</p>
+	<p><%= t('Email confirmed') %></p>
 <% else %>
-<p>Confirmation failed.</p>
+	<p><%= t('Email Confirmation failed') %></p>
 <% end %>

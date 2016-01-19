@@ -39,7 +39,7 @@ class UsersController < ApplicationController
       @user.send_activation_letter
       log_in(@user)
       respond_to do |format|
-        format.js { render :json => { :html => render_to_string('_redirect'), redirect: true}, :content_type => 'text/json' }
+        format.js { render :json => { :html => redirect_link(user_path(@user)), redirect: true}, :content_type => 'text/json' }
         format.html { redirect_to @user}
       end
     end
@@ -57,7 +57,7 @@ class UsersController < ApplicationController
         email_changed = (oldmail != @user.email)
       else
         @success = false
-        @no_right = true
+        @no_right = true #TODO: make some tests
       end
     end
     unless @success 
@@ -69,9 +69,9 @@ class UsersController < ApplicationController
       if (email_changed)
         @user.send_activation_letter
       end
-      flash[:notice] = 'User was successfully updated.' 
+      flash[:notice] = t('User was successfully updated.') 
       respond_to do |format|
-        format.js { render :json => { :html => render_to_string('_redirect'), redirect: true}, :content_type => 'text/json' }
+        format.js { render :json => { :html => redirect_link(user_path(@user)), redirect: true}, :content_type => 'text/json' }
         format.html { redirect_to @user }
       end
     end
@@ -81,7 +81,7 @@ class UsersController < ApplicationController
   def destroy
     if access?(@user)
       @user.destroy
-      flash[:notice] = 'User was successfully destroyed.'
+      flash[:notice] = t('User was successfully destroyed')
       respond_to do |format|
           format.html { redirect_to users_url }
       end

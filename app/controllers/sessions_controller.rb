@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
 	def reset
 		reset_session
 		respond_to do |format|
-			flash[:notice] = 'Session reseted.'
+			flash[:notice] = t('Session reseted.')
 		    format.html { redirect_to root_path }
 		end
 	end
@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
 		@is_login = true
 
 	    unless err
-	      flash[:notice] = 'Login successful.'
+	      flash[:notice] = t('Login successful.')
 	      redirect_url = params[:redirect_url]
 	      redirect_url ||= users_url(id: @user)
 	      respond_to do |format|
@@ -37,7 +37,7 @@ class SessionsController < ApplicationController
 	def destroy
 		log_out()
 		respond_to do |format|
-			flash[:notice] = 'Logout successfull.'
+			flash[:notice] = t('Logout successfull.')
 		    format.html { redirect_to root_path }
 		end
 	end

@@ -1,2 +1,1 @@
-	Email is not confirmed. Please check your mail and visit confirmation link. Letter with activation link should be received within several minutes after registration or changing email, but you can
-	<%= link_to 'resend letter', account_activations_url, method: :post, remote: true, id: 'resend-activation-letter'%>
+<%= t('Email is not confirmed') %><%= link_to t('resend letter'), account_activations_url, method: :post, remote: true, id: 'resend-activation-letter'%>.

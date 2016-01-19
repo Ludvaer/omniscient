@@ -15,18 +15,14 @@
 
 <% form_params =  @islogin ? {url: request.original_url} : {} %>
 	<%= form_for(@user, form_params) do |f| %>
-	<input type="text" style="display: none;" hidden="hidden" name="user[salt]" id = "salt" value="<%= @salt %>"/>
-
-	<% if @user.doublepost then %> <div class="error">Double same form submission detected.</div><%end%>
-	<% if @user.decryption_failed then %> <div class="error">Decription failed, try again.</div><%end%>
-	<% if @no_right then %> <div class="error">You have no rights to perform this action.</div><%end%>
+	<%= render 'users/form_common' %>
 
 	<%= render 'users/username_field', f: f, for_new: !@islogin %>
 	<%= render 'users/password_field', f: f, for_new: !@islogin %>
 	<% if @islogin %> 
 		<div class="field">
 		    <%= check_box :login, :remember %>
-			<%= label :login, :remember, 'Remember me', :class => "noalign"%>
+			<%= label :login, :remember, t('Remember me'), :class => "noalign"%>
 		</div>
 	<% else %>
 		<%= render 'users/password_confirmation_field', f: f, for_new: true %>

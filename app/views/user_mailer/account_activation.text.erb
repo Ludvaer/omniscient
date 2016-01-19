@@ -1,5 +1,4 @@
-Hi ,
+<%= t('app_name_full')%> <%= t('account activation')%>
+<%= t('mail_confirmation_mail_body')%>
 
-Welcome to the Omniscient! Use the link below to activate your account:
-
-<%=  account_activate_url(token: @account_activation.get_token) %>
+<%=  account_activate_url(token: @account_activation.get_token) %> <% #TODO: , method: :post %>

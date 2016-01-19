@@ -1,9 +1,9 @@
 <% provide(:title, "#{@user.name}") %>
-<div calss="user_show">
+<div class="user_show">
 <%= render 'user' %>
 </div>
 <% if access?(@user) %>
-  <td><%= link_to 'Edit', edit_user_path(@user) %></td> | 
-  <td><%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %></td> | 
+  <td><%= link_to t('Edit'), edit_user_path(@user) %></td> | 
+  <td><%= link_to t('Destroy'), @user, method: :delete, data: { confirm: t('Are you sure') } %></td> | 
 <% end %>
-<%= link_to 'Back', users_path %>
+<%= link_to t('Users list'), users_path %>

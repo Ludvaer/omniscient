@@ -14,9 +14,10 @@ root.init_users_form = ()->
 root.encryptsignup = ()->
     $('#sign-up-button').hide()
     uname = $("#user_name").val()
-    
-    name_as_salt = uname.trim().replace(/ +/g, " ").toLowerCase();
+    if (uname?)
+        name_as_salt = uname.trim().replace(/ +/g, " ").toLowerCase();
 
+    data = serializeForm($('form'))
 
     if $('#user_password').length
         salt = $("#salt").val()
@@ -25,8 +26,7 @@ root.encryptsignup = ()->
         hmac.update($('#user_password').val());
         hashed1 = hmac.digest().toHex();
         publicKey1 = forge.pki.publicKeyFromPem($("#publickey").val());
-        encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + salt));
-        data = serializeForm($('form'))
+        encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + salt));        
         delete  data['user[password]']
         data['user[password_encrypted]'] = encrypted1
 
@@ -36,6 +36,7 @@ root.encryptsignup = ()->
         hmac.start('sha256', name_as_salt);
         hmac.update($('#old_password').val());
         hashed2 = hmac.digest().toHex();
+        publicKey1 = forge.pki.publicKeyFromPem($("#publickey").val());
         encrypted2 = forge.util.bytesToHex(publicKey1.encrypt(hashed2 + '|' + salt));
         delete  data['user[old_password]']
         data['user[old_password_encrypted]'] = encrypted2
@@ -48,6 +49,7 @@ root.encryptsignup = ()->
         hmac.start('sha256', name_as_salt);
         hmac.update($('#user_password_confirmation').val());
         hashed2 = hmac.digest().toHex();
+        publicKey1 = forge.pki.publicKeyFromPem($("#publickey").val());
         encrypted2 = forge.util.bytesToHex(publicKey1.encrypt(hashed2 + '|' + salt));
         delete  data['user[password_confirmation]']
         data['user[password_confirmation_encrypted]'] = encrypted2

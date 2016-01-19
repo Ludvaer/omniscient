@@ -1,19 +1,13 @@
 <div class="field">
-	<%= f.label :name, "Username" %>
+	<%= f.label :name, t('Username') %>
 	<%= f.text_field :name %>
-	<div class="error"  <%= 'hidden="hidden"' unless @user.name_empty %> id="name-empty">
-		You need a name.</div> 
-	<div class="error"  <%= 'hidden="hidden"' unless @user.name_too_short %> id="name-too-short">
-		Too short. One symbol name confuses me, please take longer name.</div>
-	<div class="error"  <%= 'hidden="hidden"' unless @user.name_too_long %> id="name-too-long">
-		Too long. Names longer than 50 symbols are not supported.</div>
-	<div class="error"  <%= 'hidden="hidden"' unless @user.name_invalid %> id="name-invalid">
-		The username better be of some letters and numbers.</div>
+	<%= user_field_error_message('name_empty')%>
+	<%= user_field_error_message('name_too_short')%>
+	<%= user_field_error_message('name_too_long')%>
+	<%= user_field_error_message('name_invalid')%>
 	<% if for_new %> 
-		<div class="error" <%= 'hidden="hidden"' unless @user.name_taken %> id="name-taken">
-			The username is taken.</div>
+		<%= user_field_error_message('name_taken')%>
 	<% else %>
-		<div class="error" <%= 'hidden="hidden"' unless @user.name_unknown %> id="name-unknown">
-			No user with such username found.</div>
+		<%= user_field_error_message('name_unknown')%>
 	<% end %>
 </div>

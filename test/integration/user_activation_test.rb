@@ -1,4 +1,5 @@
 require 'test_helper'
+#TODO: mo tests, check possible error messges in  activate.html.erb
 
 class UserActivationTest < ActionDispatch::IntegrationTest
 	include Capybara::DSL

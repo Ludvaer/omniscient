@@ -1,5 +1,5 @@
 <%= render 'errors' %>
-<input type="text" style="display: none;" hidden="hidden" name="publickey" id="publickey" value="<%= @publickey %>"/>
+<%= public_key_field %>
 <%= form_for(@user) do |f| %>
 	<%= render 'form_common' %>
 	
@@ -8,5 +8,5 @@
 	<%= user_password_field(f,true) %>
 	<%= user_password_confirmation_field(f) %>
 	<%= user_email_field(f,true) %>
-	<%= f.submit id:'user-submit', value: 'Edit', :class => "btn"%>
+	<%= f.submit id:'user-submit', value: 't(Edit)', :class => "btn"%>
 <% end %>

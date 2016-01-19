@@ -3,11 +3,12 @@ class AccountActivationsController < ApplicationController
 	def create
 		user = current_user
 		user.send_activation_letter
-		flash[:notice] = 'Activation letter sent.'
 		@user = user
+		notice_text = t('Activation letter sent')
 		respond_to do |format|
-	        format.js { render :json => { :html => render_to_string('users/_redirect'), redirect: true}, :content_type => 'text/json' }
-	        format.html { redirect_to @user }
+	        format.js { render :json => { :html => notice_text}, :content_type => 'text/json' }
+	        format.html { redirect_to @user, notice: notice_text }
+	        #format.html { redirect_to @user, notice: t('Activation letter sent.') }
 	    end
 	end
 

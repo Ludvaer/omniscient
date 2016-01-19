@@ -1,4 +1,4 @@
 <input type="text" style="display: none;" hidden="hidden" name="user[salt]" id = "salt" value="<%= @salt %>"/>
-<% if @user.doublepost then %> <div class="error">Double same form submission detected.</div><%end%>
-<% if @user.decryption_failed then %> <div class="error">Decription failed, try again.</div><%end%>
-<% if @no_right then %> <div class="error">You have no rights to perform this action.</div><%end%>
+<% if @user.doublepost then %><div class="error"><%= t('doublepost') %></div><%end%>
+<% if @user.decryption_failed then %> <div class="error"><%= t('decryption_failed') %></div><%end%>
+<% if @no_right then %> <div class="error"><%= t('no_right') %></div><%end%>

@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
 	end
 
 	def send_password_reset_letter
-		UserMailer.password_reset(user).deliver
+		UserMailer.password_reset(self).deliver
 	end
 
 
@@ -332,7 +332,7 @@ class User < ActiveRecord::Base
 		@err = false
 		user = self
 		if check_email(user_params)
-			user = User.find_by(downame: name.downcase)
+			user = User.find_by(email: email)
 			if user 
 				return user
 			end

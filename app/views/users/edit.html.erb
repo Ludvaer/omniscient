@@ -1,6 +1,6 @@
-<% provide(:title, "Edit profile") %>
-<% provide(:action, "Edit") %>
-<%= user_form_container('edit_form','Edit') %>
+<% provide(:title, t('Edit profile')) %>
+<% provide(:action, t('Edit')) %>
+<%= user_form_container 'edit_form', t('Edit')  %>
 
 <%= link_to t('Profile'), @user %> |
 <%= link_to t('Users list'), users_path %>

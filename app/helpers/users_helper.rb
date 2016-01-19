@@ -30,7 +30,7 @@ module UsersHelper
         Invalid password, or wrong username.</div>} 
     %Q{
       <div class="field">
-      #{ f.label :old_password }
+      #{ f.label :old_password, t('Old password') }
       #{ f.password_field :old_password }
       <div class="error"  #{ 'hidden="hidden"' unless @user.old_password_empty } id="old_password-empty">
         Password should not be empty.</div> 
@@ -61,5 +61,17 @@ module UsersHelper
       </script>
     }.html_safe
 
+  end
+
+  def public_key_field
+     render partial: 'users/public_key_field'
+  end
+
+  def  user_field_error_message(message_id)
+    render partial: 'users/field_error_message', locals: { message_id: message_id }
+  end
+
+  def  simple_error_message(message_id)
+    render partial: 'users/simple_error_message', locals: { message_id: message_id }
   end
 end
