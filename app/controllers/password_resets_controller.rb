@@ -7,18 +7,19 @@ class PasswordResetsController < ApplicationController
   #post 'send_reset_request'  => 'password_resets#create'
   def create
   	init_request_form
-    @user = validate_email_input(user_params)
+    @user =  @user.validate_email_input(user_params)
     err = @user.err
     if err
+      p @user
       respond_to do |format|
-        format.js { render :json => { :html => render_to_string('request_form'), redirect: false}, :content_type => 'text/json' }
+        format.js { render :json => { :html => render_to_string('password_resets/_request_form'), redirect: false}, :content_type => 'text/json' }
         format.html { render :new } 
       end       
     else
       @user.send_password_reset_letter
-      flash[:notice] = 'Password request sent.'
+      flash[:notice] = t('Password reset link sent')
       respond_to do |format|
-        format.js { render :json => { :html => '', redirect: false}, :content_type => 'text/json' }
+        format.js { render :json => { :html => redirect_link(login_url), redirect: true}, :content_type => 'text/json' }
         format.html { redirect_to login_url }
       end
     end
@@ -35,23 +36,21 @@ class PasswordResetsController < ApplicationController
     if init_reset_form
       @user.validate_password_input(user_params)
       err = @user.err
-      p err
-      p @user
-      puts  @user
       @success = @user.save()
       err |= !@success
     end
     if err
       respond_to do |format|
-        format.js { render :json => { :html => render_to_string('reset_form'), redirect: false}, :content_type => 'text/json' }
+        format.js { render :json => { :html => render_to_string('_reset_form'), redirect: false}, :content_type => 'text/json' }
         format.html { render :edit } 
       end 
     else
       #@user.update_attribute(:password, user.password)
       #@user.update_attribute(:password, user.password_confirmation)
-      flash[:notice] = 'Password reset success.'
+      @password_reset.destroy
+      flash[:notice] = t('Password reset success.')
       respond_to do |format|
-        format.js { render :json => { :html => render_to_string('redirect'), redirect: true}, :content_type => 'text/json' }
+        format.js { render :json => { :html =>  redirect_link(login_url), redirect: true}, :content_type => 'text/json' }
         format.html { redirect_to login_url }
       end
     end
@@ -66,6 +65,7 @@ class PasswordResetsController < ApplicationController
     def init_reset_form
       @token =params[:token]
       pr = PasswordReset.find_token(@token)
+      @password_reset = pr
       if pr
         @salt = User.salt
         @user = User.find_by(id: pr.user_id)

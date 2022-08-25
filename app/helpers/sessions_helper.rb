@@ -59,5 +59,5 @@ module SessionsHelper
 		@redirect_url = redirect_url
 	   render_to_string 'sessions/_redirect_link', redirect_url: redirect_url
 	end
-
+	
 end

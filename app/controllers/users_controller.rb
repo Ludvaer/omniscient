@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @no_right = !access?(@user)
   end
 
 
@@ -25,20 +26,20 @@ class UsersController < ApplicationController
     @isEdit = false #TODO: remove this, make distinct forms
     @isCreate = true
   	@user = User.new
-    if @success = validate_input
+    if @success = @user.validate_signup_input(user_params)
       @success = @user.save
     end
-    unless @success
-      @user.send_activation_letter
+    unless @success     
       respond_to do |format|
         format.js { render :json => { :html => render_to_string('_form'), redirect: false}, :content_type => 'text/json' }
         format.html { render :new }
       end
     else
       flash[:notice] = 'User was successfully created.'
+      @user.send_activation_letter
       log_in(@user)
       respond_to do |format|
-        format.js { render :json => { :html => render_to_string('_redirect'), redirect: true}, :content_type => 'text/json' }
+        format.js { render :json => { :html => redirect_link(user_path(@user)), redirect: true}, :content_type => 'text/json' }
         format.html { redirect_to @user}
       end
     end
@@ -50,27 +51,27 @@ class UsersController < ApplicationController
     @isEdit = true #TODO: remove this, make distinct forms
     @isCreate = false
     oldmail = @user.email
-    if @success = validate_input
+    if (@success = @user.validate_edit_input(user_params))
       if access?(@user)        
         @success = @user.save
         email_changed = (oldmail != @user.email)
       else
         @success = false
-        @no_right = true
+        @no_right = true #TODO: make some tests
       end
     end
     unless @success 
       respond_to do |format|
-        format.js { render :json => { :html => render_to_string('_form'), redirect: false}, :content_type => 'text/json' }
+        format.js { render :json => { :html => render_to_string('_edit_form'), redirect: false}, :content_type => 'text/json' }
         format.html { render :edit }
       end
     else
       if (email_changed)
         @user.send_activation_letter
       end
-      flash[:notice] = 'User was successfully updated.' 
+      flash[:notice] = t('User was successfully updated.') 
       respond_to do |format|
-        format.js { render :json => { :html => render_to_string('_redirect'), redirect: true}, :content_type => 'text/json' }
+        format.js { render :json => { :html => redirect_link(user_path(@user)), redirect: true}, :content_type => 'text/json' }
         format.html { redirect_to @user }
       end
     end
@@ -80,7 +81,7 @@ class UsersController < ApplicationController
   def destroy
     if access?(@user)
       @user.destroy
-      flash[:notice] = 'User was successfully destroyed.'
+      flash[:notice] = t('User was successfully destroyed')
       respond_to do |format|
           format.html { redirect_to users_url }
       end
@@ -110,10 +111,8 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :password_encrypted, :password_confirmation_encrypted, :salt)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation,
+       :password_encrypted, :password_confirmation_encrypted, :old_password, :old_password_encrypted, :salt)
     end
 
-	def validate_input
-	  return @user.validate_signup_input(user_params)
-	end
 end

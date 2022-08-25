@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<% provide(:appname, "Omni<small style=\"font-size:0;\"> </small>scient".html_safe) %>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><%= sanitize(yield(:title)) %><%= ' | ' unless yield(:title).empty? %>Omniscient</title>
+  <% title = yield(:title)%>
+  <title><%= sanitize(title) %><%= ' | ' unless title.empty? %><%= t('app_name_full') %></title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -12,16 +12,11 @@
 <body>
 
   <div id ="footer-pusher-workaround">
-    <% if Rails.env.development?  %>
-      <div style="font-size: 16px;">
-      <%= debug(params) %>
-      </div>
-    <% end %>S
     <%= render 'layouts/header' %>
     <div id ="main-side-padding">
 
-    	<main id="main">
-        <% unless notice.nil? %>
+    	<main id="main">      
+        <% if notice %>
           <p id="notice" class="error"><%= notice %></p>
         <% end %>
         <%= render 'account_activations/notice' %>

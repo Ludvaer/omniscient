@@ -5,9 +5,9 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
   #   assert true
   # end
   test "layout links" do
-    get root_path
+    get pseudo_root_path(default_test_url_options)
     assert_template 'pseudo_static/welcome'
-    assert_select "a[href=?]", root_path, count: 1
+    assert_select "a[href=?]", pseudo_root_path, count: 1
   end
 end
 

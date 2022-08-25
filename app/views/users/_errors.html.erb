@@ -8,9 +8,3 @@
       </ul>
     </div>
 <% end %>
-
-<% form_params =  {url: send_reset_request_url} %>
-<%= form_for(@user, form_params) do |f| %>
-	<%= user_email_field(f) %>
-	<%= f.submit id:'user-submit',  value:  (yield :action), :class => "btn"%>
-<% end %>

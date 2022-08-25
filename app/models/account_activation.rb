@@ -1,3 +1,5 @@
+#TODO: remove code, include model
+#TODO: remove old records from db
 class AccountActivation < ActiveRecord::Base
 	validates :token,  presence: true
 	validates :email,  presence: true
@@ -22,6 +24,6 @@ class AccountActivation < ActiveRecord::Base
 	end
 	def hash_token(token)
 		digest = OpenSSL::Digest.new('sha256')
-		return OpenSSL::HMAC.digest(digest, user_id, token).unpack('H*')[0]
+		return OpenSSL::HMAC.digest(digest, user_id.to_s, token).unpack('H*')[0]
 	end
 end
