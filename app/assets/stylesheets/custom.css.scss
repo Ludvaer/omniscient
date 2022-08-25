@@ -131,6 +131,9 @@ a {
     img {
          vertical-align: middle;
     }
+    svg {
+         vertical-align: middle;
+    }
     &.sign:hover {
         text-decoration: underline;
     }
@@ -205,7 +208,7 @@ input {
     color: #f43210;
     background: #112211;
     padding: 1em;
-    border-radius: 1.125em;
+    border-radius: 0.5em;
     margin: 1em;
     /* recoloring links, default is too dark for dark bckground */
     /* unvisited link */

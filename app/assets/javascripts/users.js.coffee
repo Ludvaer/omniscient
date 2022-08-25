@@ -26,7 +26,7 @@ root.encryptsignup = ()->
         hmac.update($('#user_password').val());
         hashed1 = hmac.digest().toHex();
         publicKey1 = forge.pki.publicKeyFromPem($("#publickey").val());
-        encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + salt));        
+        encrypted1 = forge.util.bytesToHex(publicKey1.encrypt(hashed1 + '|' + salt));
         delete  data['user[password]']
         data['user[password_encrypted]'] = encrypted1
 

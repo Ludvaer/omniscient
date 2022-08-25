@@ -108,8 +108,13 @@ rails s
  bundle install
  bundle update
 ```
-```
-bundle update spring
-bundle exec spring binstub --remove --all
-bundle exec spring binstub --all
-```
+
+
+The Fix that worked for us: On the system having issues, find ExecJS's runtimes.rb file. It looks like this. Make a copy of the found file for backup. Open the original runtimes.rb for editing. Find the section that starts with the line JScript = ExternalRuntime.new(. In that section, on the line containing :command     => "cscript //E:jscript //Nologo //U", - remove the //U only. Then on the line containing :encoding    => 'UTF-16LE' # CScript with //U returns UTF-16LE - change UTF-16LE to UTF-8 . Save the changes to the file. This section of the file should now read:
+
+JScript = ExternalRuntime.new(
+    :name        => "JScript",
+    :command     => "cscript //E:jscript //Nologo",
+    :runner_path => ExecJS.root + "/support/jscript_runner.js",
+    :encoding    => 'UTF-8' # CScript with //U returns UTF-16LE
+)

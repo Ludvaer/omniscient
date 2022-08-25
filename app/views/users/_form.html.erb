@@ -19,7 +19,7 @@
 
 	<%= render 'users/username_field', f: f, for_new: !@islogin %>
 	<%= render 'users/password_field', f: f, for_new: !@islogin %>
-	<% if @islogin %> 
+	<% if @islogin %>
 		<div class="field">
 		    <%= check_box :login, :remember %>
 			<%= label :login, :remember, t('Remember me'), :class => "noalign"%>
@@ -28,6 +28,5 @@
 		<%= render 'users/password_confirmation_field', f: f, for_new: true %>
 		<%= render 'users/email_field', f: f, for_new: true %>
 	<% end %>
-<%= f.submit id:'user-submit', value:  (yield :action), :class => "btn"%>
+<%= f.submit id:'user-submit', value:  (yield :action), :class => "btn", data: { disable_with: ( t('In progress')) }  %>
 <% end %>
-
