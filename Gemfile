@@ -1,39 +1,38 @@
-source 'https://rubygems.org'
-ruby '2.0.0'
+source 'http://rubygems.org'
+ruby '2.7.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.13'
+gem 'rails', '7.0.3.1'
 # Use pg as the database for Active Record
-gem 'pg'
+gem 'pg', '1.4.3'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.3'
+gem 'sass-rails', '6.0.0'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier', '4.2.0'
 # Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
+gem 'coffee-rails', '5.0.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+gem 'jquery-rails', '4.5.0'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+gem 'turbolinks', '5.2.1'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder', '2.11.5'
 #need sequre_password functionality
-gem 'bcrypt', '~> 3.1.7'
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0',          group: :doc
+gem 'bcrypt', '3.1.18' # bundle exec rake doc:rails generates the API under doc/api.
+gem 'sdoc', '2.4.0',         group: :doc
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-gem 'spring',        group: :development
+gem 'spring', '4.0.0',       group: :development
 
-# i need tests 
-gem 'capybara',      group: :development
+# i need tests
+gem 'capybara', '3.37.1',      group: :development
 
-gem 'selenium-webdriver',      group: :development
+gem 'selenium-webdriver', '4.4.0',     group: :development
 
-
+gem 'tzinfo-data'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -45,4 +44,3 @@ gem 'selenium-webdriver',      group: :development
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-
