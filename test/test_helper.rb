@@ -30,19 +30,19 @@ class ActiveSupport::TestCase
 
   def accept_alert
     if Capybara.current_driver == :selenium
-      page.driver.browser.switch_to.alert.accept    
+      page.driver.browser.switch_to.alert.accept
     end
   end
 
   def standart_name s
     s + 'name'
-  end 
+  end
   def standart_pass s
     s + 'pass'
-  end 
+  end
   def standart_mail s
     s + '_test_mail@'+ s + '.' + s
-  end 
+  end
 
   def logged_in s
     assert page.has_css?('a.sign', text: 'Profile'),  'Logged in. Profile link'
@@ -110,5 +110,3 @@ class ActiveSupport::TestCase
   end
 
 end
-
-

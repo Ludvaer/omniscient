@@ -32,7 +32,7 @@ gem 'capybara', '3.37.1',      group: :development
 
 gem 'selenium-webdriver', '4.4.0',     group: :development
 
-gem 'tzinfo-data'
+gem 'tzinfo-data', '1.2022.3'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

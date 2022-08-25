@@ -9,7 +9,7 @@ PASSWORD_LENGTH = 64
 class User < ActiveRecord::Base
 
 	validates :name,  presence: true, length: { maximum: MAX_USERNAME_LENGTH,  minimum: MIN_USERNAME_LENGTH},
-		format: { with: VALID_USER_REGEX }#, uniqueness: { case_sensitive: false } 
+		format: { with: VALID_USER_REGEX }#, uniqueness: { case_sensitive: false }
 		               #uniqueness checked during validation, removed here to avoid ext db queries
 	validates :email, presence: true, length: { maximum: MAX_EMAIL_LENGTH },
 		format: { with: VALID_EMAIL_REGEX }#, uniqueness: { case_sensitive: false }
@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
 	end
 
 	def send_activation_letter
-		UserMailer.account_activation(user.account_activation).deliver_now
+		UserMailer.account_activation(@user.account_activation).deliver_now
 	end
 
 	def create_password_reset
@@ -87,7 +87,7 @@ class User < ActiveRecord::Base
 		l = @@sym.length
 		salt = (0...5).map { @@sym[rand(l)] }.join + "#{@@i}"
 		@@i += 1
-		Rails.cache.fetch salt do 
+		Rails.cache.fetch salt do
 			true
 		end
 		return salt
@@ -95,7 +95,7 @@ class User < ActiveRecord::Base
 
 	def self.checksalt(salt)
 		if Rails.cache.fetch(salt)
-			Rails.cache.fetch salt do 
+			Rails.cache.fetch salt do
 				false
 			end
 			return true
@@ -149,7 +149,7 @@ class User < ActiveRecord::Base
 
 	def unique_email?
 		#return @@usersbymail[self.email.downcase].nil?
-		check_unique User.where(email: email) 
+		check_unique User.where(email: email)
 	end
 
 # class NameErrors
@@ -249,7 +249,7 @@ class User < ActiveRecord::Base
 	    check_password(user_params)
 	    check_password_confirmation(user_params)
 	    if check_email(user_params)
-		    check_email_unique	 
+		    check_email_unique
 	    end
 
 		return !@err
@@ -261,7 +261,7 @@ class User < ActiveRecord::Base
 	    check_name(user_params)
    		check_password(user_params)
 
-		unless @err	       
+		unless @err
 			user = User.find_by(downame: name.downcase)
 	        if user
 		        if user.authenticate(password)
@@ -282,7 +282,7 @@ class User < ActiveRecord::Base
 		user = self
 		if check_email(user_params)
 			user = User.find_by(downame: name.downcase)
-			if user 
+			if user
 				return user
 			end
 		end

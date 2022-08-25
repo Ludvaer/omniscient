@@ -5,19 +5,19 @@ $header-color: #ddddd6;
 $footer-color: #ddddd6;
 $mystery-padding-workaround: 0px;
 $font-size: 16px;
-$main-width: 55em; 
+$main-width: 55em;
 
 html {
     height:100%;
     font-size: 0px;
-    display: block;   
+    display: block;
 }
 
-body { 
-    display: inline-block;   
+body {
+    display: inline-block;
     box-sizing: border-box;
     margin: 0px;
-    padding: 0px;    
+    padding: 0px;
     height: 100%;
     min-width:100%;
     padding-bottom: $mystery-padding-workaround;
@@ -26,7 +26,7 @@ body {
     word-wrap: break-word;
     color: #000033;
 }
- 
+
 
 //main should not contain % padding since it has max width limitter, that's why padding defind for outer element
 #main {
@@ -35,7 +35,7 @@ body {
     display: block;
     padding: 2% 0px;
     margin: 0px auto;
-    max-width: $main-width; 
+    max-width: $main-width;
 }
 
 #main-side-padding{
@@ -66,23 +66,23 @@ body {
     padding-top: 0px;
     padding-bottom: $footer-height - $mystery-padding-workaround;
     margin-top: 0px;
-    margin-bottom: -$footer-height + $mystery-padding-workaround; 
+    margin-bottom: -$footer-height + $mystery-padding-workaround;
 }
 
 
 
-footer { 
+footer {
     font-size: $font-size;
     display: inline-block;
     box-sizing: border-box;
     overflow: auto;
     width: 100%;
 
-    min-height: $footer-height - $mystery-padding-workaround; 
-    max-height: $footer-height - $mystery-padding-workaround; 
-    height: $footer-height - $mystery-padding-workaround; 
+    min-height: $footer-height - $mystery-padding-workaround;
+    max-height: $footer-height - $mystery-padding-workaround;
+    height: $footer-height - $mystery-padding-workaround;
     line-height: $footer-height - 2*$mystery-padding-workaround;
- 
+
     padding: 0px 3%;
     padding-top: $mystery-padding-workaround;
     margin: 0px;
@@ -121,7 +121,7 @@ h2 {
     margin-bottom: 1%;
 }
 
-nav {    
+nav {
     text-align: center;
 }
 
@@ -203,6 +203,14 @@ input {
     margin: 0 auto;
     text-align: center;
     color: #f43210;
+    background-color: #010101;
+
+    padding-bottom: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 1em;
+    border-radius: 1.125em;
+    margin: 1em;
 }
 
 

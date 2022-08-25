@@ -1,4 +1,4 @@
-class CreateAccountActivations < ActiveRecord::Migration
+class CreateAccountActivations < ActiveRecord::Migration[5.1]
   def change
     create_table :account_activations do |t|
       t.string :token
@@ -7,6 +7,6 @@ class CreateAccountActivations < ActiveRecord::Migration
       t.timestamps
     end
     add_index :account_activations, :user_id, unique: false
-    add_column :users, :activated, :boolean, default: false  
+    add_column :users, :activated, :boolean, default: false
   end
 end

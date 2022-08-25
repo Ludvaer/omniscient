@@ -28,7 +28,7 @@ module SessionsHelper
 				end
 			end
 			cookies.delete(:remember_token)
-			@current_user = nil			
+			@current_user = nil
 		end
 	end
 
@@ -43,7 +43,7 @@ module SessionsHelper
 			s = Session.find_by(token: cookies.signed[:remember_token])
 			if s
 				cookies.delete(:remember_token)
-				s.destroy				
+				s.destroy
 			end
 		end
 		session.delete(:user_id)
@@ -52,6 +52,12 @@ module SessionsHelper
 
 	#determines if logged in user has right to modify data related to argument user
 	def access?(user)
-		current_user and (current_user.id == user.id or current_user.id == 1) 
+		current_user and (current_user.id == user.id or current_user.id == 1)
 	end
+
+	def redirect_link(redirect_url)
+		@redirect_url = redirect_url
+	   render_to_string 'sessions/_redirect_link', redirect_url: redirect_url
+	end
+
 end

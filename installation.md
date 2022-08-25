@@ -33,11 +33,11 @@ check installed version
 ruby -v
 rails -v
 '''
-If commands does not 
+If commands does not
 
 ##Install additional software
 
-install very important gem 
+install very important gem
 
 
 ```
@@ -95,4 +95,21 @@ rake db:create
 run server
 ```
 rails s
+```
+
+
+-------
+ ## windows
+
+
+
+ go to http://rubyinstaller.org/downloads/
+```
+ bundle install
+ bundle update
+```
+```
+bundle update spring
+bundle exec spring binstub --remove --all
+bundle exec spring binstub --all
 ```

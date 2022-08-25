@@ -1,70 +1,54 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151203082752) do
-
+ActiveRecord::Schema[7.0].define(version: 2015_12_03_082752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "account_actiovations", force: true do |t|
-    t.string   "token"
-    t.integer  "user_id"
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "account_activations", force: :cascade do |t|
+    t.string "token"
+    t.integer "user_id"
+    t.string "email"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["user_id"], name: "index_account_activations_on_user_id"
   end
 
-  add_index "account_actiovations", ["token"], name: "index_account_actiovations_on_token", unique: true, using: :btree
-  add_index "account_actiovations", ["user_id"], name: "index_account_actiovations_on_user_id", using: :btree
-
-  create_table "account_activations", force: true do |t|
-    t.string   "token"
-    t.integer  "user_id"
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "password_resets", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "token"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
-  add_index "account_activations", ["user_id"], name: "index_account_activations_on_user_id", using: :btree
-
-  create_table "password_resets", force: true do |t|
-    t.integer  "user_id"
-    t.string   "token"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "sessions", force: :cascade do |t|
+    t.string "token"
+    t.integer "user_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["token"], name: "index_sessions_on_token", unique: true
   end
 
-  create_table "sessions", force: true do |t|
-    t.string   "token"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "password_digest"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.string "downame"
+    t.boolean "activated", default: false
+    t.index ["downame"], name: "index_users_on_downame", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["name"], name: "index_users_on_name", unique: true
   end
-
-  add_index "sessions", ["token"], name: "index_sessions_on_token", unique: true, using: :btree
-
-  create_table "users", force: true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.string   "password_digest"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "downame"
-    t.boolean  "activated",       default: false
-  end
-
-  add_index "users", ["downame"], name: "index_users_on_downame", unique: true, using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
 
 end
