@@ -196,11 +196,21 @@ input {
         max-width: $input-width;
         width: 100%;
     }
+    &.long_input {
+        max-width: $main-width  - 1.5 * $input-width;
+
+        margin: 1px auto;
+        width: 100%;
+      }
     &[type=button], &[type=submit]{
         display: block;
         margin: 1px auto;
+        &.row_button {
+          display: inline-block;
+        }
     }
 }
+
 
 .error {
     margin: 0 auto;

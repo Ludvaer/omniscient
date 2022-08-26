@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   get '/:locale' => 'pseudo_static#welcome', as: :pseudo_root
 
 
-  scope "(:locale)", locale: /en|ru/ do  
+  scope "(:locale)", locale: /en|ru/ do
+    #pseudostatic stuff
+    get 'sigil' => 'pseudo_static#sigil',  as: :sigil
     #signup view destroy users
     resources :users
     get 'signup'  => 'users#new'
@@ -17,7 +19,7 @@ Rails.application.routes.draw do
     get 'logout'  => 'sessions#destroy' #TODO: fix; no logout through get
     delete 'logout'  => 'sessions#destroy'
     get 'resession'  => 'sessions#reset' #simulates session reset (reopening browser) (clears session cookie)
-   
+
     #activation stuff
     post 'account_activations' => 'account_activations#create'
     post 'account_activations/:token' => 'account_activations#activate' , as: :account_activate
