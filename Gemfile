@@ -25,7 +25,7 @@ gem 'bcrypt', '3.1.18' # bundle exec rake doc:rails generates the API under doc/
 gem 'sdoc', '2.4.0',         group: :doc
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-gem 'spring',       group: :development
+gem 'spring', '4.0.0',      group: :development
 
 # i need tests
 gem 'capybara', '3.37.1',      group: :development
@@ -44,7 +44,3 @@ gem 'tzinfo-data', '1.2022.3'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-
-
-gem 'rails_12factor'
-gem 'puma'
