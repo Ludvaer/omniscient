@@ -13,16 +13,15 @@
       <tr>
         <td><%= user.name %></td>
         <td><%= user.email %></td>
-        <td><%= link_to t('Profile'), user %></td>
+        <td><%= link_to t('Profile'), user %>
         <% if access?(user) %>
-          <td><%= link_to t('Edit'), edit_user_path(user) %></td>
-          <td><%= link_to t('Destroy'), user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <%= link_to t('Edit'), edit_user_path(user) %>
+          <%= link_to t('Destroy'), user, method: :delete, data: { confirm: 'Are you sure?' } %>
         <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-
