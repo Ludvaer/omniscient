@@ -7,7 +7,7 @@ VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 VALID_USER_REGEX = /\A[\w+\-@. ]+\z/i
 PASSWORD_LENGTH = 64
 class User < ActiveRecord::Base
-
+#TODO: check that password magic works when username changed
 	validates :name,  presence: true, length: { maximum: MAX_USERNAME_LENGTH,  minimum: MIN_USERNAME_LENGTH},
 		format: { with: VALID_USER_REGEX }#, uniqueness: { case_sensitive: false }
 		               #uniqueness checked during validation, removed here to avoid ext db queries
