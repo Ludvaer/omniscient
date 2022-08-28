@@ -1,0 +1,59 @@
+/* Ratio: height/width */
+:root {
+    --ratio: 0.5;
+    --reverse-ratio: 2;
+    --container-width: 50vw;
+    --container-height: 50vh;
+
+    --font1-sizeVW: 15vh;
+    --font1-sizeVH: calc(var(--ratio) * 15vw);
+
+    --font2-sizeVW: 6vh;
+    --font2-sizeVH: calc(var(--ratio) * 6vw);
+}
+
+
+
+
+#gameboard
+{
+  .equalRelative {width:10%; height:10%;}
+  .equalAbsolute {width:50px; height:50px;}
+  table
+  {
+  	padding: 0px;
+
+  border-collapse: collapse;
+  table-layout: fixed;
+width: 100%;
+  margin: auto;
+  }
+
+  tr
+  {
+    padding: 0px;
+      border-collapse: collapse;
+    width: 100%;
+  }
+
+  td {
+    width: 33.33%;
+    position: relative;
+  }
+  td:after {
+    content: '';
+    display: block;
+    margin-top: 100%;
+  }
+  td button {
+    //font-size: 1vmin;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+
+
+  }
+}

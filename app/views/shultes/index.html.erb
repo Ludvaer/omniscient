@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Shultes</h1>
+
+<div id="shultes">
+  <% @shultes.each do |shulte| %>
+    <%= render shulte %>
+    <p>
+      <%= link_to "Show this shulte", shulte %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New shulte", new_shulte_path %>

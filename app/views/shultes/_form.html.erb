@@ -1,0 +1,143 @@
+<div id="gameboard">
+
+
+</div>>
+
+<script type="text/javascript">
+  var table_size = 5;
+  var game_status = 0;
+  var table_length = table_size*table_size;
+  var mistakes = 0;
+  function shuffle(array) {  // http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+    let currentIndex = array.length,  randomIndex;
+    var number = BigInt(0);
+    var mult = BigInt(1);
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      number +=  BigInt(randomIndex)*mult;
+      mult *= BigInt(currentIndex +1);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+
+    return [array,number];
+  }
+  function factorialize(num)
+  {
+    var result = BigInt(num);
+    if (num === 0 || num === 1)
+        return 1;
+    while (num > 1) {
+      num--;
+      result *= BigInt(num);
+    }
+  return result;
+  }
+function click_cell(n, btn)
+{
+  if ( n == game_status + 1)
+  {
+
+         btn.style.display = "none";
+         ++game_status;
+
+  }
+
+}
+
+function fill_table()
+{
+
+  var gameboard = document.getElementById('gameboard');
+  gameboard.innerHTML = "";
+  let table = document.createElement('table');
+
+  gameboard.appendChild(table);
+  let thead = document.createElement('thead');
+  let tbody = document.createElement('tbody');
+  //table.appendChild(thead);
+  //table.appendChild(tbody);
+
+  var size = table_size;
+  var length = table_length;
+    var fontsize = length > 99 ? 30/size : 40/size;
+    gameboard.style.fontSize = fontsize + "vmin";
+  //var shuffleCount = factorialize(length)
+  numbers =[]
+  for (var i = 0; i < length; i++)
+  {
+    numbers[i] = i+1;
+  }
+  number = shuffle(numbers)[1]
+  for (var i = 0; i < size; i++)
+  {
+
+    let row =  document.createElement('tr');
+    table.appendChild(row);
+    for (var j = 0; j < size; j++)
+    {
+      let cell =  document.createElement('td');
+      //var cellButton =  document.createElement('td');
+      //cell.innerHTML = numbers[i*size+j];
+      row.appendChild(cell);
+      let btn = document.createElement("button");
+      let number = numbers[i*size+j];
+      btn.innerHTML = number;
+      btn.onclick = function () { click_cell(number,btn); };
+
+      cell.appendChild(btn);
+    }
+  }
+  return number;
+}
+
+number = fill_table();
+</script>
+
+
+
+
+
+
+
+
+
+
+<%= form_with(model: shulte) do |form| %>
+  <% if shulte.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(shulte.errors.count, "error") %> prohibited this shulte from being saved:</h2>
+
+      <ul>
+        <% shulte.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :user_id%>
+    <%= form.number_field :user_id %>
+  </div>
+
+  <div>
+    <%= form.label :time %>
+    <%= form.number_field :time %>
+  </div>
+
+  <div>
+    <%= form.label :mistakes%>
+    <%= form.number_field :mistakes %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
