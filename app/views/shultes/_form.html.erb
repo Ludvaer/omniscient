@@ -1,13 +1,34 @@
 <div id="gameboard">
 
 
-</div>>
+</div>
 
 <script type="text/javascript"> //consider moveing to separate file
-  var table_size = 5;
-  var game_status = 0;
-  var table_length = table_size*table_size;
-  var mistakes = 0;
+  var gameboard = document.getElementById('gameboard');
+ var table_size = 5;
+ var table_length = table_size*table_size;
+       var game_status = 0;
+             var mistakes = 0;
+  function play()
+  {
+
+       table_size = 5;
+       game_status = 0;
+       table_length = table_size*table_size;
+       mistakes = 0;
+      var number = fill_table();
+  }
+  function show_start_button()
+  {
+     gameboard.innerHTML = "";
+     var start_button = document.createElement("button");
+     start_button.innerHTML = "Start"
+     start_button.onclick = play;
+     start_button.className = "btn";
+
+     gameboard.appendChild(start_button);
+  }
+  show_start_button();
   function shuffle(array) {  // http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
     let currentIndex = array.length,  randomIndex;
     var number = BigInt(0);
@@ -46,8 +67,9 @@ function click_cell(n, btn)
 
          btn.style.display = "none";
          ++game_status;
-         if(game_status >= length)
+         if(game_status >= table_length)
          {
+           show_start_button();
            //finisj game
          }
 
@@ -61,27 +83,27 @@ function click_cell(n, btn)
 function fill_table()
 {
 
-  var gameboard = document.getElementById('gameboard');
+
   gameboard.innerHTML = "";
   let table = document.createElement('table');
 
   gameboard.appendChild(table);
-  let thead = document.createElement('thead');
-  let tbody = document.createElement('tbody');
+  //let thead = document.createElement('thead');
+  //let tbody = document.createElement('tbody');
   //table.appendChild(thead);
   //table.appendChild(tbody);
 
-  var size = table_size;
-  var length = table_length;
-    var fontsize = length > 99 ? 30/size : 40/size;
-    gameboard.style.fontSize = fontsize + "vmin";
+  let size = table_size;
+  let length = table_length;
+  var fontsize = length > 99 ? 30/size : 40/size;
+    table.style.fontSize = fontsize + "vmin";
   //var shuffleCount = factorialize(length)
-  numbers =[]
+  let numbers =[]
   for (var i = 0; i < length; i++)
   {
     numbers[i] = i+1;
   }
-  number = shuffle(numbers)[1]
+  var suffle_number = shuffle(numbers)[1]
   for (var i = 0; i < size; i++)
   {
 
@@ -103,50 +125,8 @@ function fill_table()
       cell.appendChild(btn);
     }
   }
-  return number;
+  return suffle_number;
 }
 
-number = fill_table();
+
 </script>
-
-
-
-
-
-
-
-
-
-
-<%= form_with(model: shulte) do |form| %>
-  <% if shulte.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(shulte.errors.count, "error") %> prohibited this shulte from being saved:</h2>
-
-      <ul>
-        <% shulte.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div>
-    <%= form.label :user_id%>
-    <%= form.number_field :user_id %>
-  </div>
-
-  <div>
-    <%= form.label :time %>
-    <%= form.number_field :time %>
-  </div>
-
-  <div>
-    <%= form.label :mistakes%>
-    <%= form.number_field :mistakes %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
