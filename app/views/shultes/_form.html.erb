@@ -3,7 +3,7 @@
 
 </div>>
 
-<script type="text/javascript">
+<script type="text/javascript"> //consider moveing to separate file
   var table_size = 5;
   var game_status = 0;
   var table_length = table_size*table_size;
@@ -46,7 +46,14 @@ function click_cell(n, btn)
 
          btn.style.display = "none";
          ++game_status;
+         if(game_status >= length)
+         {
+           //finisj game
+         }
 
+  }
+  else {
+    ++mistakes;
   }
 
 }
@@ -80,15 +87,17 @@ function fill_table()
 
     let row =  document.createElement('tr');
     table.appendChild(row);
+    row.style.height = (100.0/size)+"%";
     for (var j = 0; j < size; j++)
     {
       let cell =  document.createElement('td');
+      cell.style.width = (100.0/size)+"%";
       //var cellButton =  document.createElement('td');
       //cell.innerHTML = numbers[i*size+j];
       row.appendChild(cell);
       let btn = document.createElement("button");
       let number = numbers[i*size+j];
-      btn.innerHTML = number;
+      btn.innerHTML = number; //consider making it svg for better
       btn.onclick = function () { click_cell(number,btn); };
 
       cell.appendChild(btn);
