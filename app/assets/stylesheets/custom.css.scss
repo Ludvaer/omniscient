@@ -6,6 +6,8 @@ $footer-color: #ddddd6;
 $mystery-padding-workaround: 0px;
 $font-size: 16px;
 $main-width: 55em;
+$label-width: 0.22*$main-width;
+$input-width: 0.36*$main-width;
 
 html {
     height:100%;
@@ -133,6 +135,7 @@ a {
     }
     svg {
          vertical-align: middle;
+
     }
     &.sign:hover {
         text-decoration: underline;
@@ -168,8 +171,7 @@ form {
 
 }
 
-$label-width: 12em;
-$input-width: 20em;
+
 
 .field {
     margin: 0.5em 1px;
