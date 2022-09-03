@@ -5,7 +5,7 @@ class CreateShultes < ActiveRecord::Migration[7.0]
       t.integer :time
       t.integer :mistakes
       t.integer :size
-      t.bigint  :shuffle
+      t.numeric  :shuffle
       t.timestamps
     end
   end
