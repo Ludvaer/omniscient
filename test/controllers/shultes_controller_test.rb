@@ -17,7 +17,7 @@ class ShultesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create shulte" do
     assert_difference("Shulte.count") do
-      post shultes_url, params: { shulte: { mistakes: @shulte.mistakes, time: @shulte.time, user_id: @shulte.user_id } }
+      post shultes_url, params: { shulte: { mistakes: @shulte.mistakes, time: @shulte.time, size: @shulte.size, shuffle: @shulte.shuffle, user_id: @user.id } }
     end
 
     assert_redirected_to shulte_url(Shulte.last)
@@ -34,7 +34,7 @@ class ShultesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update shulte" do
-    patch shulte_url(@shulte), params: { shulte: { mistakes: @shulte.mistakes, time: @shulte.time, user_id: @shulte.user_id } }
+    patch shulte_url(@shulte), params: { shulte: { mistakes: @shulte.mistakes, time: @shulte.time, size: @shulte.size, shuffle: @shulte.shuffle, user_id: @user.id } }
     assert_redirected_to shulte_url(@shulte)
   end
 

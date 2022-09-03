@@ -1,6 +1,6 @@
 class ShultesController < ApplicationController
   before_action :set_shulte, only: %i[ show edit update destroy ]
-
+  skip_before_action :verify_authenticity_token
   # GET /shultes or /shultes.json
   def index
     @shultes = Shulte.all
@@ -21,8 +21,9 @@ class ShultesController < ApplicationController
 
   # POST /shultes or /shultes.json
   def create
-    @shulte = Shulte.new(shulte_params)
 
+    @shulte = Shulte.new(shulte_params)
+    @shulte.user_id = current_user.id
     respond_to do |format|
       if @shulte.save
         format.html { redirect_to shulte_url(@shulte), notice: "Shulte was successfully created." }
@@ -65,6 +66,6 @@ class ShultesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def shulte_params
-      params.require(:shulte).permit(:user_id, :time, :mistakes)
+      params.require(:shulte).permit(:user_id, :time, :mistakes, :size, :shuffle)
     end
 end

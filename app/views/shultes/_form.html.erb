@@ -2,13 +2,19 @@
 
 
 </div>
+<div id="shulte-save-response">
 
+
+</div>
 <script type="text/javascript"> //consider moveing to separate file
   var gameboard = document.getElementById('gameboard');
- var table_size = 5;
+ var table_size = 0;
  var table_length = table_size*table_size;
        var game_status = 0;
              var mistakes = 0;
+        var suffle_number = BigInt(0);
+        var startTime, endTime;
+
   function play()
   {
 
@@ -16,12 +22,14 @@
        game_status = 0;
        table_length = table_size*table_size;
        mistakes = 0;
-      var number = fill_table();
+      suffle_number = fill_table();
+      startTime = performance.now();
   }
   function show_start_button()
   {
      gameboard.innerHTML = "";
      var start_button = document.createElement("button");
+     //start_button.id = "start_button"
      start_button.innerHTML = "Start"
      start_button.onclick = play;
      start_button.className = "btn";
@@ -31,7 +39,7 @@
   show_start_button();
   function shuffle(array) {  // http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
     let currentIndex = array.length,  randomIndex;
-    var number = BigInt(0);
+    let number = BigInt(0);
     var mult = BigInt(1);
     // While there remain elements to shuffle.
     while (currentIndex != 0) {
@@ -69,6 +77,13 @@ function click_cell(n, btn)
          ++game_status;
          if(game_status >= table_length)
          {
+           form = document.getElementById("shulte_form");
+            endTime = performance.now();
+           document.getElementById('time').value  = Math.round(endTime - startTime);
+           document.getElementById('size').value   = table_size;
+           document.getElementById('mistakes').value   = mistakes;
+           document.getElementById('shuffle').value   = suffle_number;
+           sendShulte();
            show_start_button();
            //finisj game
          }
@@ -103,7 +118,7 @@ function fill_table()
   {
     numbers[i] = i+1;
   }
-  var suffle_number = shuffle(numbers)[1]
+  let suffle_number = shuffle(numbers)[1]
   for (var i = 0; i < size; i++)
   {
 
@@ -127,6 +142,41 @@ function fill_table()
   }
   return suffle_number;
 }
-
-
 </script>
+<%= form_with(model: shulte, id: 'shulte_form') do |form| %>
+  <% if shulte.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(shulte.errors.count, "error") %> prohibited this shulte from being saved:</h2>
+
+      <ul>
+        <% shulte.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :time %>
+    <%= form.number_field :time, id: :time %>
+  </div>
+
+  <div>
+    <%= form.label :mistakes %>
+    <%= form.number_field :mistakes, id: :mistakes %>
+  </div>
+
+  <div>
+    <%= form.label :size %>
+    <%= form.number_field :size, id: :size %>
+  </div>
+
+  <div>
+    <%= form.label :shuffle %>
+    <%= form.number_field :shuffle, id: :shuffle %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
