@@ -27,6 +27,7 @@ svg.style.marginRight ="auto";
 var spell_input = document.getElementById("spell-input");
 function rset() {
 while(svg.children.length > 0) svg.removeChild(svg.children[0]);
+spell_input.value = "";
 }
 
 var x = 10.0;
@@ -379,10 +380,12 @@ draw_a()
       draw_z()
       break;
     case '_':
-      forward(1.5)
+      forward(0.3)
+      forward_i(0.3)
+      forward(0.3)
       break;
     case ' ':
-      forward(2)
+      forward_i(0.9)
       break;
     case 'Ж':
     case 'ж':
